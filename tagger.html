@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <link href="css/text.css" media="screen" type="text/css" rel="stylesheet"></link>
+        <link href="css/960_24_col.css" media="screen" type="text/css" rel="stylesheet"></link>
+        <link href="css/slider.css" media="screen" type="text/css" rel="stylesheet"></link>
+        <title>Tile test</title>
+    </head>
+    <body onLoad="reflow()" onResize="reflow()">
+        <div id="header">
+            <div><H1><span id="logo">Fedora</span> tagger</H1></div>
+            <div class="userinfo">Tuxytux</div>
+        </div>
+        <div class="clear"></div>
+        <div class="body" id="gameboard">
+            <div class="card">
+              <div class="content">
+                <div class="clear"></div>
+                <div class="package_header">
+                  <img src="imgs/gvim.png" class="icon"></img>
+                  <div class="title">
+                    <div><h2>Vim</h2></div>
+                    <div class="clear"></div>
+                    <div class="summary">
+                      The VIM editor
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                    <div class="details">
+                      <a href="#">More details...</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <div class="question">
+                  Do the following tags match this package?
+                </div>
+                <div class="clear"></div>
+                <div class="tags">
+                  <ul>
+                    <li class="selected"><a href="#">keybindings</a></li>
+                    <li><a href="#">editor</a></li>
+                    <li><a href="#">operating system</a></li>
+                    <li><a href="#">text</a></li>
+                    <li><a href="#">ide</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="content">
+                <div class="clear"></div>
+                <div class="package_header">
+                  <img src="imgs/file-manager.png" class="icon"></img>
+                  <div class="title">
+                    <div><h2>Nautilus</h2></div>
+                    <div class="clear"></div>
+                    <div class="summary">
+                      A filemanager for GNOME
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                    <div class="details">
+                      <a href="#">More details...</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <div class="question">
+                  Do the following tags match this package?
+                </div>
+                <div class="clear"></div>
+                <div class="tags">
+                  <ul>
+                    <li class="selected"><a href="#">file-management</a></li>
+                    <li><a href="#">filesystem</a></li>
+                    <li><a href="#">browse</a></li>
+                    <li><a href="#">bananas</a></li>
+                    <li><a href="#">heimlich</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="content">
+                <div class="clear"></div>
+                <div class="package_header">
+                  <img src="imgs/gimp.png" class="icon"></img>
+                  <div class="title">
+                    <div><h2>Gimp</h2></div>
+                    <div class="clear"></div>
+                    <div class="summary">
+                      GNU Image Manipulation Program 
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                    <div class="details">
+                      <a href="#">More details...</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+                <div class="question">
+                  Do the following tags match this package?
+                </div>
+                <div class="clear"></div>
+                <div class="tags">
+                  <ul>
+                    <li class="selected"><a href="#">gegl</a></li>
+                    <li><a href="#">photo editor</a></li>
+                    <li><a href="#">bonobo</a></li>
+                    <li><a href="#">monkeys</a></li>
+                    <li><a href="#">image editor</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div id="leftfade"></div>
+            <a href="#" onClick="card_new(); animate_left(); return false;"><div id="rightfade"></div></a>
+        </div>
+        <div class="clear"></div>
+        <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+        <script type="text/javascript" src="js/cards.js"></script>
+    </body>
+</html>
