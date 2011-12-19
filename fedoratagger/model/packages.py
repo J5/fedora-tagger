@@ -25,7 +25,7 @@ class Package(DeclarativeBase):
     __tablename__ = 'package'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
-    tags = relation('Tag', backref=('parent'))
+    tags = relation('Tag', backref=('package'))
 
     def __repr__(self):
         """ JSON.. kinda. """
