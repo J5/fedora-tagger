@@ -112,6 +112,11 @@ function card_new() {
 }
 
 $(document).ready(function() {
+        $(document).keydown(function(e){
+            if (e.keyCode == 39) {
+                card_new(); animate_left();
+            }
+        });
         $(window).resize(function() { reflow(); });
         reflow();
 });
