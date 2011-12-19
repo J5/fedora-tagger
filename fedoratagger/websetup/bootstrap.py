@@ -43,6 +43,15 @@ def bootstrap(command, conf, vars):
     
         model.DBSession.add(u1)
         model.DBSession.flush()
+
+        p1 = model.Package()
+        p1.name = "Foobar"
+        t1 = model.Tag()
+        t1.label = "foobar"
+        p1.tags.append(t1)
+        model.DBSession.add(p1)
+        model.DBSession.add(t1)
+
         transaction.commit()
     except IntegrityError:
         print 'Warning, there was a problem adding your auth data, it may have already been added:'
