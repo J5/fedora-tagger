@@ -33,10 +33,9 @@ install_requires=[
     "repoze.who-friendlyform >= 1.0.4",
     "repoze.what-pylons >= 1.0",
     "repoze.who==1.0.19",
-    "tgext.admin >= 0.3.11",
     "repoze.what-quickstart",
     "repoze.what.plugins.sql>=1.0.1",
-    "tw.forms",
+    "Pylons==1.0",  # This is madness
     ]
 
 if sys.version_info[:2] == (2,4):
