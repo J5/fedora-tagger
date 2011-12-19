@@ -1,0 +1,10 @@
+*.swp
+*.pyc
+*.pyo
+data
+*.swo
+*.db
+*.db-journal
+*.egg*
+dist
+build
