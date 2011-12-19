@@ -36,6 +36,7 @@ install_requires=[
     "repoze.what-quickstart",
     "repoze.what.plugins.sql>=1.0.1",
     "Pylons==1.0",  # This is madness
+    "tw2.core",
     ]
 
 if sys.version_info[:2] == (2,4):
