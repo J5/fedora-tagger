@@ -38,7 +38,11 @@ class RootController(BaseController):
     @expose('fedoratagger.templates.index')
     def index(self):
         """Handle the front-page."""
-        return dict(page='index')
+        redirect(url('/tagger'))
+
+    @expose('fedoratagger.templates.tagger')
+    def tagger(self):
+        return dict()
 
     @expose('fedoratagger.templates.about')
     def about(self):
