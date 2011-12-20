@@ -8,6 +8,8 @@ from tg import request
 from tg.i18n import ugettext as _, ungettext
 import fedoratagger.model as model
 
+import tw2.jquery
+
 __all__ = ['BaseController']
 
 
@@ -28,4 +30,8 @@ class BaseController(TGController):
 
         request.identity = request.environ.get('repoze.who.identity')
         tmpl_context.identity = request.identity
+
+        # Include jquery on every page.
+        tw2.jquery.jquery_js.req().prepare()
+
         return TGController.__call__(self, environ, start_response)

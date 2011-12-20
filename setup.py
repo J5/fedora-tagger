@@ -40,6 +40,7 @@ install_requires=[
     "tg.devtools",
     "tw2.core",
     "tw2.jit",
+    "tw2.jqplugins.gritter",
     "tw.forms",     # TODO - What is pulling this in?
     ]
 

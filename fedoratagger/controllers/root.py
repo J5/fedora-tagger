@@ -5,6 +5,7 @@ import random
 
 from tg import expose, flash, require, url, lurl, request, redirect
 from tg.i18n import ugettext as _, lazy_ugettext as l_
+from paste.deploy.converters import asbool
 from fedoratagger import model
 from repoze.what import predicates
 from fedoratagger.controllers.secure import SecureController
@@ -53,6 +54,17 @@ class RootController(BaseController):
             for i in range(3)
         ]
         return dict(cards=cards)
+
+    @expose('json')
+    def vote(self, id, like):
+        tag = model.Tag.query.filter_by(id=id).one()
+
+        if asbool(like):
+            tag.like += 1
+        else:
+            tag.dislike += 1
+
+        return tag.__json__()
 
     @expose('fedoratagger.templates.about')
     def about(self):

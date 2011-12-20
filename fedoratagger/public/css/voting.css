@@ -1,0 +1,33 @@
+div.other_packages {
+        float:right;
+        display: inline-block;
+}
+div.voter {
+        display: inline-block;
+        width: 25px;
+        margin-left: -25px;
+}
+div.total {
+        text-align: center;
+}
+div.arrow {
+        margin:0px 0px 0px 0px;
+        width:100%;
+        height:7px;
+        display:block;
+        cursor:pointer;
+        background-position:center center;
+        background-repeat:no-repeat; 
+}
+div.arrow.upmod { 
+        background-image:url(/images/up_arrow.gif);
+}
+div.arrow.downmod { 
+        background-image:url(/images/down_arrow.gif);
+}
+div.arrow.up { 
+        background-image:url(/images/up_arrow.gif);
+}
+div.arrow.down { 
+        background-image:url(/images/down_arrow.gif);
+}

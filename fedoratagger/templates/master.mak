@@ -3,7 +3,8 @@
         <link href="css/text.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/960_24_col.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/slider.css" media="screen" type="text/css" rel="stylesheet"></link>
-		<script src="javascript/jquery-1.6.4.min.js" type="text/javascript"></script>
+        <link href="css/voting.css" media="screen" type="text/css" rel="stylesheet"></link>
+
 		<script src="javascript/cards.js" type="text/javascript"></script>
         <title>Tile test</title>
     </head>
