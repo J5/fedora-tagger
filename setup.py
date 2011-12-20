@@ -37,7 +37,9 @@ install_requires=[
     "repoze.what.plugins.sql>=1.0.1",
     "Pylons==1.0",  # This is madness
     "WebOb==1.0.8", # This is also madness
+    "tg.devtools",
     "tw2.core",
+    "tw.forms",     # TODO - What is pulling this in?
     ]
 
 if sys.version_info[:2] == (2,4):

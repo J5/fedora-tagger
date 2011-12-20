@@ -7,8 +7,6 @@ from fedoratagger import model
 from repoze.what import predicates
 from fedoratagger.controllers.secure import SecureController
 from fedoratagger.model import DBSession, metadata
-from tgext.admin.tgadminconfig import TGAdminConfig
-from tgext.admin.controller import AdminController
 
 from fedoratagger.lib.base import BaseController
 from fedoratagger.controllers.error import ErrorController
@@ -31,7 +29,6 @@ class RootController(BaseController):
 
     """
     secc = SecureController()
-    admin = AdminController(model, DBSession, config_type=TGAdminConfig)
 
     error = ErrorController()
 
