@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Main Controller"""
 
+import random
+
 from tg import expose, flash, require, url, lurl, request, redirect
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 from fedoratagger import model
@@ -11,6 +13,8 @@ from fedoratagger.model import DBSession, metadata
 from fedoratagger.lib.base import BaseController
 from fedoratagger.controllers.error import ErrorController
 from fedoratagger.controllers.radial import RadialController
+
+from fedoratagger.widgets.card import CardWidget
 
 __all__ = ['RootController']
 
@@ -42,7 +46,13 @@ class RootController(BaseController):
 
     @expose('fedoratagger.templates.tagger')
     def tagger(self):
-        return dict()
+        packages = model.Package.query.all()
+        n = len(packages)
+        cards = [
+            CardWidget(package=packages[random.randint(0, n-1)])
+            for i in range(3)
+        ]
+        return dict(cards=cards)
 
     @expose('fedoratagger.templates.about')
     def about(self):

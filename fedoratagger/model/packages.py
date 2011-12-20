@@ -36,6 +36,10 @@ class Package(DeclarativeBase):
         secondary=association_table
     )
 
+    @property
+    def summary(self):
+        return "No summaries yet."
+
     def __unicode__(self):
         return self.name
 
