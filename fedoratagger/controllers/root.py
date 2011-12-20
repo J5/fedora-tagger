@@ -10,6 +10,7 @@ from fedoratagger.model import DBSession, metadata
 
 from fedoratagger.lib.base import BaseController
 from fedoratagger.controllers.error import ErrorController
+from fedoratagger.controllers.radial import RadialController
 
 __all__ = ['RootController']
 
@@ -31,6 +32,8 @@ class RootController(BaseController):
     secc = SecureController()
 
     error = ErrorController()
+
+    radial = RadialController()
 
     @expose('fedoratagger.templates.index')
     def index(self):

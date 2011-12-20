@@ -39,6 +39,7 @@ install_requires=[
     "WebOb==1.0.8", # This is also madness
     "tg.devtools",
     "tw2.core",
+    "tw2.jit",
     "tw.forms",     # TODO - What is pulling this in?
     ]
 

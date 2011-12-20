@@ -36,11 +36,23 @@ class Package(DeclarativeBase):
         secondary=association_table
     )
 
+    def __unicode__(self):
+        return self.name
 
-    def __repr__(self):
+    def __json__(self):
         """ JSON.. kinda. """
         return {
             self.name: [repr(tag) for tag in sorted(self.tags, tag_sorter)]
+        }
+
+    def __jit_data__(self):
+        return {
+            'hover_html' :
+            u"<h2>Package: {name}</h2><ul>" + \
+            " ".join([
+                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>".format(
+                    tag=tag) for tag in self.tags
+            ]) + "</ul>"
         }
 
 
@@ -49,6 +61,9 @@ class TagLabel(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     label = Column(Unicode(255), nullable=False)
     tags = relation('Tag', backref=('label'))
+
+    def __unicode__(self):
+        return self.label
 
 
 class Tag(DeclarativeBase):
@@ -65,14 +80,36 @@ class Tag(DeclarativeBase):
         return self.like - self.dislike
 
     @property
-    def magnitude(self):
+    def votes(self):
         return self.like + self.dislike
 
-    def __repr__(self):
+    def __unicode__(self):
+        return self.label.label + " on " + self.package.name
+
+    def __json__(self):
         return {
-            'tag': self.label,
+            'tag': self.label.label,
             'like': self.like,
             'dislike': self.dislike,
             'total': self.total,
             'votes': self.votes,
+        }
+
+    def __jit_data__(self):
+        return {
+            'hover_html' :
+            u""" <h2>Tag: {label}</h2>
+            <ul>
+                <li>Likes: {like}</li>
+                <li>Dislike: {dislike}</li>
+                <li>Total: {total}</li>
+                <li>Votes: {votes}</li>
+            </ul>
+            """.format(
+                label=unicode(self),
+                like=self.like,
+                dislike=self.dislike,
+                total=self.total,
+                votes=self.votes,
+            )
         }
