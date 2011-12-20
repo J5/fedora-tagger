@@ -36,6 +36,7 @@ install_requires=[
     "repoze.what-quickstart",
     "repoze.what.plugins.sql>=1.0.1",
     "Pylons==1.0",  # This is madness
+    "WebOb==1.0.8", # This is also madness
     "tw2.core",
     ]
 
