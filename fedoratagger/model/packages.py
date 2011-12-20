@@ -20,12 +20,22 @@ def tag_sorter(tag1, tag2):
             return result
     return result
 
+association_table = Table(
+    'package_tag_association', DeclarativeBase.metadata,
+    Column('package_id', Integer, ForeignKey('package.id')),
+    Column('tag_label_id', Integer, ForeignKey('tag_label.id')),
+)
 
 class Package(DeclarativeBase):
     __tablename__ = 'package'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
     tags = relation('Tag', backref=('package'))
+    tag_labels = relation(
+        'TagLabel', backref=('packages'),
+        secondary=association_table
+    )
+
 
     def __repr__(self):
         """ JSON.. kinda. """
@@ -33,11 +43,20 @@ class Package(DeclarativeBase):
             self.name: [repr(tag) for tag in sorted(self.tags, tag_sorter)]
         }
 
+
+class TagLabel(DeclarativeBase):
+    __tablename__ = 'tag_label'
+    id = Column(Integer, primary_key=True)
+    label = Column(Unicode(255), nullable=False)
+    tags = relation('Tag', backref=('label'))
+
+
 class Tag(DeclarativeBase):
     __tablename__ = 'tag'
     id = Column(Integer, primary_key=True)
     package_id = Column(Integer, ForeignKey('package.id'))
-    label = Column(Unicode(255), nullable=False)
+    label_id = Column(Integer, ForeignKey('tag_label.id'))
+
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
 

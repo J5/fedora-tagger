@@ -60,4 +60,4 @@ def init_model(engine):
 
 # Import your model modules here.
 from fedoratagger.model.auth import User, Group, Permission
-from fedoratagger.model.packages import Package, Tag
+from fedoratagger.model.packages import Package, Tag, TagLabel

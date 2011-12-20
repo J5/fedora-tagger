@@ -13,22 +13,12 @@ import os
 import sys
 
 def import_pkgdb_tags():
-    print "Getting list of all packages from koji"
-    status, output = commands.getstatusoutput('koji list-pkgs')
-    if status != 0:
-        raise RuntimeError("koji list-pkgs failed")
-    pkgs = output.split('\n')[2:]
-    print len(pkgs), "packages found."
-
-    for package in pkgs:
-        p = model.Package(name=package)
-        model.DBSession.add(p)
-
     repo = "F-16-i386-u"
     base_url = "https://admin.fedoraproject.org/pkgdb"
     url = base_url + "/lists/sqlitebuildtags/F-16-i386-u"
-    f, fname = tempfile.mkstemp(suffix="-%s.db" % package)
+    f, fname = tempfile.mkstemp(suffix="-%s.db" % repo)
     urllib.urlretrieve(url, fname)
+
     conn = sqlite3.connect(fname)
     cursor = conn.cursor()
     cursor.execute('select * from packagetags')
@@ -36,13 +26,24 @@ def import_pkgdb_tags():
     for row in cursor:
         name, tag, score = row
         p = model.Package.query.filter_by(name=name)
+        tl = model.TagLabel.query.filter_by(label=tag)
         if p.count() == 0:
-            failed.append(name)
-        else:
-            p = p.one()
-            t = model.Tag(label=tag)
-            p.tags.append(t)
-            model.DBSession.add(t)
+            model.DBSession.add(model.Package(name=name))
+
+        if tl.count() == 0:
+            model.DBSession.add(model.TagLabel(label=tag))
+
+        package = p.one()
+        label = tl.one()
+
+        t = model.Tag()
+        t.package = package
+        t.label = label
+        model.DBSession.add(t)
+
+        if label not in package.tag_labels:
+            package.tag_labels.append(label)
+
 
     conn.close()
     os.remove(fname)
