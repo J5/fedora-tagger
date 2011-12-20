@@ -4,7 +4,7 @@
       <div class="content">
         <div class="clear"></div>
         <div class="package_header">
-          <images src="imagess/gvim.png" class="icon"></images>
+          <images src="images/gvim.png" class="icon"></images>
           <div class="title">
             <div><h2>Vim</h2></div>
             <div class="clear"></div>
@@ -34,11 +34,12 @@
         </div>
       </div>
     </div>
+
     <div class="card">
       <div class="content">
         <div class="clear"></div>
         <div class="package_header">
-          <images src="imagess/file-manager.png" class="icon"></images>
+          <images src="images/file-manager.png" class="icon"></images>
           <div class="title">
             <div><h2>Nautilus</h2></div>
             <div class="clear"></div>
@@ -72,7 +73,7 @@
       <div class="content">
         <div class="clear"></div>
         <div class="package_header">
-          <images src="imagess/gimp.png" class="icon"></images>
+          <images src="images/gimp.png" class="icon"></images>
           <div class="title">
             <div><h2>Gimp</h2></div>
             <div class="clear"></div>
