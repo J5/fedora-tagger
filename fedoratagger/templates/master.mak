@@ -10,6 +10,7 @@
         <title>Tile test</title>
     </head>
     <body>
+		${tmpl_context.hotkeys_dialog.display() | n}
         <div id="header">
             <div><H1><span id="logo">Fedora</span> tagger</H1></div>
             <div class="userinfo">Tuxytux</div>

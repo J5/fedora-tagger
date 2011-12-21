@@ -45,12 +45,20 @@ function init_mouseover() {
         });
 }
 
+function help() { $('#hotkeys_dialog').dialog('open'); }
+
+function search() {
+        console.log('search not implemented yet.');
+}
+
 function init_navigation() {
         keys = {
                 left: [37, 72],
                 up: [38, 75],
                 right: [39, 76],
                 down: [40, 74],
+                help: [27, 112],
+                search: [191],
         }
 
         callbacks = {
@@ -58,6 +66,8 @@ function init_navigation() {
                 right: next_item,
                 up: upvote_this,
                 down: downvote_this,
+                help: help,
+                search: search,
         }
 
         init_mouseover();

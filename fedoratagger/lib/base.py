@@ -7,6 +7,7 @@ from tg.render import render
 from tg import request
 from tg.i18n import ugettext as _, ungettext
 import fedoratagger.model as model
+import fedoratagger.widgets.dialog
 
 import tw2.jquery
 
@@ -33,5 +34,6 @@ class BaseController(TGController):
 
         # Include jquery on every page.
         tw2.jquery.jquery_js.req().prepare()
+        tmpl_context.hotkeys_dialog = fedoratagger.widgets.dialog.HotkeysDialog
 
         return TGController.__call__(self, environ, start_response)
