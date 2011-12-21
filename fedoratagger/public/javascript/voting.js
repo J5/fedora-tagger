@@ -19,6 +19,7 @@ function failed_vote() {
         $.gritter.add({
                 title: 'There was a problem with the server.',
                 text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
                 sticky: true,
         });
 }
