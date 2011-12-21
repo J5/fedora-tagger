@@ -175,6 +175,9 @@ body, p, a, li, div, input, button {
 }
 
 .card .content li a:link { color: #3c6eb4; text-decoration: none; font-weight: bold;}
-.card .content li  a:visited { color: #3c6eb4; text-decoration: none; font-weight: bold;}
-.card .content li  a:hover { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}
+.card .content li a:visited { color: #3c6eb4; text-decoration: none; font-weight: bold;}
+.card .content li a:hover { color: #3c6eb4; text-decoration: none; font-weight: bold;}
 .card .content li a:active { color: #3c6eb4; text-decoration: none; font-weight: bold;}
+
+.center .content .selected a:link { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}
+.center .content .selected a:visited { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}

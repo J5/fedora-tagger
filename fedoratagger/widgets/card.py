@@ -9,9 +9,11 @@ class CardWidget(tw2.forms.LabelField):
 
     package = tw2.core.Param()
     tags = tw2.core.params.Variable()
+    css_class = 'card'
 
     template = 'fedoratagger.widgets.templates.card'
 
     def prepare(self):
         super(CardWidget, self).prepare()
         self.tags = [TagWidget(tag=tag) for tag in self.package.tags]
+        self.tags[0].css_class += " selected"

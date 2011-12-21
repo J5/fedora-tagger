@@ -6,6 +6,7 @@
         <link href="css/voting.css" media="screen" type="text/css" rel="stylesheet"></link>
 
 		<script src="javascript/cards.js" type="text/javascript"></script>
+		<script src="javascript/navigation.js" type="text/javascript"></script>
         <title>Tile test</title>
     </head>
     <body>

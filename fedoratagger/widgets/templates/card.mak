@@ -1,4 +1,4 @@
-<div class="card">
+<div class="${w.css_class}">
   <div class="content">
     <div class="clear"></div>
     <div class="package_header">

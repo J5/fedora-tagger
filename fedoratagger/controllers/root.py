@@ -53,6 +53,7 @@ class RootController(BaseController):
             CardWidget(package=packages[random.randint(0, n-1)])
             for i in range(3)
         ]
+        cards[1].css_class = 'card center'
         return dict(cards=cards)
 
     @expose('json')

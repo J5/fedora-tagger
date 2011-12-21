@@ -6,7 +6,7 @@
 % endfor
 
     <div id="leftfade"></div>
-    <a href="#" onClick="card_new(); animate_left(); return false;">
+    <a href="#" onClick="navigate_new_card(); return false;">
 	<div id="rightfade"></div>
 	</a>
 </div>
