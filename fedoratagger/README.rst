@@ -30,6 +30,33 @@ Hotkeys
 
 .. hotkeys
 
+Running from source
+-------------------
+
+Setup a virtual environment::
+
+  $ virtualenv ~/tagger-env
+  $ source ~/tagger-env/bin/activate
+
+Get ``python-fedora``::
+
+  $ wget https://fedorahosted.org/releases/p/y/python-fedora/python-fedora-0.3.25.tar.gz
+  $ tar -xzvf python-fedora-0.3.25.tar.gz
+  $ pushd python-fedora-0.3.25
+  $ python setup.py develop
+  $ popd
+
+Get fedora-tagger::
+
+  $ git clone git://github.com/ralphbean/fedora-tagger.git
+  $ cd fedora-tagger
+  $ python setup.py develop
+  $ paster setup-app development.ini
+  $ paster serve development.ini
+
+The setup-app step will try and use ``yum`` to get package summaries.  It won't
+be able to find it if you specify ``--no-site-packages`` with virtualenv.
+
 Old Notes
 =========
 
