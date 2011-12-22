@@ -79,7 +79,7 @@ function init_navigation() {
                 if ( $("#search_box").is(":focus") ) { return; }
                 if ( animation_elements != null ) { return; }
                 var now = new Date();
-                if ( now - then < 250 ) { return; }
+                if ( now - then < 50 ) { return; }
                 then = now;
                 for (var attr in callbacks) {
                         if ($.inArray(e.keyCode, keys[attr]) != -1) {
