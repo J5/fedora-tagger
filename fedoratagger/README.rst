@@ -1,34 +1,37 @@
 Fedora-Tagger
 =============
 
-A TurboGears 2 app.
+A TurboGears 2 app for helping us tag fedora packages.  Users who login with
+their `FAS <https://admin.fedoraproject.org/accounts>`_ credentials can upvote
+and downvote tags on packages as well as add new tags alltogether.
 
-The search database and icons cached in Fedora Community Packager can be used to grab package data.
-Or koji, or pkgdb ( try ``$ koji list-pkgs``).
-
+Vote it up!  The votes you place are tracked and rank you against other users.
 
 Hotkeys
 -------
 
 .. hotkeys
 
-+--------------+----------------+
-| ``h or ←``   | previous item  |
-+--------------+----------------+
-| ``l or →``   | next item      |
-+--------------+----------------+
-| ``k or ↑``   | upvote tag     |
-+--------------+----------------+
-| ``j or ↓``   | downvote tag   |
-+--------------+----------------+
-| ``i or a``   | add new tag    |
-+--------------+----------------+
-| ``/``        | search packages|
-+--------------+----------------+
-| ``esc``      | help           |
-+--------------+----------------+
++--------------------+----------------+
+| ``h`` *or* ``←``   | previous item  |
++--------------------+----------------+
+| ``l`` *or* ``→``   | next item      |
++--------------------+----------------+
+| ``k`` *or* ``↑``   | upvote tag     |
++--------------------+----------------+
+| ``j`` *or* ``↓``   | downvote tag   |
++--------------------+----------------+
+| ``i`` *or* ``a``   | add new tag    |
++--------------------+----------------+
+| ``/``              | search packages|
++--------------------+----------------+
+| ``esc``            | help           |
++--------------------+----------------+
 
 .. hotkeys
+
+Old Notes
+=========
 
 Workflow
 --------
