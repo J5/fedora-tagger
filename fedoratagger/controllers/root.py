@@ -68,10 +68,7 @@ class RootController(BaseController):
     def tagger(self):
         packages = model.Package.query.all()
         n = len(packages)
-        cards = [
-            CardWidget(package=packages[random.randint(0, n-1)])
-            for i in range(3)
-        ]
+        cards = [CardWidget(package=p) for p in random.sample(packages, 3)]
         cards[1].css_class = 'card center'
         return dict(cards=cards)
 
@@ -83,8 +80,7 @@ class RootController(BaseController):
             package = query.first()
         else:
             packages = model.Package.query.all()
-            n = len(packages)
-            package = packages[random.randint(0, n-1)]
+            package = random.sample(packages, 1)[0]
 
         w = CardWidget(package=package)
         return w.display()
