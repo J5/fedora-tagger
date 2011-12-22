@@ -7,7 +7,7 @@ from tg import expose, flash, require, url, lurl, request, redirect
 from tg.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
 from fedoratagger import model
-from repoze.what import predicates
+from repoze.what.predicates import not_anonymous
 from fedoratagger.controllers.secure import SecureController
 from fedoratagger.model import DBSession, metadata
 
@@ -63,6 +63,7 @@ class RootController(BaseController):
         )
 
     @expose('fedoratagger.templates.tagger')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def tagger(self):
         packages = model.Package.query.all()
         n = len(packages)

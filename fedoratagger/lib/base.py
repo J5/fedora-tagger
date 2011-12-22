@@ -8,6 +8,7 @@ from tg import request
 from tg.i18n import ugettext as _, ungettext
 import fedoratagger.model as model
 import fedoratagger.widgets.dialog
+import fedoratagger.widgets.user
 
 import tw2.jquery
 
@@ -35,7 +36,9 @@ class BaseController(TGController):
         # Include jquery on every page.
         tw2.jquery.jquery_js.req().prepare()
 
-        tmpl_context.hotkeys_dialog = fedoratagger.widgets.dialog.HotkeysDialog
-        tmpl_context.search_dialog = fedoratagger.widgets.dialog.SearchDialog
+        if 'login' not in environ['PATH_INFO']:
+            tmpl_context.hotkeys_dialog = fedoratagger.widgets.dialog.HotkeysDialog
+            tmpl_context.search_dialog = fedoratagger.widgets.dialog.SearchDialog
+            tmpl_context.user_widget = fedoratagger.widgets.user.UserWidget
 
         return TGController.__call__(self, environ, start_response)

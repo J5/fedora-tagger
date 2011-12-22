@@ -10,11 +10,17 @@
         <title>Tile test</title>
     </head>
     <body>
+% if hasattr(tmpl_context, 'hotkeys_dialog'):
 		${tmpl_context.hotkeys_dialog.display() | n}
+% endif
+% if hasattr(tmpl_context, 'search_dialog'):
 		${tmpl_context.search_dialog.display() | n}
+% endif
         <div id="header">
             <div><H1><span id="logo">Fedora</span> tagger</H1></div>
-            <div class="userinfo">Tuxytux</div>
+% if hasattr(tmpl_context, 'user_widget'):
+			${tmpl_context.user_widget.display() | n}
+% endif
         </div>
         <div class="clear"></div>
 		${self.body()}
