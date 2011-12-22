@@ -1,4 +1,6 @@
 <%inherit file="local:templates.master"/>
+<div id="hotkeys-ribbon" class="hotkeys-ribbon" onclick="javascript:help();">Hotkeys</div>
+
 <div class="body" id="gameboard">
 
 % for card in cards:

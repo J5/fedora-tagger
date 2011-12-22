@@ -3,6 +3,30 @@ body{
 	font-size: 13px;
 }
 
+div.hotkeys-ribbon {
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+        position: absolute;
+        left: -30px;
+        top: 33%;
+        z-index: 100;
+
+        background-color: #DB347A;
+        color: #333;
+        cursor: pointer;
+        padding: 20px 10px 10px 10px;
+
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+
+	    border:2px #333 solid;
+
+        font-size: 13pt;
+}
+
 table.docutils {
         border: 0px;
         margin: 0px;
