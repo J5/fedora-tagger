@@ -16,6 +16,8 @@ from fedoratagger.controllers.error import ErrorController
 
 from fedoratagger.widgets.card import CardWidget
 
+from fedoratagger.lib.utils import dump2json
+
 __all__ = ['RootController']
 
 
@@ -41,6 +43,10 @@ class RootController(BaseController):
     def index(self):
         """Handle the front-page."""
         redirect(url('/tagger'))
+
+    @expose('json')
+    def dump(self):
+        return dump2json()
 
     def _search_query(self, term):
         query = model.Package.query.filter_by(name=term)

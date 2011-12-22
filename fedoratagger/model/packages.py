@@ -45,7 +45,7 @@ class Package(DeclarativeBase):
     def __json__(self):
         """ JSON.. kinda. """
         return {
-            self.name: [repr(tag) for tag in sorted(self.tags, tag_sorter)]
+            self.name: [tag.__json__() for tag in sorted(self.tags, tag_sorter)]
         }
 
     def __jit_data__(self):
@@ -146,3 +146,9 @@ class FASUser(DeclarativeBase):
 
         return users.index(self) + 1
 
+    def __json__(self):
+        return {
+            'username': self.username,
+            'votes': self.total_votes,
+            'rank': self.rank,
+        }
