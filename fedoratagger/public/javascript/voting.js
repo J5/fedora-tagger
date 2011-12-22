@@ -50,4 +50,8 @@ function client_side_mod(id, like, json) {
         var arrow = $("#tag-" + id + " * ." + dir1);
         arrow.removeClass(dir1);
         arrow.addClass(dir1 + 'mod');
+
+        // Update the user thumbnail widget
+        $('#total_votes').html(json.user.votes);
+        $('#rank').html(json.user.rank);
 }

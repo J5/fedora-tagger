@@ -105,7 +105,12 @@ class RootController(BaseController):
         vote.tag = tag
         model.DBSession.add(vote)
 
-        return tag.__json__()
+        json = tag.__json__()
+        json['user'] = {
+            'votes': user.total_votes,
+            'rank': user.rank,
+        }
+        return json
 
     @expose('fedoratagger.templates.login')
     def login(self, came_from=lurl('/')):

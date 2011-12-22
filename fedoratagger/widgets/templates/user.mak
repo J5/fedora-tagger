@@ -8,9 +8,9 @@
       </td>
       <td style="width:4px;"></td>
       <td>
-        <p>${str(w.formatted_name)}</p>
-        <p>${str(w.total_votes)} votes cast.</p>
-        <p>Rank: ${str(w.rank)}.</p>
+        <p><span id="username">${str(w.formatted_name)}</span></p>
+        <p><span id="total_votes">${str(w.total_votes)}</span> votes cast.</p>
+        <p>Rank: <span id="rank">${str(w.rank)}</span></p>
       </td>
     </tr>
   </table>
