@@ -102,13 +102,25 @@ function card_new() {
     if (animation_elements != null)
         return;
 
-    // just copy the left most card for now
-    var left_card = $(".card:first");
-    var card_copy = left_card.clone();
-    card_copy.insertAfter(".card:last");
-    var card_el = card_copy.get(0)
-    card_el.style.top = board_margin + "px";
-    card_el.style.left = (card_size * 2.80) + "px";
+    $.ajax({
+            type: "POST",
+            url: "/card",
+            cache: false,
+            error: function() {
+                $.gritter.add({
+                        title: 'There was a problem getting the next card.',
+                        text: 'Sorry.',
+                        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                });
+            },
+            success: function(html) {
+                    $('.card:last').after(html);
+                    $('.card:last').css('left', (card_size * 2.80) + "px");
+                    $('.card:last').css('top', board_margin + "px");
+                    animate_left();
+                    init_mouseover();
+            }
+    });
 }
 
 $(document).ready(function() {

@@ -56,6 +56,13 @@ class RootController(BaseController):
         cards[1].css_class = 'card center'
         return dict(cards=cards)
 
+    @expose()
+    def card(self, name=None):
+        packages = model.Package.query.all()
+        n = len(packages)
+        w = CardWidget(package=packages[random.randint(0, n-1)])
+        return w.display()
+
     @expose('json')
     def vote(self, id, like):
         tag = model.Tag.query.filter_by(id=id).one()

@@ -12,8 +12,6 @@ function navigate_new_card() {
         change_card();
         change_selected(sel, $('.center li:first'));
         card_new();
-        init_mouseover();
-        animate_left();
 }
 
 function prev_item() {
