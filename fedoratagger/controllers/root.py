@@ -42,14 +42,19 @@ class RootController(BaseController):
         """Handle the front-page."""
         redirect(url('/tagger'))
 
-    @expose('json')
-    def search(self, term):
+    def _search_query(self, term):
         query = model.Package.query.filter_by(name=term)
 
         if query.count() != 1:
             # Broaden the search
             query = model.Package.query.filter(
                 model.Package.name.like("%%%s%%" % term))
+
+        return query
+
+    @expose('json')
+    def search(self, term):
+        query = self._search_query(term)
 
         return dict(
             count=query.count(),
@@ -71,13 +76,13 @@ class RootController(BaseController):
     @expose()
     def card(self, name=None):
         if name and name != "undefined":
-            package = model.Package.query.filter(
-                model.Package.name.like("%%%s%%" % name)
-            ).first()
+            query = self._search_query(name)
+            package = query.first()
         else:
             packages = model.Package.query.all()
             n = len(packages)
             package = packages[random.randint(0, n-1)]
+
         w = CardWidget(package=package)
         return w.display()
 
