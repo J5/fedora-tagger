@@ -20,10 +20,10 @@ div.arrow {
         background-repeat:no-repeat; 
 }
 div.arrow.upmod { 
-        background-image:url(/images/up_arrow.gif);
+        background-image:url(/images/up_arrow_mod.gif);
 }
 div.arrow.downmod { 
-        background-image:url(/images/down_arrow.gif);
+        background-image:url(/images/down_arrow_mod.gif);
 }
 div.arrow.up { 
         background-image:url(/images/up_arrow.gif);
@@ -31,3 +31,5 @@ div.arrow.up {
 div.arrow.down { 
         background-image:url(/images/down_arrow.gif);
 }
+div.up_text {   color: #DB347A; }
+div.down_text { color: #3C6EB4; }

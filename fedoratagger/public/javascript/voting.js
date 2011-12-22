@@ -1,8 +1,8 @@
 function upvote(id) {
-        _vote(id, "True");
+        _vote(id, true);
 }
 function downvote(id) {
-        _vote(id, "False");
+        _vote(id, false);
 }
 function _vote(id, like) {
         $.ajax({
@@ -24,6 +24,25 @@ function failed_vote() {
         });
 }
 
-function client_side_mod(id, score, json) {
+function client_side_mod(id, like, json) {
         $("#tag-" + id + " * .total").html(json.total);
+
+        var dir1, dir2;
+        if (like) {
+                dir1 = "up";
+                dir2 = "down";
+        } else {
+                dir1 = "down";
+                dir2 = "up";
+        }
+        
+        $("#tag-" + id + " * .total").addClass(dir1 + "_text");
+
+        var other = $('#tag-' + id + " * ." + dir2 + "mod");
+        other.addClass(dir2);
+        other.removeClass(dir2 + 'mod');
+
+        var arrow = $("#tag-" + id + " * ." + dir1);
+        arrow.removeClass(dir1);
+        arrow.addClass(dir1 + 'mod');
 }
