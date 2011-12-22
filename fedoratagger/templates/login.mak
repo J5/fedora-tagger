@@ -6,7 +6,9 @@
 <div class="content">
 <div id="loginform">
 <form action="${tg.url('/login_handler', params=dict(came_from=came_from.encode('utf-8'), __logins=login_counter.encode('utf-8')))}" method="POST" class="loginfields">
-    <h2><span>Login</span></h2>
+  <h2><span>Login (<a target="_blank"
+        href="https://admin.fedoraproject.org/accounts">
+        FAS credentials</a>)</span></h2>
     <label for="login">Username:</label><input type="text" id="login" name="login" class="text"></input><br/>
     <label for="password">Password:</label><input type="password" id="password" name="password" class="text"></input>
     <label id="labelremember" for="loginremember">remember me</label><input type="checkbox" id="loginremember" name="remember" value="2252000"/>
