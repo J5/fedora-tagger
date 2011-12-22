@@ -14,9 +14,9 @@ def tag_sorter(tag1, tag2):
     the total score, ties are broken by the number of votes cast and if there is
     still a tie, alphabetically by the tag.
     """
-    for attr in ['label', 'votes', 'total']:
+    for attr in ['total', 'votes', 'label']:
         result = cmp(getattr(tag1, attr), getattr(tag2, attr))
-        if result:
+        if result != 0:
             return result
     return result
 
