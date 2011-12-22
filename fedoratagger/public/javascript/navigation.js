@@ -46,6 +46,10 @@ function init_mouseover() {
         });
 }
 
+function add() {
+        alert("TODO");
+}
+
 var help_opened = false;
 function help() {
         if ( ! help_opened ) { $('#hotkeys_dialog').dialog('open'); }
@@ -53,12 +57,14 @@ function help() {
 }
 function search() { $("#search_dialog").dialog('open'); }
 
+
 function init_navigation() {
         keys = {
                 left: [37, 72],
                 up: [38, 75],
                 right: [39, 76],
                 down: [40, 74],
+                add: [65, 73],
                 help: [27, 112],
                 search: [191],
         }
@@ -68,6 +74,7 @@ function init_navigation() {
                 right: next_item,
                 up: upvote_this,
                 down: downvote_this,
+                add: add,
                 help: help,
                 search: search,
         }
