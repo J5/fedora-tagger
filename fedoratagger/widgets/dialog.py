@@ -6,6 +6,8 @@ import docutils.examples
 
 
 def hotkeys_readme():
+    """ Pick the README.rst off of disk and render the hotkeys section """
+
     root = '/'.join(__file__.split('/')[:-2])
     fname = root + '/README.rst'
     with codecs.open(fname, 'r', 'utf-8') as f:
@@ -15,6 +17,8 @@ def hotkeys_readme():
 
 
 class HotkeysDialog(DialogWidget):
+    """ jQuery UI dialog for the hotkeys help. """
+
     id = 'hotkeys_dialog'
     options = {
         'title': 'Hotkeys',
@@ -27,6 +31,8 @@ class HotkeysDialog(DialogWidget):
 search_action_js = twc.JSLink(link="javascript/search.js")
 
 class SearchDialog(DialogWidget):
+    """ jQuery UI dialog for the searchbar. """
+
     id = 'search_dialog'
     resources = DialogWidget.resources + [search_action_js]
     options = {
@@ -40,6 +46,8 @@ class SearchDialog(DialogWidget):
 add_js = twc.JSLink(link="javascript/add.js")
 
 class AddTagDialog(DialogWidget):
+    """ jQuery UI dialog for adding a new tag. """
+
     id = 'add_dialog'
     resources = DialogWidget.resources + [add_js]
     options = {

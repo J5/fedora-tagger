@@ -22,31 +22,26 @@ __all__ = ['RootController']
 
 
 class RootController(BaseController):
-    """
-    The root controller for the fedora-tagger application.
+    """ The root controller for the fedora-tagger application. """
 
-    All the other controllers and WSGI applications should be mounted on this
-    controller. For example::
-
-        panel = ControlPanelController()
-        another_app = AnotherWSGIApplication()
-
-    Keep in mind that WSGI applications shouldn't be mounted directly: They
-    must be wrapped around with :class:`tg.controllers.WSGIAppController`.
-
-    """
     error = ErrorController()
 
     @expose('fedoratagger.templates.index')
     def index(self):
-        """Handle the front-page."""
+        """ Simply redirect to /tagger """
         redirect(url('/tagger'))
 
     @expose('json')
     def dump(self):
+        """ A http interface to the dump2json method.
+
+        Returns a json dump of the database (nearly) in full.
+        """
         return dump2json()
 
     def _search_query(self, term):
+        """ Produce a query searching over packages for ``term`` """
+
         query = model.Package.query.filter_by(name=term)
 
         if query.count() != 1:
@@ -59,6 +54,13 @@ class RootController(BaseController):
     @expose('json')
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def search(self, term):
+        """ Handles /search URL.
+
+        Returns a JSON object including how many items were found, and a (few)
+        samples.
+        """
+
+
         query = self._search_query(term)
 
         return dict(
@@ -70,6 +72,17 @@ class RootController(BaseController):
     @expose('json')
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def add(self, label, package):
+        """ Handles /add URL.
+
+        Returns a JSON object indicating success or failure.
+
+         - If the package does not exist.  Fail.
+         - If the label does not exist, create it.
+         - If the label is not associated with the package, associate it.
+         - Log a 'vote' for the current user on the new tag.
+
+        """
+
         json = dict(tag=label, package=package)
 
         query = model.TagLabel.query.filter_by(label=label)
@@ -107,6 +120,14 @@ class RootController(BaseController):
     @expose('fedoratagger.templates.tagger')
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def tagger(self):
+        """ Really, the main index.
+
+        Returns a list of (the first three) card widgets for the
+        template to render.  The rest are acquired as needed via ajax calls to
+        the /card path.
+
+        """
+
         packages = model.Package.query.all()
         n = len(packages)
         cards = [CardWidget(package=p) for p in random.sample(packages, 3)]
@@ -116,6 +137,16 @@ class RootController(BaseController):
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def card(self, name=None):
+        """ Handles the /card path.  Return a rendered CardWidget in HTML.
+
+        If no name is specified, produce a widget for a package selected at
+        random.
+
+        If a name is specified, try to search for that package and render the
+        associated CardWidget.
+
+        """
+
         if name and name != "undefined":
             query = self._search_query(name)
             package = query.first()
@@ -129,6 +160,14 @@ class RootController(BaseController):
     @expose('json')
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def vote(self, id, like):
+        """ Handles the /vote path.  Return JSON indicating results and stats.
+
+        If the user has voted on this tag before, only allow a 'change' of
+        votes; no "double-voting".
+
+        If they have not, then register their new vote.
+        """
+
         like = asbool(like)
         tag = model.Tag.query.filter_by(id=id).one()
         user = model.get_user()
