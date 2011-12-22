@@ -70,6 +70,8 @@ body, p, a, li, div, input, button {
 }
 
 .userinfo {
+  background-color: #EFEFEF;
+
   float: right;
   height: 90px;
   min-width: 200px;
@@ -79,13 +81,17 @@ body, p, a, li, div, input, button {
   top: 20px;
   padding: 5px;
   z-index: 100;
+
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: 1px dashed black;
+
+  -webkit-box-shadow: 3px -3px 3px #333;
+  -moz-box-shadow: 3px -3px 3px #333;
+  box-shadow: 3px -3px 3px #333;
 }
 
 .userinfo * p {
-        margin-bottom: -8px;
+        margin-bottom: -4px;
         margin-top: -1px;
 }
 
