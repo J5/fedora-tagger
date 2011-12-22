@@ -60,4 +60,13 @@ def init_model(engine):
 
 # Import your model modules here.
 from fedoratagger.model.auth import User, Group, Permission
-from fedoratagger.model.packages import Package, Tag, TagLabel
+from fedoratagger.model.packages import Package, Tag, TagLabel, FASUser
+
+def get_user(username):
+    query = FASUser.query.filter_by(username=username)
+
+    if query.count() == 0:
+        DBSession.add(FASUser(username=username))
+
+    assert(query.count() > 0)
+    return query.first()

@@ -117,3 +117,26 @@ class Tag(DeclarativeBase):
                 votes=self.votes,
             )
         }
+
+
+class FASUser(DeclarativeBase):
+    __tablename__ = 'fas_user'
+    id = Column(Integer, primary_key=True)
+    username = Column(Unicode(255), nullable=False)
+
+    # TODO -- keep track of votes here
+
+    @property
+    def total_votes(self):
+        # TODO -- write this
+        return 0
+
+    @property
+    def rank(self):
+
+        # TODO - there's a more optimal way to do this in SQL land.
+        users = FASUser.query.all()
+        users.sort(lambda x, y: cmp(x.total_votes, y.total_votes), reverse=True)
+
+        return users.index(self) + 1
+
