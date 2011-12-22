@@ -33,7 +33,6 @@ $(document).ready(function () {
         });
 
         $("#add_dialog").bind("dialogclose", function (e, ui) {
-                // TODO -- do something here to give key focus back to the main
-                // window.  Not sure how to make it happen.
+                $("#add_box").blur();
         });
 });
