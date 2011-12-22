@@ -2,7 +2,7 @@
   <div class="content">
     <div class="clear"></div>
     <div class="package_header">
-      <images src="images/gvim.png" class="icon"></images>
+      <images src="images/icons/${w.package.name}.png" class="icon"></images>
       <div class="title">
         <div><h2>${w.package.name}</h2></div>
         <div class="clear"></div>
