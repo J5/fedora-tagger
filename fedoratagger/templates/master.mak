@@ -11,6 +11,7 @@
     </head>
     <body>
 		${tmpl_context.hotkeys_dialog.display() | n}
+		${tmpl_context.search_dialog.display() | n}
         <div id="header">
             <div><H1><span id="logo">Fedora</span> tagger</H1></div>
             <div class="userinfo">Tuxytux</div>

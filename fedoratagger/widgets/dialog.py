@@ -1,4 +1,6 @@
+import tw2.core as twc
 from tw2.jqplugins.ui import DialogWidget
+
 import codecs
 import docutils.examples
 
@@ -20,3 +22,17 @@ class HotkeysDialog(DialogWidget):
         'width': 350,
     }
     value = hotkeys_readme()
+
+
+search_action_js = twc.JSLink(link="javascript/search.js")
+
+class SearchDialog(DialogWidget):
+    id = 'search_dialog'
+    resources = DialogWidget.resources + [search_action_js]
+    options = {
+        'title': 'Search for a package',
+        'autoOpen': False,
+        'width': 350,
+        'modal': True,
+    }
+    value = """<input id="search_box"/>"""

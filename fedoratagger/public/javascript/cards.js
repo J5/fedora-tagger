@@ -98,14 +98,15 @@ function animate_left() {
     animation_elements.animate({"left": "-=" + offset}, "slow", animation_complete);
 }
 
-function card_new() {
-    if (animation_elements != null)
+function card_new(name, callback) {
+    if (animation_elements != null) 
         return;
 
     $.ajax({
             type: "POST",
             url: "/card",
             cache: false,
+            data: "name=" + encodeURI(name),
             error: function() {
                 $.gritter.add({
                         title: 'There was a problem getting the next card.',
@@ -119,6 +120,7 @@ function card_new() {
                     $('.card:last').css('top', board_margin + "px");
                     animate_left();
                     init_mouseover();
+                    setTimeout(callback, 1250);
             }
     });
 }

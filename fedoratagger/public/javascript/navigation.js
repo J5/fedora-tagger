@@ -7,11 +7,11 @@ function next_item() {
         }
 }
 
-function navigate_new_card() {
+function navigate_new_card(name, callback) {
         var sel = $('.center .selected');
         change_card();
         change_selected(sel, $('.center li:first'));
-        card_new();
+        card_new(name, callback);
 }
 
 function prev_item() {
@@ -44,10 +44,7 @@ function init_mouseover() {
 }
 
 function help() { $('#hotkeys_dialog').dialog('open'); }
-
-function search() {
-        console.log('search not implemented yet.');
-}
+function search() { $("#search_dialog").dialog('open'); }
 
 function init_navigation() {
         keys = {
@@ -71,7 +68,8 @@ function init_navigation() {
         init_mouseover();
 
         var then = new Date();
-        $(document).keydown(function(e){
+        $(document).keyup(function(e){
+                if ( $("#search_box").is(":focus") ) { return; }
                 if ( animation_elements != null ) { return; }
                 var now = new Date();
                 if ( now - then < 250 ) { return; }

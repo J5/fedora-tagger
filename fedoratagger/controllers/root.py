@@ -42,6 +42,21 @@ class RootController(BaseController):
         """Handle the front-page."""
         redirect(url('/tagger'))
 
+    @expose('json')
+    def search(self, term):
+        query = model.Package.query.filter_by(name=term)
+
+        if query.count() != 1:
+            # Broaden the search
+            query = model.Package.query.filter(
+                model.Package.name.like("%%%s%%" % term))
+
+        return dict(
+            count=query.count(),
+            term=term,
+            samples=[p.name for p in query.all()[:3]]
+        )
+
     @expose('fedoratagger.templates.tagger')
     def tagger(self):
         packages = model.Package.query.all()
@@ -55,9 +70,15 @@ class RootController(BaseController):
 
     @expose()
     def card(self, name=None):
-        packages = model.Package.query.all()
-        n = len(packages)
-        w = CardWidget(package=packages[random.randint(0, n-1)])
+        if name and name != "undefined":
+            package = model.Package.query.filter(
+                model.Package.name.like("%%%s%%" % name)
+            ).first()
+        else:
+            packages = model.Package.query.all()
+            n = len(packages)
+            package = packages[random.randint(0, n-1)]
+        w = CardWidget(package=package)
         return w.display()
 
     @expose('json')
