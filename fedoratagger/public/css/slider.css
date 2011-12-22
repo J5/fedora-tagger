@@ -121,7 +121,6 @@ body, p, a, li, div, input, button {
   margin-bottom: 1em;
   float: left;
   color: #61615c;
-  max-width: 320px;
 }
 
 .package_header h2 {
