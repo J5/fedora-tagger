@@ -17,9 +17,14 @@ from tg.configuration import AppConfig
 
 import fedoratagger
 from fedoratagger import model
-from fedoratagger.lib import app_globals, helpers 
+from fedoratagger.lib import app_globals, helpers
 
-base_config = AppConfig()
+from fedora.tg.tg2utils import add_fas_auth_middleware
+from bunch import Bunch
+class MyAppConfig(AppConfig):
+    add_auth_middleware = add_fas_auth_middleware
+
+base_config = MyAppConfig()
 base_config.renderers = []
 
 base_config.package = fedoratagger

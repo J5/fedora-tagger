@@ -38,6 +38,10 @@ install_requires=[
     "Pylons==1.0",  # This is madness
     "WebOb==1.0.8", # This is also madness
     "tg.devtools",
+    "bunch",
+    # "fedora",
+    # #https://fedorahosted.org/releases/p/y/python-fedora/python-fedora-0.3.25.tar.gz
+    "pycurl",
     "tw2.core",
     "tw2.jit",
     "tw2.jqplugins.gritter",
