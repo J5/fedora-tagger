@@ -13,6 +13,9 @@
 % if hasattr(tmpl_context, 'search_dialog'):
 		${tmpl_context.search_dialog.display() | n}
 % endif
+% if hasattr(tmpl_context, 'add_dialog'):
+		${tmpl_context.add_dialog.display() | n}
+% endif
         <div id="header">
             <div><H1><span id="logo">Fedora</span> tagger</H1></div>
 % if hasattr(tmpl_context, 'user_widget'):

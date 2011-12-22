@@ -36,3 +36,16 @@ class SearchDialog(DialogWidget):
         'modal': True,
     }
     value = """<input id="search_box"/>"""
+
+add_js = twc.JSLink(link="javascript/add.js")
+
+class AddTagDialog(DialogWidget):
+    id = 'add_dialog'
+    resources = DialogWidget.resources + [add_js]
+    options = {
+        'title': 'Add a new tag',
+        'autoOpen': False,
+        'width': 350,
+        'modal': True,
+    }
+    value = """<input id="add_box"/>"""

@@ -63,6 +63,43 @@ class RootController(BaseController):
             samples=[p.name for p in query.all()[:3]]
         )
 
+    @expose('json')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
+    def add(self, label, package):
+        json = dict(tag=label, package=package)
+
+        query = model.TagLabel.query.filter_by(label=label)
+        if query.count() == 0:
+            model.DBSession.add(model.TagLabel(label=label))
+
+        label = query.one()
+
+        query = model.Package.query.filter_by(name=package)
+        if query.count() == 0:
+            json['msg'] = "No such package '%s'" % package
+            return json
+
+        package = query.one()
+
+        query = model.Tag.query.filter_by(label=label, package=package)
+
+        if query.count() != 0:
+            json['msg'] = "%s already tagged '%s'" % (package.name, label.label)
+            return json
+
+        tag = model.Tag(label=label, package=package)
+        model.DBSession.add(tag)
+
+        vote = model.Vote(like=True)
+        vote.user = model.get_user()
+        vote.tag = tag
+        model.DBSession.add(vote)
+
+        json['msg'] = "Success.  '%s' added to package '%s'" % (
+            label.label, package.name)
+        return json
+
+
     @expose('fedoratagger.templates.tagger')
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def tagger(self):
