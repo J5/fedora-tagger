@@ -131,18 +131,41 @@ class RootController(BaseController):
     @expose('json')
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def vote(self, id, like):
+        like = asbool(like)
         tag = model.Tag.query.filter_by(id=id).one()
         user = model.get_user()
 
-        if asbool(like):
-            tag.like += 1
-        else:
-            tag.dislike += 1
+        # See if they've voted on this before.
+        query = model.Vote.query.filter_by(user=user, tag=tag)
+        if query.count() == 0:
+            # They haven't.  So register a new vote.
+            if like:
+                tag.like += 1
+            else:
+                tag.dislike += 1
 
-        vote = model.Vote(like=asbool(like))
-        vote.user = user
-        vote.tag = tag
-        model.DBSession.add(vote)
+            vote = model.Vote(like=like)
+            vote.user = user
+            vote.tag = tag
+            model.DBSession.add(vote)
+        else:
+            # Otherwise, they've voted on this before.  See if they're changing
+            # their vote.
+            vote = query.one()
+            if vote.like == like:
+                # They're casting the same vote, the same way.  Ignore them.
+                pass
+            else:
+                # Okay.  Let them change their vote.
+                if like:
+                    tag.like += 1
+                    tag.dislike -= 1
+                else:
+                    tag.like -= 1
+                    tag.dislike += 1
+
+                vote.like = like
+                # Done changing vote.
 
         json = tag.__json__()
         json['user'] = {
