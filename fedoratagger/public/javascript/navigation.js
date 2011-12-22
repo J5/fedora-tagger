@@ -70,8 +70,12 @@ function init_navigation() {
 
         init_mouseover();
 
+        var then = new Date();
         $(document).keydown(function(e){
-                // TODO -- think about rate-limiting this.
+                if ( animation_elements != null ) { return; }
+                var now = new Date();
+                if ( now - then < 250 ) { return; }
+                then = now;
                 for (var attr in callbacks) {
                         if ($.inArray(e.keyCode, keys[attr]) != -1) {
                                 callbacks[attr]();
