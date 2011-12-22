@@ -17,7 +17,6 @@ class HotkeysDialog(DialogWidget):
     options = {
         'title': 'Hotkeys',
         'autoOpen': False,
-        'width': 600,
-        'modal': True,
+        'width': 350,
     }
     value = hotkeys_readme()
