@@ -8,7 +8,11 @@ function _vote(id, like) {
         $.ajax({
                 type: "POST",
                 url: "/vote",
-                data: "id=" + id + "&like=" + like,
+                data: $.param({
+                        id: id,
+                        like: like,
+                        _csrf_token: $.getUrlVar("_csrf_token"),
+                }),
                 cache: false,
                 error: function() { failed_vote(); },
                 success: function(json) {client_side_mod(id, like, json);},

@@ -4,10 +4,7 @@
         <link href="css/960_24_col.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/slider.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/voting.css" media="screen" type="text/css" rel="stylesheet"></link>
-
-		<script src="javascript/cards.js" type="text/javascript"></script>
-		<script src="javascript/navigation.js" type="text/javascript"></script>
-        <title>Tile test</title>
+        <title>Fedora Tagger</title>
     </head>
     <body>
 % if hasattr(tmpl_context, 'hotkeys_dialog'):

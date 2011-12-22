@@ -93,11 +93,17 @@ class RootController(BaseController):
     @require(not_anonymous(msg="Login with your FAS credentials."))
     def vote(self, id, like):
         tag = model.Tag.query.filter_by(id=id).one()
+        user = model.get_user()
 
         if asbool(like):
             tag.like += 1
         else:
             tag.dislike += 1
+
+        vote = model.Vote(like=asbool(like))
+        vote.user = user
+        vote.tag = tag
+        model.DBSession.add(vote)
 
         return tag.__json__()
 

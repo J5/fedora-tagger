@@ -106,7 +106,10 @@ function card_new(name, callback) {
             type: "POST",
             url: "/card",
             cache: false,
-            data: "name=" + encodeURI(name),
+            data: $.param({
+                    name: name,
+                    _csrf_token: $.getUrlVar("_csrf_token"),
+            }),
             error: function() {
                 $.gritter.add({
                         title: 'There was a problem getting the next card.',

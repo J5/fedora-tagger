@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """The application's model objects"""
 
+import tg
+
 from zope.sqlalchemy import ZopeTransactionExtension
 from sqlalchemy.orm import scoped_session, sessionmaker
 #from sqlalchemy import MetaData
@@ -60,9 +62,12 @@ def init_model(engine):
 
 # Import your model modules here.
 from fedoratagger.model.auth import User, Group, Permission
-from fedoratagger.model.packages import Package, Tag, TagLabel, FASUser
+from fedoratagger.model.packages import Package, Tag, TagLabel, FASUser, Vote
 
-def get_user(username):
+def get_user(username=None):
+    if not username:
+        username = tg.request.identity['username']
+
     query = FASUser.query.filter_by(username=username)
 
     if query.count() == 0:

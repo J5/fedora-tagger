@@ -44,7 +44,10 @@ $(document).ready(function () {
                         $.ajax({
                                 type: "POST",
                                 url: "/search",
-                                data: "term=" + encodeURI($(this).val()),
+                                data: $.param({
+                                        term: $(this).val(),
+                                        _csrf_token: $.getUrlVar("_csrf_token"),
+                                }),
                                 cache: false,
                                 error: error,
                                 success: success,

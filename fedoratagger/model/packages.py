@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import *
-from sqlalchemy.orm import mapper, relation
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import mapper, relation, backref
 
 from fedoratagger.model import DeclarativeBase, metadata, DBSession
 
@@ -20,7 +19,7 @@ def tag_sorter(tag1, tag2):
             return result
     return result
 
-association_table = Table(
+package_tag_association_table = Table(
     'package_tag_association', DeclarativeBase.metadata,
     Column('package_id', Integer, ForeignKey('package.id')),
     Column('tag_label_id', Integer, ForeignKey('tag_label.id')),
@@ -33,7 +32,7 @@ class Package(DeclarativeBase):
     tags = relation('Tag', backref=('package'))
     tag_labels = relation(
         'TagLabel', backref=('packages'),
-        secondary=association_table
+        secondary=package_tag_association_table
     )
 
     @property
@@ -75,6 +74,7 @@ class Tag(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     package_id = Column(Integer, ForeignKey('package.id'))
     label_id = Column(Integer, ForeignKey('tag_label.id'))
+    votes = relation('Vote', backref=('tag'))
 
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
@@ -84,7 +84,7 @@ class Tag(DeclarativeBase):
         return self.like - self.dislike
 
     @property
-    def votes(self):
+    def total_votes(self):
         return self.like + self.dislike
 
     def __unicode__(self):
@@ -96,7 +96,7 @@ class Tag(DeclarativeBase):
             'like': self.like,
             'dislike': self.dislike,
             'total': self.total,
-            'votes': self.votes,
+            'votes': self.total_votes,
         }
 
     def __jit_data__(self):
@@ -119,17 +119,23 @@ class Tag(DeclarativeBase):
         }
 
 
+class Vote(DeclarativeBase):
+    __tablename__ = 'vote'
+    id = Column(Integer, primary_key=True)
+    like = Column(Boolean, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    tag_id = Column(Integer, ForeignKey('tag.id'))
+
+
 class FASUser(DeclarativeBase):
-    __tablename__ = 'fas_user'
+    __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     username = Column(Unicode(255), nullable=False)
-
-    # TODO -- keep track of votes here
+    votes = relation('Vote', backref=('user'))
 
     @property
     def total_votes(self):
-        # TODO -- write this
-        return 0
+        return len(self.votes)
 
     @property
     def rank(self):

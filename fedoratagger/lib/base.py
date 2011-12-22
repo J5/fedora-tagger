@@ -10,6 +10,7 @@ import fedoratagger.model as model
 import fedoratagger.widgets.dialog
 import fedoratagger.widgets.user
 
+import tw2.core as twc
 import tw2.jquery
 
 __all__ = ['BaseController']
@@ -37,6 +38,9 @@ class BaseController(TGController):
         tw2.jquery.jquery_js.req().prepare()
 
         if 'login' not in environ['PATH_INFO']:
+            for link in ["query.js", "cards.js", "navigation.js"]:
+                twc.JSLink(link="javascript/%s" % link).req().prepare()
+
             tmpl_context.hotkeys_dialog = fedoratagger.widgets.dialog.HotkeysDialog
             tmpl_context.search_dialog = fedoratagger.widgets.dialog.SearchDialog
             tmpl_context.user_widget = fedoratagger.widgets.user.UserWidget
