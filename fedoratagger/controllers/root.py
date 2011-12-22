@@ -53,6 +53,7 @@ class RootController(BaseController):
         return query
 
     @expose('json')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def search(self, term):
         query = self._search_query(term)
 
@@ -75,6 +76,7 @@ class RootController(BaseController):
         return dict(cards=cards)
 
     @expose()
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def card(self, name=None):
         if name and name != "undefined":
             query = self._search_query(name)
@@ -88,6 +90,7 @@ class RootController(BaseController):
         return w.display()
 
     @expose('json')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def vote(self, id, like):
         tag = model.Tag.query.filter_by(id=id).one()
 
