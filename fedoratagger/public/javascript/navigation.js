@@ -43,7 +43,11 @@ function init_mouseover() {
         });
 }
 
-function help() { $('#hotkeys_dialog').dialog('open'); }
+var help_opened = false;
+function help() {
+        if ( ! help_opened ) { $('#hotkeys_dialog').dialog('open'); }
+        help_opened = ! help_opened;
+}
 function search() { $("#search_dialog").dialog('open'); }
 
 function init_navigation() {
