@@ -37,6 +37,7 @@ function client_side_mod(id, like, json) {
         }
         
         $("#tag-" + id + " * .total").addClass(dir1 + "_text");
+        $("#tag-" + id + " * .total").removeClass(dir2 + "_text");
 
         var other = $('#tag-' + id + " * ." + dir2 + "mod");
         other.addClass(dir2);
