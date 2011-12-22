@@ -13,6 +13,33 @@ import os
 import sys
 import shutil
 
+try:
+    import yum
+
+    class YumQuery(yum.YumBase):
+
+        def __init__(self):
+            yum.YumBase.__init__(self)
+            self.setCacheDir()
+            self._pl = self.doPackageLists('all')
+
+        def summary(self, name):
+
+            def exacts(section):
+                exactmatch, matched, unmatched = yum.packages.parsePackages(
+                    getattr(self._pl, section), [name])
+                return yum.misc.unique(exactmatch)
+
+            sections = ['installed', 'available', 'updates', 'extras']
+            exactmatch = sum(map(exacts, sections), [])
+            if exactmatch:
+                return exactmatch[0].summary
+            else:
+                return ''
+
+    yumq = YumQuery()
+except ImportError as e:
+    yumq = None
 
 def get_icons():
     print "Getting icons."
@@ -48,10 +75,18 @@ def import_pkgdb_tags():
     failed = []
     for row in cursor:
         name, tag, score = row
+
         p = model.Package.query.filter_by(name=name)
         tl = model.TagLabel.query.filter_by(label=tag)
         if p.count() == 0:
-            model.DBSession.add(model.Package(name=name))
+            if yumq:
+                summary = yumq.summary(name)
+            else:
+                # If we have no access to yum... oh well.
+                summary = "No summaries available."
+
+            print name, '-', summary
+            model.DBSession.add(model.Package(name=name, summary=summary))
 
         if tl.count() == 0:
             model.DBSession.add(model.TagLabel(label=tag))

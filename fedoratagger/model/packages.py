@@ -29,15 +29,13 @@ class Package(DeclarativeBase):
     __tablename__ = 'package'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
+    summary = Column(Unicode(1023), nullable=False)
+
     tags = relation('Tag', backref=('package'))
     tag_labels = relation(
         'TagLabel', backref=('packages'),
         secondary=package_tag_association_table
     )
-
-    @property
-    def summary(self):
-        return "No summaries yet."
 
     def __unicode__(self):
         return self.name
