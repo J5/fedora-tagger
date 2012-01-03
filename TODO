@@ -1,0 +1,21 @@
+- we should use thumb icons instead of arrows
+
+- going back to the previous card doesn't seem to work
+
+- voting on a tag should jump you to the next one?
+
+- there should be a visual indicator for skipping to the next package
+
+- packages & tags should be presented at random
+
+- summaries aren't working
+
+- Icons should be pulled from our xapian db
+
+- the next card shouldn't be interactive... eg: you can vote on the next
+  package without centering it. moving the voting links to the right side of the
+  card should hopefully fix this issue
+
+- the 'more details' should display a pop up in the app with more
+  details, giving the user the ability to open fedoracommunity, etc
+  in a new tab.
