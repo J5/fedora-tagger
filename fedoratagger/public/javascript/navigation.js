@@ -27,6 +27,7 @@ function prev_item() {
 }
 
 function upvote_this() {   $('.center .selected .voter .up').click()   }
+
 function downvote_this() { $('.center .selected .voter .down').click() }
 
 function change_selected(from, to) {
@@ -35,9 +36,21 @@ function change_selected(from, to) {
 }
 
 function change_card() {
-        var center = $('.center');
-        center.removeClass('center');
-        center.next().addClass('center');
+    // Remove clickability from tags on the center card
+    $('.center .voter').children().removeAttr('onclick')
+
+    // Remove the center class from the center card
+    var center = $('.center');
+    center.removeClass('center');
+    center.next().addClass('center');
+
+    // Add the vote callbacks to the tags on the new center card.
+    $('.center .voter .up').click(function() {
+        upvote($(this).parent().attr('id'));
+    });
+    $('.center .voter .down').click(function() {
+        downvote($(this).parent().attr('id'));
+    });
 }
 
 function init_mouseover() {
@@ -51,10 +64,10 @@ function help() {
         if ( ! help_opened ) { $('#hotkeys_dialog').dialog('open'); }
         help_opened = ! help_opened;
 }
+
 function search() { $("#search_dialog").dialog('open'); }
 
 function add() { $("#add_dialog").dialog('open'); }
-
 
 function init_navigation() {
         keys = {
@@ -92,6 +105,7 @@ function init_navigation() {
                         }
                 }
         });
+        navigate_new_card();
 }
 
 $(document).ready(init_navigation);
