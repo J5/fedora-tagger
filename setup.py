@@ -22,6 +22,7 @@ testpkgs=['WebTest >= 1.2.3',
                'wsgiref',
                'repoze.who-testutil >= 1.0.1',
                ]
+
 install_requires=[
     "TurboGears2 >= 2.1.4",
     "Mako",
@@ -39,8 +40,8 @@ install_requires=[
     "WebOb==1.0.8", # This is also madness
     "tg.devtools",
     "bunch",
-    # "fedora",
-    # #https://fedorahosted.org/releases/p/y/python-fedora/python-fedora-0.3.25.tar.gz
+    "kitchen",
+    "python-fedora",
     "pycurl",
     "tw2.core",
     "tw2.jit",
