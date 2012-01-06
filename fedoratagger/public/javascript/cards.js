@@ -69,8 +69,8 @@ function reflow() {
             $(el).stop();
             if (index == 0)
                 $(el).remove();
-        });
-        animation_elements = null;
+            });
+            animation_elements = null;
     }
     var content = document.getElementById("gameboard");
     reflow_content(content);
@@ -82,8 +82,8 @@ function animation_complete() {
             $(el).stop();
             if (index == 0)
                 $(el).remove();
-        });
-        animation_elements = null;
+            });
+            animation_elements = null;
     }
 
     reflow_cards();
@@ -103,28 +103,28 @@ function card_new(name, callback) {
         return;
 
     $.ajax({
-            type: "POST",
-            url: "/card",
-            cache: false,
-            data: $.param({
-                    name: name,
-                    _csrf_token: $.getUrlVar("_csrf_token"),
-            }),
-            error: function() {
-                $.gritter.add({
-                        title: 'There was a problem getting the next card.',
-                        text: 'Sorry.',
-                        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
-                });
-            },
-            success: function(html) {
-                    $('.card:last').after(html);
-                    $('.card:last').css('left', (card_size * 2.80) + "px");
-                    $('.card:last').css('top', board_margin + "px");
-                    animate_left();
-                    init_mouseover();
-                    setTimeout(callback, 1250);
-            }
+        type: "POST",
+        url: "/card",
+        cache: false,
+        data: $.param({
+            name: name,
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        }),
+        error: function() {
+            $.gritter.add({
+                title: 'There was a problem getting the next card.',
+                text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            });
+        },
+        success: function(html) {
+            $('.card:last').after(html);
+            $('.card:last').css('left', (card_size * 2.80) + "px");
+            $('.card:last').css('top', board_margin + "px");
+            animate_left();
+            init_mouseover();
+            setTimeout(callback, 1250);
+        }
     });
 }
 
