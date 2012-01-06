@@ -70,8 +70,8 @@ function init_navigation() {
         callbacks = {
                 left: prev_item,
                 right: next_item,
-                up: upvote_this,
-                down: downvote_this,
+                up: function() { upvote_this(); next_item(); },
+                down: function() { downvote_this(); next_item(); },
                 add: add,
                 help: help,
                 search: search,
