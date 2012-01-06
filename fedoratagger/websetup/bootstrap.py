@@ -13,33 +13,30 @@ import os
 import sys
 import shutil
 
-try:
-    import yum
+import yum
 
-    class YumQuery(yum.YumBase):
+class YumQuery(yum.YumBase):
 
-        def __init__(self):
-            yum.YumBase.__init__(self)
-            self.setCacheDir()
-            self._pl = self.doPackageLists('all')
+    def __init__(self):
+        yum.YumBase.__init__(self)
+        self.setCacheDir()
+        self._pl = self.doPackageLists('all')
 
-        def summary(self, name):
+    def summary(self, name):
 
-            def exacts(section):
-                exactmatch, matched, unmatched = yum.packages.parsePackages(
-                    getattr(self._pl, section), [name])
-                return yum.misc.unique(exactmatch)
+        def exacts(section):
+            exactmatch, matched, unmatched = yum.packages.parsePackages(
+                getattr(self._pl, section), [name])
+            return yum.misc.unique(exactmatch)
 
-            sections = ['installed', 'available', 'updates', 'extras']
-            exactmatch = sum(map(exacts, sections), [])
-            if exactmatch:
-                return exactmatch[0].summary
-            else:
-                return ''
+        sections = ['installed', 'available', 'updates', 'extras']
+        exactmatch = sum(map(exacts, sections), [])
+        if exactmatch:
+            return exactmatch[0].summary
+        else:
+            return ''
 
-    yumq = YumQuery()
-except ImportError as e:
-    yumq = None
+yumq = YumQuery()
 
 def get_icons():
     print "Getting icons."
