@@ -7,10 +7,10 @@ This file complements development/deployment.ini.
 Please note that **all the argument values are strings**. If you want to
 convert them into boolean, for example, you should use the
 :func:`paste.deploy.converters.asbool` function, as in::
-    
+
     from paste.deploy.converters import asbool
     setting = asbool(global_conf.get('the_setting'))
- 
+
 """
 
 from tg.configuration import AppConfig
@@ -19,7 +19,7 @@ import fedoratagger
 from fedoratagger import model
 from fedoratagger.lib import app_globals, helpers
 
-from fedora.tg.tg2utils import add_fas_auth_middleware
+from fedora.tg2.utils import add_fas_auth_middleware
 from bunch import Bunch
 class MyAppConfig(AppConfig):
     add_auth_middleware = add_fas_auth_middleware
@@ -40,8 +40,8 @@ base_config.model = fedoratagger.model
 base_config.DBSession = fedoratagger.model.DBSession
 # Configure the authentication backend
 
-# YOU MUST CHANGE THIS VALUE IN PRODUCTION TO SECURE YOUR APP 
-base_config.sa_auth.cookie_secret = "ChangeME" 
+# YOU MUST CHANGE THIS VALUE IN PRODUCTION TO SECURE YOUR APP
+base_config.sa_auth.cookie_secret = "ChangeME"
 
 base_config.auth_backend = 'sqlalchemy'
 base_config.sa_auth.dbsession = model.DBSession
