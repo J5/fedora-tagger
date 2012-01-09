@@ -136,6 +136,34 @@ class RootController(BaseController):
 
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
+    def details(self, name=None):
+        """ Handles the /details path.
+
+        Return a list of details for a package.
+        """
+
+        icon_template = "https://admin.fedoraproject.org/community/images/16_{serv}.png"
+        item_template = "<li><img src='{icon}'/><a href='{url}'>{text}</a></li>"
+        services = [
+            ('pkgdb', 'Downloads', "https://admin.fedoraproject.org/community/?package={name}#package_maintenance/details/downloads"),
+            ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search?terms={name}&type=package&match=exact"),
+            ('bodhi', 'Updates', "https://admin.fedoraproject.org/updates/{name}"),
+            ('bugs', 'Bugs', "https://admin.fedoraproject.org/pkgdb/acls/bugs/{name}"),
+            ('sources', 'Source', "http://pkgs.fedoraproject.org/gitweb/?p={name}.git"),
+        ]
+
+        items = [
+            item_template.format(
+                icon=icon_template.format(serv=serv),
+                url=url.format(name=name),
+                text=text
+            ) for serv, text, url in services
+        ]
+        return "<ul>" + "\n".join(items) + "</ul>"
+
+
+    @expose()
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def card(self, name=None):
         """ Handles the /card path.  Return a rendered CardWidget in HTML.
 

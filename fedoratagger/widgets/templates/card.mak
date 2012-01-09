@@ -12,7 +12,7 @@
       </div>
       <div class="clear"></div>
         <div class="details">
-	      <a target="_blank" href="https://admin.fedoraproject.org/community/?package=${w.package.name}">More details...</a>
+		<a href="javascript:more_details('${w.package.name}');">More details...</a>
         </div>
         <div class="clear"></div>
     </div>

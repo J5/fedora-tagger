@@ -123,7 +123,36 @@ function card_new(name, callback) {
             $('.card:last').css('top', board_margin + "px");
             animate_left();
             init_mouseover();
-            setTimeout(callback, 1250);
+            setTimeout(String(callback), 1250);
+        }
+    });
+}
+
+function more_details(name) {
+    $.ajax({
+        type: "POST",
+        url: "/details",
+        cache: false,
+        data: $.param({
+            name: name,
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        }),
+        error: function() {
+            $.gritter.add({
+                title: 'There was a problem getting the details.',
+                text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            });
+        },
+        success: function(html) {
+            $("body").append("<div id='details-dialog'></div>");
+            $("#details-dialog").attr('title', name);
+            $("#details-dialog").html(html);
+            $("#details-dialog").dialog({
+                autoOpen: true,
+                modal: true,
+                close: function() { $('#details-dialog').dialog('destroy'); },
+            });
         }
     });
 }
