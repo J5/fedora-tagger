@@ -84,6 +84,9 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
+
+    [tw2.widgets]
+    widgets = fedoratagger.widgets
     """,
     dependency_links=[
         "http://www.turbogears.org/2.1/downloads/current/"
