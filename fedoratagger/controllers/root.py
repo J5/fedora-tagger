@@ -26,11 +26,6 @@ class RootController(BaseController):
 
     error = ErrorController()
 
-    @expose('fedoratagger.templates.index')
-    def index(self):
-        """ Simply redirect to /tagger """
-        redirect(url('/tagger'))
-
     @expose('json')
     def dump(self):
         """ A http interface to the dump2json method.
@@ -133,6 +128,8 @@ class RootController(BaseController):
         cards = [CardWidget(package=p) for p in random.sample(packages, 3)]
         cards[1].css_class = 'card center'
         return dict(cards=cards)
+
+    index = tagger
 
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
