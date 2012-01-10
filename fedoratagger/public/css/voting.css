@@ -1,34 +1,37 @@
 div.voter {
-        display: inline-block;
-        width: 25px;
-        margin-left: -25px;
+    display: inline-block;
+    width: 100px;
+    right: 0px;
+    float: right;
 }
-div.total {
-        text-align: center;
-        margin-top: -4px;
-        margin-bottom: -3px;
+span.total {
+    text-align: center;
+    float:right;
 }
-div.arrow {
-        margin:0px 0px 0px 0px;
-        width:100%;
-        height:20px;
-        width:20px;
-        display:block;
-        cursor:pointer;
-        background-position:center center;
-        background-repeat:no-repeat; 
+span.arrow {
+    float:right;
+    margin-left:4px;
+    margin-right:4px;
+    width:100%;
+    height:24px;
+    width:24px;
+    display:block;
+    cursor:pointer;
+    background-position:left center;
+    background-repeat:no-repeat;
+    background-clip: content-box;
 }
-div.arrow.upmod { 
-        background-image:url(../images/up_arrow_mod.gif);
+span.arrow.upmod {
+    background-image:url(../images/up_arrow_mod.png);
 }
-div.arrow.downmod { 
-        background-image:url(../images/down_arrow_mod.gif);
+span.arrow.downmod {
+    background-image:url(../images/down_arrow_mod.png);
 }
-div.arrow.up { 
-        background-image:url(../images/up_arrow.gif);
+span.arrow.up {
+    background-image:url(../images/up_arrow.png);
 }
-div.arrow.down { 
-        background-image:url(../images/down_arrow.gif);
+span.arrow.down {
+    background-image:url(../images/down_arrow.png);
 }
-div.up_text {   color: #DB347A; }
-div.down_text { color: #3C6EB4; }
+span.up_text {   color: #DB347A; }
+span.down_text { color: #3C6EB4; }
