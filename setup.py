@@ -71,7 +71,8 @@ setup(
     tests_require=testpkgs,
     package_data={'fedoratagger': ['i18n/*/LC_MESSAGES/*.mo',
                                  'templates/*/*',
-                                 'public/*/*']},
+                                 #'public/*/*'
+                                 ]},
     message_extractors={'fedoratagger': [
             ('**.py', 'python', None),
             ('templates/**.mako', 'mako', None),
