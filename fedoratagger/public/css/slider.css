@@ -123,6 +123,20 @@ body, p, a, li, div, input, button {
   height: 100%;
 }
 
+div.new {
+    font-weight: bold;
+}
+
+div.plus {
+	background-image: url("../images/gfx_add-button.png");
+    width: 29px;
+    height: 27px;
+    margin-bottom: -7px;
+    margin-right: 5px;
+    display:inline-block;
+    cursor:pointer;
+}
+
 #nextbutton {
     z-index: 100;
     position: absolute;

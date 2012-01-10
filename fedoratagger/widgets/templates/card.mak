@@ -28,5 +28,9 @@
 % endfor
       </ul>
     </div>
+    <div class="clear"></div>
+	<div class="new">
+		<div class="plus" onclick="javascript:$('#add_dialog').dialog('open');"></div>Add a new tag.
+	</div>
   </div>
 </div>
