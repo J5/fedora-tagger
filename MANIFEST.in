@@ -1,3 +1,4 @@
 graft fedoratagger
 graft apache
 include README.rst
+include development.ini
