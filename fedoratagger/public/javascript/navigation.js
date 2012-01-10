@@ -95,6 +95,7 @@ function init_navigation() {
     var then = new Date();
     $(document).keyup(function(e){
         if ( $("#search_box").is(":focus") ) { return; }
+        if ( $("#add_box").is(":focus") ) { return; }
         if ( animation_elements != null ) { return; }
         var now = new Date();
         if ( now - then < 50 ) { return; }
