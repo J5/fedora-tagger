@@ -14,6 +14,8 @@ convert them into boolean, for example, you should use the
 """
 
 from tg.configuration import AppConfig
+from pylons.i18n import ugettext
+from paste.deploy.converters import asbool
 
 import fedoratagger
 from fedoratagger import model
@@ -23,6 +25,27 @@ from fedora.tg.tg2utils import add_fas_auth_middleware
 from bunch import Bunch
 class MyAppConfig(AppConfig):
     add_auth_middleware = add_fas_auth_middleware
+    tw2_initialized = False
+
+    def add_tosca2_middleware(self, app):
+        if self.tw2_initialized:
+            return app
+
+        from tg import config
+        from tw2.core.middleware import Config, TwMiddleware
+        default_tw2_config = dict( default_engine=self.default_renderer,
+                                   translator=ugettext,
+                                   auto_reload_templates=asbool(self.get('templating.mako.reloadfromdisk', 'false'))
+                                   )
+        res_prefix = config.get('fedoratagger.resource_path_prefix')
+        if res_prefix:
+            default_tw2_config['res_prefix'] = res_prefix
+        if getattr(self, 'custom_tw2_config', None):
+            default_tw2_config.update(self.custom_tw2_config)
+        app = TwMiddleware(app, **default_tw2_config)
+        self.tw2_initialized = True
+        return app
+
 
 base_config = MyAppConfig()
 base_config.renderers = []

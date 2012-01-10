@@ -4,6 +4,8 @@
 from fedoratagger.config.app_cfg import base_config
 from fedoratagger.config.environment import load_environment
 
+import tg
+tg_version_tuple = tuple(map(int, tg.__version__.split('.')))
 
 __all__ = ['make_app']
 
@@ -32,6 +34,9 @@ def make_app(global_conf, full_stack=True, **app_conf):
     
    
     """
+    if tg_version_tuple < (2, 1):
+        app_conf['wrap_app'] = base_config.add_tosca2_middleware
+
     app = make_base_app(global_conf, full_stack=True, **app_conf)
     
     # Wrap your base TurboGears 2 application with custom middleware here
