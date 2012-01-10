@@ -4,7 +4,7 @@
 import random
 
 from tg import expose, flash, require, url, request, redirect
-from tg.i18n import ugettext as _, lazy_ugettext as l_
+from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
 from repoze.what.predicates import not_anonymous
 
