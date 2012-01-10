@@ -1,2 +1,2 @@
-<%inherit file="local:templates.master"/>
+<%inherit file="fedoratagger.templates.master"/>
 ${widget.display() | n}
