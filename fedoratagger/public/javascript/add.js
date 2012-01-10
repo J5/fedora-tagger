@@ -19,7 +19,7 @@ $(document).ready(function () {
         if( e.keyCode == 13 ){
             $.ajax({
                 type: "POST",
-                url: "/add",
+                url: "add",
                 data: $.param({
                     label: $(this).val(),
                     package: $('.center * h2').html(),
