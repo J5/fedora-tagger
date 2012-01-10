@@ -123,6 +123,14 @@ body, p, a, li, div, input, button {
   height: 100%;
 }
 
+#nextbutton {
+    z-index: 100;
+    position: absolute;
+    right: 0px;
+    float:right;
+    top: 33%;
+}
+
 .package_header {
   right: auto;
   left: auto;

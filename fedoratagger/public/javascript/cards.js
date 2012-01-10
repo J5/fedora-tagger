@@ -11,11 +11,11 @@ function reflow_gradients(content) {
     lf.style.height = content.clientHeight;
     lf.style.top = 0;
     lf.style.left = 0;
-    lf.style.width = card_size * 0.25;
+    lf.style.width = card_size * 0.4;
 
     rf.style.height = content.clientHeight;
     rf.style.right = 0;
-    rf.style.width = card_size * 0.25;
+    rf.style.width = card_size * 0.4;
 
     lf.style.display = "inline";
     rf.style.display = "inline";
