@@ -140,7 +140,7 @@ class RootController(BaseController):
         """
 
         icon_template = "https://admin.fedoraproject.org/community/images/16_{serv}.png"
-        item_template = "<li><img src='{icon}'/><a href='{url}'>{text}</a></li>"
+        item_template = "<li><img src='{icon}'/><a href='{url}' target='_blank'>{text}</a></li>"
         services = [
             ('pkgdb', 'Downloads', "https://admin.fedoraproject.org/community/?package={name}#package_maintenance/details/downloads"),
             ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search?terms={name}&type=package&match=exact"),
