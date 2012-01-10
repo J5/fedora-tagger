@@ -43,7 +43,7 @@ $(document).ready(function () {
                 if( e.keyCode == 13 ){
                         $.ajax({
                                 type: "POST",
-                                url: "/search",
+                                url: "search",
                                 data: $.param({
                                         term: $(this).val(),
                                         _csrf_token: $.getUrlVar("_csrf_token"),

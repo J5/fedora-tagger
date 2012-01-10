@@ -7,7 +7,7 @@ function downvote(id) {
 function _vote(id, like) {
         $.ajax({
                 type: "POST",
-                url: "/vote",
+                url: "vote",
                 data: $.param({
                         id: id,
                         like: like,

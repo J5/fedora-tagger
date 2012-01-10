@@ -11,7 +11,7 @@
         <p>Logged in (<span id="username">${str(w.formatted_name)}</span>)</p>
         <p><span id="total_votes">${str(w.total_votes)}</span> votes cast.</p>
         <p>Rank: <span id="rank">${str(w.rank)}</span></p>
-        <p><a href="/logout_handler">Logout</a></p>
+        <p><a href="logout_handler">Logout</a></p>
       </td>
     </tr>
   </table>

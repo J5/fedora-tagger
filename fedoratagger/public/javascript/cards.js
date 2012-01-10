@@ -104,7 +104,7 @@ function card_new(name, callback) {
 
     $.ajax({
             type: "POST",
-            url: "/card",
+            url: "card",
             cache: false,
             data: $.param({
                     name: name,
