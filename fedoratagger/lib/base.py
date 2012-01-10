@@ -5,7 +5,7 @@
 from tg import TGController, tmpl_context
 from tg.render import render
 from tg import request
-from tg.i18n import ugettext as _, ungettext
+from pylons.i18n import ugettext as _, ungettext
 import fedoratagger.model as model
 import fedoratagger.widgets.dialog
 import fedoratagger.widgets.user

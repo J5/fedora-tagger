@@ -1,4 +1,4 @@
-<%inherit file="local:templates.master"/>
+<%inherit file="fedoratagger.templates.master"/>
 <div id="hotkeys-ribbon" class="hotkeys-ribbon" onclick="javascript:help();">Hotkeys</div>
 
 <div class="body" id="gameboard">

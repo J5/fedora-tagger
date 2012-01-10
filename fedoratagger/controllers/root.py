@@ -3,8 +3,8 @@
 
 import random
 
-from tg import expose, flash, require, url, lurl, request, redirect
-from tg.i18n import ugettext as _, lazy_ugettext as l_
+from tg import expose, flash, require, url, request, redirect
+from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
 from repoze.what.predicates import not_anonymous
 
@@ -25,11 +25,6 @@ class RootController(BaseController):
     """ The root controller for the fedora-tagger application. """
 
     error = ErrorController()
-
-    @expose('fedoratagger.templates.index')
-    def index(self):
-        """ Simply redirect to /tagger """
-        redirect(url('/tagger'))
 
     @expose('json')
     def dump(self):
@@ -133,6 +128,8 @@ class RootController(BaseController):
         cards = [CardWidget(package=p) for p in random.sample(packages, 3)]
         cards[1].css_class = 'card center'
         return dict(cards=cards)
+
+    index = tagger
 
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
@@ -240,7 +237,7 @@ class RootController(BaseController):
         return json
 
     @expose('fedoratagger.templates.login')
-    def login(self, came_from=lurl('/')):
+    def login(self, came_from=url('/')):
         """Start the user login."""
         login_counter = request.environ['repoze.who.logins']
         if login_counter > 0:
@@ -249,7 +246,7 @@ class RootController(BaseController):
                     came_from=came_from)
 
     @expose()
-    def post_login(self, came_from=lurl('/')):
+    def post_login(self, came_from=url('/')):
         """
         Redirect the user to the initially requested page on successful
         authentication or redirect her back to the login page if login failed.
@@ -260,11 +257,11 @@ class RootController(BaseController):
             redirect('/login',
                 params=dict(came_from=came_from, __logins=login_counter))
         userid = request.identity['repoze.who.userid']
-        flash(_('Welcome back, %s!') % userid)
+        flash(_('Welcome back, %s!' % userid))
         redirect(came_from)
 
     @expose()
-    def post_logout(self, came_from=lurl('/')):
+    def post_logout(self, came_from=url('/')):
         """
         Redirect the user to the initially requested page on logout and say
         goodbye as well.

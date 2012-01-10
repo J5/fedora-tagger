@@ -1,4 +1,4 @@
-<%inherit file="local:templates.master"/>
+<%inherit file="fedoratagger.templates.master"/>
 <%def name="title()">Login Form</%def>
 <div class="body" id="gameboard" style="height: 380px; width: 720px; ">
 <div class="card" style="height: 360px; width: 360px; left: -234px; "></div>
