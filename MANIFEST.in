@@ -1,4 +1,3 @@
-recursive-include fedoratagger/public *
-include fedoratagger/public/favicon.ico
-recursive-include fedoratagger/i18n *
-recursive-include fedoratagger/templates *
+graft fedoratagger
+graft apache
+include README.rst
