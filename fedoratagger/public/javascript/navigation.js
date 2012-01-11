@@ -112,10 +112,10 @@ function init_navigation() {
     }
 
     callbacks = {
-        left: prev_item,
-        right: next_item,
-        up: function() { upvote_this(); next_item(); },
-        down: function() { downvote_this(); next_item(); },
+        up: prev_item,
+        down: next_item,
+        right: function() { upvote_this(); next_item(); },
+        left: function() { downvote_this(); next_item(); },
         add: add,
         help: help,
         leaderboard: leaderboard,
