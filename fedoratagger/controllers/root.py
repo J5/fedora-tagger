@@ -4,7 +4,6 @@
 from tg import expose, flash, require, url, request, redirect
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
-from repoze.what.predicates import not_anonymous
 
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
@@ -45,7 +44,6 @@ class RootController(BaseController):
         return query
 
     @expose('json')
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def search(self, term):
         """ Handles /search URL.
 
@@ -63,7 +61,6 @@ class RootController(BaseController):
         )
 
     @expose('json')
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def add(self, label, package):
         """ Handles /add URL.
 
@@ -111,7 +108,6 @@ class RootController(BaseController):
 
 
     @expose('fedoratagger.templates.tagger')
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def tagger(self):
         """ Really, the main index.
 
@@ -128,14 +124,14 @@ class RootController(BaseController):
     index = tagger
 
     @expose()
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def leaderboard(self, N=10):
         """ Handles the /leaderboard path.
 
         Returns an HTML table of the top N users.
         """
 
-        users = model.FASUser.query.all()
+        query = model.FASUser.query
+        users = query.filter(model.FASUser.username!='anonymous').all()
         users.sort(lambda x, y: cmp(len(x.votes), len(y.votes)), reverse=True)
         users = users[:N]
 
@@ -158,7 +154,6 @@ class RootController(BaseController):
 
 
     @expose()
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def details(self, name=None):
         """ Handles the /details path.
 
@@ -186,7 +181,6 @@ class RootController(BaseController):
 
 
     @expose()
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def card(self, name=None):
         """ Handles the /card path.  Return a rendered CardWidget in HTML.
 
@@ -207,7 +201,6 @@ class RootController(BaseController):
         return w.display()
 
     @expose('json')
-    @require(not_anonymous(msg="Login with your FAS credentials."))
     def vote(self, id, like):
         """ Handles the /vote path.  Return JSON indicating results and stats.
 

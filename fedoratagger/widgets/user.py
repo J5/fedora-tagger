@@ -13,8 +13,7 @@ class UserWidget(tw2.core.Widget):
     template = 'fedoratagger.widgets.templates.user'
 
     def avatar_link(self, s=140, d='mm'):
-        email = tg.request.identity.get('email', 'Whoops')
-        hash = hashlib.md5(email).hexdigest()
+        hash = hashlib.md5(m.get_user().email).hexdigest()
         return "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
 
     @property
@@ -25,8 +24,12 @@ class UserWidget(tw2.core.Widget):
         )
 
     @property
+    def logged_in(self):
+        return self.username != 'anonymous'
+
+    @property
     def username(self):
-        return tg.request.identity['username']
+        return m.get_user().username
 
     @property
     def total_votes(self):

@@ -73,7 +73,7 @@ def get_user(username=None):
     """
 
     if not username:
-        username = tg.request.identity['username']
+        username = tg.request.identity.get('username', 'anonymous')
 
     query = FASUser.query.filter_by(username=username)
 
@@ -83,6 +83,8 @@ def get_user(username=None):
     user = query.first()
 
     if not user.email:
-        user.email = to_unicode(tg.request.identity['email'])
+        user.email = to_unicode(
+            tg.request.identity.get('email', 'anon@fedoraproject.org')
+        )
 
     return user

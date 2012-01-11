@@ -161,8 +161,11 @@ class FASUser(DeclarativeBase):
     @property
     def rank(self):
 
+        if self.username == 'anonymous':
+            return -1
+
         # TODO - there's a more optimal way to do this in SQL land.
-        users = FASUser.query.all()
+        users = FASUser.query.filter(FASUser.username!='anonymous').all()
         users.sort(lambda x, y: cmp(x.total_votes, y.total_votes), reverse=True)
 
         return users.index(self) + 1
