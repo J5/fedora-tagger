@@ -12,6 +12,7 @@ convert them into boolean, for example, you should use the
     setting = asbool(global_conf.get('the_setting'))
 
 """
+import socket
 
 from tg.configuration import AppConfig
 from pylons.i18n import ugettext
@@ -24,6 +25,9 @@ from fedoratagger.lib import app_globals, helpers
 from fedora.tg2.utils import add_fas_auth_middleware
 from bunch import Bunch
 class MyAppConfig(AppConfig):
+    # If we're deployed to Fedora's dev environment, use the production FAS
+    if 'dev.phx2.fedoraproject.org' in socket.gethostname():
+        fas_auth = Bunch(fas_url='https://admin-prod.fedoraproject.org/accounts/')
     add_auth_middleware = add_fas_auth_middleware
     tw2_initialized = False
 
