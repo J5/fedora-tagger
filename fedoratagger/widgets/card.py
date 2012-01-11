@@ -2,11 +2,14 @@ import tw2.core
 import tw2.forms
 import random
 
+from sqlalchemy import func
+
 import fedoratagger.model as m
 from fedoratagger.widgets.voting import TagWidget
 
 def pick(tags, N, tags_voted_for):
     """ Select a subset of tags I haven't voted on yet. """
+
 
     if len(tags) <= N:
         return sorted(tags, m.packages.tag_sorter, reverse=True)
@@ -25,12 +28,7 @@ def pick(tags, N, tags_voted_for):
 def select_random_package(tags_voted_for):
     """ Select a random package based on a complicated set of rules """
 
-    all_packages = m.Package.query.all()
-    limited_packages = [package for package in all_packages if any(
-        [tag not in tags_voted_for and not tag.banned for tag in package.tags]
-    )]
-    package = random.sample(limited_packages, 1)[0]
-    return package
+    return m.Package.query.order_by(func.random()).first()
 
 
 class CardWidget(tw2.forms.LabelField):
@@ -53,6 +51,11 @@ class CardWidget(tw2.forms.LabelField):
             self.package = select_random_package(tags_voted_for)
 
         allowed_tags = filter(lambda t: not t.banned, self.package.tags)
-        picked_tags = pick(allowed_tags, self.N, tags_voted_for)
+
+        if len(allowed_tags) >= self.N:
+            picked_tags = random.sample(allowed_tags, self.N)
+        else:
+            picked_tags = allowed_tags
+
         self.tags = [TagWidget(tag=tag) for tag in picked_tags]
         self.tags[0].css_class += " selected"
