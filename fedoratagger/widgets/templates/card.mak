@@ -9,7 +9,11 @@
         % endif
         <div><h2>${w.package.name}</h2></div>
         <div class="summary">
-          ${w.package.summary}
+          % if w.package.summary:
+            ${w.package.summary}
+          % else:
+            ${w.package.xapian_summary}
+          % endif
         </div>
       </div>
         <div class="details">

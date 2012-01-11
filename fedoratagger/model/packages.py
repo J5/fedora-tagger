@@ -45,8 +45,7 @@ class Package(DeclarativeBase):
         secondary=package_tag_association_table
     )
 
-    @property
-    def icon(self):
+    def _get_xapian_data(self):
         xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
         if not os.path.exists(xapian_dir):
             return
@@ -64,7 +63,19 @@ class Package(DeclarativeBase):
         matches = enquire.get_mset(0, 1)
         if len(matches) == 0: return None
         result = json.loads(matches[0].document.get_data())
-        return "/packages/images/icons/%s.png" % result['icon']
+        return result
+
+    @property
+    def icon(self):
+        result = self._get_xapian_data()
+        if result:
+            return "/packages/images/icons/%s.png" % result['icon']
+
+    @property
+    def xapian_summary(self):
+        result = self._get_xapian_data()
+        if result:
+            return result['summary']
 
     def __unicode__(self):
         return self.name
