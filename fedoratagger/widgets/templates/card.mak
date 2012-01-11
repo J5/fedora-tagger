@@ -19,7 +19,7 @@
     </div>
     <div class="clear"></div>
     <div class="question">
-      Do the following tags match this package?
+      Do these tags match this package?
     </div>
     <div class="clear"></div>
     <div class="tags">

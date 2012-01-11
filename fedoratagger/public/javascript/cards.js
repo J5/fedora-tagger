@@ -1,5 +1,5 @@
 var card_size = 0;
-var min_size = 360;
+var min_size = 420;
 var board_margin = 10;
 
 var request_in_progress = false;

@@ -226,3 +226,62 @@ div.plus {
     border-top: 1px dashed black;
     text-align: center;
 }
+
+.card .icon img {
+  max-width: 75px !important;
+  background-color: #ccc;
+  border: 5px solid white;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+}
+
+div.icon {
+  max-width: 88px;
+  float: left !important;
+  margin-right: 1em;
+}
+
+.package_header,
+.title {
+  width: 100%;
+  display: block;
+}
+
+.package_header h2,
+.package_header .summary {
+  float: right;
+}
+
+.package_header h2 {
+  font-size: 18pt !important;
+  margin-top: 1px !important;
+  width: 70%;
+  text-align: right;
+  color: black;
+}
+
+.summary {
+  clear: none !important;
+  width: 70%;
+  text-align: right;
+  margin-top: 7px;
+}
+
+.details a {
+  font-size: 8pt !important;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.details {
+  float: right;
+  background-color: #3c6eb4;
+  padding: 3px;
+  -moz-border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.details:hover {
+  background-color: #db3279;
+}
