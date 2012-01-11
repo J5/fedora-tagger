@@ -52,6 +52,11 @@ class CardWidget(tw2.forms.LabelField):
 
         allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 
+        # This is getting ridiculous
+        while len(allowed_tags) == 0:
+            self.package = select_random_package(tags_voted_for)
+            allowed_tags = filter(lambda t: not t.banned, self.package.tags)
+
         if len(allowed_tags) >= self.N:
             picked_tags = random.sample(allowed_tags, self.N)
         else:
