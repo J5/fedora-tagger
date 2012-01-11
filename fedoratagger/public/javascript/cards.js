@@ -3,6 +3,7 @@ var min_size = 360;
 var board_margin = 10;
 
 var animation_elements = null;
+var waiting_cbs = [];
 
 function reflow_gradients(content) {
     var lf = document.getElementById("leftfade");
@@ -86,6 +87,8 @@ function animation_complete() {
             animation_elements = null;
     }
 
+    while (waiting_cbs.length) waiting_cbs.pop()();
+
     reflow_cards();
 }
 
@@ -99,7 +102,7 @@ function animate_left() {
 }
 
 function card_new(name, callback) {
-    if (animation_elements != null) 
+    if (animation_elements != null)
         return;
 
     $.ajax({
@@ -123,7 +126,14 @@ function card_new(name, callback) {
             $('.card:last').css('top', board_margin + "px");
             animate_left();
             init_mouseover();
-            setTimeout(String(callback), 1250);
+
+            if (callback) {
+                if (animation_elements != null) {
+                    waiting_cbs.push(callback);
+                } else {
+                    callback();
+                }
+            }
         }
     });
 }
