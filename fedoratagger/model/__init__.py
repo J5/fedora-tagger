@@ -3,6 +3,8 @@
 
 import tg
 
+from kitchen.text.converters import to_unicode
+
 from zope.sqlalchemy import ZopeTransactionExtension
 from sqlalchemy.orm import scoped_session, sessionmaker
 #from sqlalchemy import MetaData
@@ -76,11 +78,11 @@ def get_user(username=None):
     query = FASUser.query.filter_by(username=username)
 
     if query.count() == 0:
-        DBSession.add(FASUser(username=username))
+        DBSession.add(FASUser(username=to_unicode(username)))
 
     user = query.first()
 
     if not user.email:
-        user.email = tg.request.identity['email']
+        user.email = to_unicode(tg.request.identity['email'])
 
     return user
