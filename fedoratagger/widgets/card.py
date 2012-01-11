@@ -1,6 +1,7 @@
 import tw2.core
 import tw2.forms
 import random
+import tw2.jqplugins.gritter
 
 from sqlalchemy import func
 
@@ -32,6 +33,7 @@ class CardWidget(tw2.forms.LabelField):
     package = tw2.core.Param(default=None)
     tags = tw2.core.params.Variable()
     css_class = 'card'
+    resources = tw2.jqplugins.gritter.gritter_resources
 
     template = 'fedoratagger.widgets.templates.card'
 
