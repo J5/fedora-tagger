@@ -130,7 +130,8 @@ class RootController(BaseController):
         Returns an HTML table of the top N users.
         """
 
-        users = model.FASUser.query.all()
+        query = model.FASUser.query
+        users = query.filter(model.FASUser.username!='anonymous').all()
         users.sort(lambda x, y: cmp(len(x.votes), len(y.votes)), reverse=True)
         users = users[:N]
 
