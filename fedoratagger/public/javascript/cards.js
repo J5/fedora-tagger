@@ -141,7 +141,7 @@ function card_new(name, callback) {
 function more_details(name) {
     $.ajax({
         type: "POST",
-        url: "/details",
+        url: "details",
         cache: false,
         data: $.param({
             name: name,
