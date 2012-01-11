@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import os
+import json
+
 from sqlalchemy import *
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode
@@ -41,6 +44,27 @@ class Package(DeclarativeBase):
         'TagLabel', backref=('packages'),
         secondary=package_tag_association_table
     )
+
+    @property
+    def icon(self):
+        xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
+        if not os.path.exists(xapian_dir):
+            return
+
+        import xapian
+        from fedoracommunity.search.utils import filter_search_string
+        package_name = filter_search_string(self.name)
+        search_db = xapian.Database(xapian_dir)
+        enquire = xapian.Enquire(search_db)
+        qp = xapian.QueryParser()
+        qp.set_database(search_db)
+        search_string = "Ex__%s__EX" % package_name
+        query = qp.parse_query(search_string)
+        enquire.set_query(query)
+        matches = enquire.get_mset(0, 1)
+        if len(matches) == 0: return None
+        result = json.loads(matches[0].document.get_data())
+        return "/packages/images/icons/%s.png" % result['icon']
 
     def __unicode__(self):
         return self.name
