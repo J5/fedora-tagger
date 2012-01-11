@@ -70,6 +70,7 @@ function search() { $("#search_dialog").dialog('open'); }
 function add() { $("#add_dialog").dialog('open'); }
 
 function leaderboard() {
+    request_in_progress = true;
     $.ajax({
         type: "POST",
         url: "leaderboard",
@@ -83,6 +84,7 @@ function leaderboard() {
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
+            request_in_progress = false;
         },
         success: function(html) {
             $("body").append("<div id='leaderboard-dialog'></div>");
@@ -93,6 +95,7 @@ function leaderboard() {
                 modal: true,
                 close: function() { $('#leaderboard-dialog').dialog('destroy'); },
             });
+            request_in_progress = false;
         }
     });
 }
@@ -126,6 +129,7 @@ function init_navigation() {
         if ( $("#search_box").is(":focus") ) { return; }
         if ( $("#add_box").is(":focus") ) { return; }
         if ( animation_elements != null ) { return; }
+        if ( request_in_progress ) { return; }
         var now = new Date();
         if ( now - then < 50 ) { return; }
         then = now;

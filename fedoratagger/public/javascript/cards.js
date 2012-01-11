@@ -2,6 +2,7 @@ var card_size = 0;
 var min_size = 360;
 var board_margin = 10;
 
+var request_in_progress = false;
 var animation_elements = null;
 var waiting_cbs = [];
 
@@ -105,6 +106,7 @@ function card_new(name, callback) {
     if (animation_elements != null)
         return;
 
+    request_in_progress = true;
     $.ajax({
         type: "POST",
         url: "card",
@@ -119,6 +121,7 @@ function card_new(name, callback) {
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
+            request_in_progress = false;
         },
         success: function(html) {
             $('.card:last').after(html);
@@ -134,11 +137,13 @@ function card_new(name, callback) {
                     callback();
                 }
             }
+            request_in_progress = false;
         }
     });
 }
 
 function more_details(name) {
+    request_in_progress = true;
     $.ajax({
         type: "POST",
         url: "details",
@@ -148,6 +153,7 @@ function more_details(name) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
+            request_in_progress = false;
             $.gritter.add({
                 title: 'There was a problem getting the details.',
                 text: 'Sorry.',
@@ -155,6 +161,7 @@ function more_details(name) {
             });
         },
         success: function(html) {
+            request_in_progress = false;
             $("body").append("<div id='details-dialog'></div>");
             $("#details-dialog").attr('title', name);
             $("#details-dialog").html(html);

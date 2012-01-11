@@ -5,6 +5,7 @@ $(document).ready(function () {
             text: 'Sorry.',
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
+        request_in_progress = false;
     };
     var success = function(json) {
         $.gritter.add({
@@ -13,10 +14,12 @@ $(document).ready(function () {
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
         $('#add_dialog').dialog('close');
+        request_in_progress = false;
     };
 
     $("#add_box").keydown(function(e){
         if( e.keyCode == 13 ){
+            request_in_progress = true;
             $.ajax({
                 type: "POST",
                 url: "add",
