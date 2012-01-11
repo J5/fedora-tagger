@@ -57,3 +57,14 @@ class AddTagDialog(DialogWidget):
         'modal': True,
     }
     value = """<input id="add_box"/>"""
+
+class LeaderboardDialog(DialogWidget):
+    """ jQuery UI dialog for showing the leaderboard. """
+
+    id = 'leaderboard_dialog'
+    options = {
+        'title': 'Leaderboard',
+        'autoOpen': False,
+        'width': 350,
+        'modal': True,
+    }

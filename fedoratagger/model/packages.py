@@ -7,6 +7,11 @@ from sqlalchemy.orm import mapper, relation, backref
 
 from fedoratagger.model import DeclarativeBase, metadata, DBSession
 
+try:
+    from hashlib import md5
+except ImportError:
+    import md5
+
 
 def tag_sorter(tag1, tag2):
     """ The tag list for each package should be sorted in descending order by
@@ -147,6 +152,7 @@ class FASUser(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     username = Column(Unicode(255), nullable=False)
     votes = relation('Vote', backref=('user'))
+    email = Column(Unicode(255), default=None)
 
     @property
     def total_votes(self):
@@ -160,6 +166,16 @@ class FASUser(DeclarativeBase):
         users.sort(lambda x, y: cmp(x.total_votes, y.total_votes), reverse=True)
 
         return users.index(self) + 1
+
+    @property
+    def gravatar_sm(self):
+        s=32
+        d='mm'
+        email = self.email if self.email else "whatever"
+        hash = md5(email).hexdigest()
+        url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
+        return "<img src='%s'></img>" % url
+
 
     def __json__(self):
         return {

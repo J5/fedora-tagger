@@ -69,6 +69,33 @@ function search() { $("#search_dialog").dialog('open'); }
 
 function add() { $("#add_dialog").dialog('open'); }
 
+function leaderboard() {
+    $.ajax({
+        type: "POST",
+        url: "leaderboard",
+        cache: false,
+        data: $.param({
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        }),
+        error: function() {
+            $.gritter.add({
+                title: 'There was a problem getting the leaderboard.',
+                text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            });
+        },
+        success: function(html) {
+            $("body").append("<div id='leaderboard-dialog'></div>");
+            $("#leaderboard-dialog").attr('title', "Leaderboard");
+            $("#leaderboard-dialog").html(html);
+            $("#leaderboard-dialog").dialog({
+                autoOpen: true,
+                modal: true,
+                close: function() { $('#leaderboard-dialog').dialog('destroy'); },
+            });
+        }
+    });
+}
 function init_navigation() {
     keys = {
         left: [37, 72],
@@ -77,6 +104,7 @@ function init_navigation() {
         down: [40, 74],
         add: [65, 73],
         help: [27, 112],
+        leaderboard: [66],
         search: [191],
     }
 
@@ -87,6 +115,7 @@ function init_navigation() {
         down: function() { downvote_this(); next_item(); },
         add: add,
         help: help,
+        leaderboard: leaderboard,
         search: search,
     }
 

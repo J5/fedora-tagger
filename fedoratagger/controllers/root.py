@@ -129,6 +129,29 @@ class RootController(BaseController):
 
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
+    def leaderboard(self, N=10):
+        """ Handles the /leaderboard path.
+
+        Returns an HTML table of the top N users.
+        """
+
+        users = model.FASUser.query.all()
+        users.sort(lambda x, y: cmp(len(x.votes), len(y.votes)), reverse=True)
+        users = users[:N]
+
+        keys = ['gravatar_sm', 'username', 'total_votes']
+        row = "<tr>" + ''.join(["<td>{%s}</td>" % k for k in keys]) + "</tr>"
+        rows = [
+            row.format(**dict([(k, getattr(u, k)) for k in keys]))
+            for u in users
+        ]
+
+        return "<table class='leaderboard'>" + "".join(rows) + "</table>"
+
+
+
+    @expose()
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def details(self, name=None):
         """ Handles the /details path.
 

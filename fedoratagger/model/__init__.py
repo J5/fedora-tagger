@@ -78,5 +78,9 @@ def get_user(username=None):
     if query.count() == 0:
         DBSession.add(FASUser(username=username))
 
-    assert(query.count() > 0)
-    return query.first()
+    user = query.first()
+
+    if not user.email:
+        user.email = tg.request.identity['email']
+
+    return user
