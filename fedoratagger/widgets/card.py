@@ -47,8 +47,8 @@ class CardWidget(tw2.forms.LabelField):
 
         allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 
-        # This is getting ridiculous
-        while len(allowed_tags) == 0:
+        # Weird corner cases of obsoleted packages, etc.
+        while not self.package.xapian_summary:
             self.package = select_random_package()
             allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 
@@ -58,4 +58,5 @@ class CardWidget(tw2.forms.LabelField):
             picked_tags = allowed_tags
 
         self.tags = [TagWidget(tag=tag) for tag in picked_tags]
-        self.tags[0].css_class += " selected"
+        if self.tags:
+            self.tags[0].css_class += " selected"

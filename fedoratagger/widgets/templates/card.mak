@@ -23,7 +23,9 @@
     </div>
     <div class="clear"></div>
     <div class="question">
+      % if w.tags:
       Do these tags match this package?
+     % endif
     </div>
     <div class="clear"></div>
     <div class="tags">
