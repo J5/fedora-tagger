@@ -139,15 +139,22 @@ class RootController(BaseController):
         users.sort(lambda x, y: cmp(len(x.votes), len(y.votes)), reverse=True)
         users = users[:N]
 
-        keys = ['gravatar_sm', 'username', 'total_votes']
+        keys = ['rank', 'gravatar_sm', 'username', 'total_votes']
         row = "<tr>" + ''.join(["<td>{%s}</td>" % k for k in keys]) + "</tr>"
         rows = [
             row.format(**dict([(k, getattr(u, k)) for k in keys]))
             for u in users
         ]
-
-        return "<table class='leaderboard'>" + "".join(rows) + "</table>"
-
+        template = """
+        <table class="leaderboard">
+        <tr>
+            <th>Rank</th>
+            <th colspan="2">User</th>
+            <th>Votes</th>
+        </tr>
+        {rows}
+        </table>"""
+        return template.format(rows="".join(rows))
 
 
     @expose()
