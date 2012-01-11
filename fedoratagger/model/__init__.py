@@ -65,6 +65,11 @@ from fedoratagger.model.auth import User, Group, Permission
 from fedoratagger.model.packages import Package, Tag, TagLabel, FASUser, Vote
 
 def get_user(username=None):
+    """ Handy function to get a user by username.
+
+    If no username is provided, get the currently logged in user.
+    """
+
     if not username:
         username = tg.request.identity['username']
 
