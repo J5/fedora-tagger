@@ -27,7 +27,7 @@ def select_random_package(tags_voted_for):
 
     all_packages = m.Package.query.all()
     limited_packages = [package for package in all_packages if any(
-        [tag not in tags_voted_for for tag in package.tags]
+        [tag not in tags_voted_for and not tag.banned for tag in package.tags]
     )]
     package = random.sample(limited_packages, 1)[0]
     return package
@@ -52,6 +52,7 @@ class CardWidget(tw2.forms.LabelField):
         if not self.package:
             self.package = select_random_package(tags_voted_for)
 
-        picked_tags = pick(self.package.tags, self.N, tags_voted_for)
+        allowed_tags = filter(lambda t: not t.banned, self.package.tags)
+        picked_tags = pick(allowed_tags, self.N, tags_voted_for)
         self.tags = [TagWidget(tag=tag) for tag in picked_tags]
         self.tags[0].css_class += " selected"

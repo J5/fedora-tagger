@@ -43,7 +43,10 @@ class Package(DeclarativeBase):
     def __json__(self):
         """ JSON.. kinda. """
         return {
-            self.name: [tag.__json__() for tag in sorted(self.tags, tag_sorter)]
+            self.name: [
+                tag.__json__() for tag in sorted(self.tags, tag_sorter)
+                if not tag.banned
+            ]
         }
 
     def __jit_data__(self):
@@ -76,6 +79,20 @@ class Tag(DeclarativeBase):
 
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
+
+    @property
+    def banned(self):
+        """ We want to exclude some tags permanently.
+
+        https://github.com/ralphbean/fedora-tagger/issues/16
+        """
+
+        return any([
+            self.label.label.startswith('X-'),
+            self.label.label == 'Application',
+            self.label.label == 'System',
+            self.label.label == 'Utility',
+        ])
 
     @property
     def total(self):
