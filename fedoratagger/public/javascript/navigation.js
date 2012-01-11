@@ -54,8 +54,8 @@ function change_card() {
 }
 
 function init_mouseover() {
-    $('.tags a').mouseover(function(e) {
-        change_selected($('.center .selected'), $(this).parent());
+    $('.tags li').mouseover(function(e) {
+        change_selected($('.center .selected'), $(this));
     });
 }
 

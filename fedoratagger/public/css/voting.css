@@ -35,3 +35,43 @@ span.arrow.down {
 }
 span.up_text {   color: #DB347A; }
 span.down_text { color: #3C6EB4; }
+
+.voter {
+    opacity: 0.4;
+}
+
+.voter .total{
+    opacity: 1.0;
+    color: #aaa;
+}
+
+.selected .voter {
+    opacity: 1.0;
+}
+
+.selected .total {
+    color: black;
+    font-weight: 700;
+}
+
+.tags li {
+    width: 100%;
+}
+
+.tags li a {
+    width: 100%;
+    min-height: 30px;
+}
+
+.tags ul {
+    padding-left: 0px;
+}
+
+.selected {
+    background-color: #E7E8E9;
+    height: 30px;
+}
+
+.selected .arrow:hover {
+    border: 2px solid #79db32 !important;
+}
