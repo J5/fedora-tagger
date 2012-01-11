@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Main Controller"""
 
-import random
-
 from tg import expose, flash, require, url, request, redirect
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
@@ -123,9 +121,7 @@ class RootController(BaseController):
 
         """
 
-        packages = model.Package.query.all()
-        n = len(packages)
-        cards = [CardWidget(package=p) for p in random.sample(packages, 3)]
+        cards = [CardWidget(package=None) for i in range(3)]
         cards[1].css_class = 'card center'
         return dict(cards=cards)
 
@@ -172,12 +168,10 @@ class RootController(BaseController):
 
         """
 
+        package = None
         if name and name != "undefined":
             query = self._search_query(name)
             package = query.first()
-        else:
-            packages = model.Package.query.all()
-            package = random.sample(packages, 1)[0]
 
         w = CardWidget(package=package)
         return w.display()
