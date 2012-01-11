@@ -10,7 +10,7 @@ body, p, a, li, div, input, button {
 }
 
 #header h1 span#logo {
-	background:transparent url("http://fedoraproject.org/static/images/fedora-logo.png") no-repeat scroll 0px 0px;
+	background:transparent url("../images/fedora-logo.png") no-repeat scroll 0px 0px;
 	height: 50px;
 	width: 155px;
 	display: block;
@@ -284,4 +284,30 @@ div.icon {
 
 .details:hover {
   background-color: #db3279;
+}
+
+.question {
+  width: 100% !important;
+}
+
+.card .content li a {
+  font-size: 12pt !important;
+  text-transform: lowercase;
+  font-weight: normal !important;
+}
+
+.card .content li {
+  padding: 3px;
+  margin-bottom: 4px !important;
+  margin-top: 2px !important;
+}
+
+.tags {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.selected {
+  height: 24px !important;
 }
