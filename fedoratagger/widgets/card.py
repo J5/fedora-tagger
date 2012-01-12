@@ -55,7 +55,8 @@ class CardWidget(tw2.forms.LabelField):
         allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 
         # Weird corner cases of obsoleted packages, etc.
-        while not self.package.xapian_summary:
+        while (not self.package.xapian_summary or
+                not (allowed_tags and user.anonymous)):
             self.package = select_random_package()
             allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 
