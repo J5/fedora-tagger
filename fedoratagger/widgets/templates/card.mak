@@ -2,7 +2,6 @@
   <div class="content">
     <div class="clear"></div>
     <div class="package_header">
-      <images src="images/icons/${w.package.name}.png" class="icon"></images>
       <div class="title">
         % if w.package.icon:
           <div class="icon"><img src="${w.package.icon}"/></div>
