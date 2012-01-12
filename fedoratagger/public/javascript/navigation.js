@@ -51,6 +51,9 @@ function change_card() {
     $('.center .voter .down').click(function() {
         downvote($(this).parent().attr('id'));
     });
+
+    // Set the hash for deep-linkage
+    window.location.hash = $('.center h2').html();
 }
 
 function init_mouseover() {
@@ -139,7 +142,7 @@ function init_navigation() {
             }
         }
     });
-    navigate_new_card();
+    navigate_new_card(window.location.hash.substr(1), navigate_new_card);
 }
 
 $(document).ready(init_navigation);
