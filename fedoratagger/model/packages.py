@@ -48,7 +48,10 @@ class Package(DeclarativeBase):
     def _get_xapian_data(self):
         xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
         if not os.path.exists(xapian_dir):
-            return
+            NO_XAP = '__no_xapian_available__'
+            keys = ['icon', 'summary']
+            dumb_data = dict([(key, NO_XAP) for key in keys])
+            return dumb_data
 
         import xapian
         from fedoracommunity.search.utils import filter_search_string
