@@ -218,7 +218,7 @@ class RootController(BaseController):
         tag = model.Tag.query.filter_by(id=id).one()
         user = model.get_user()
 
-        if user.not_anonymous:
+        if not user.anonymous:
             # See if they've voted on this before.
             query = model.Vote.query.filter_by(user=user, tag=tag)
             if query.count() == 0:
