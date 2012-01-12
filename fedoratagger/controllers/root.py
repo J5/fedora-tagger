@@ -163,9 +163,10 @@ class RootController(BaseController):
         Return a list of details for a package.
         """
 
-        icon_template = "https://admin.fedoraproject.org/community/images/16_{serv}.png"
+        icon_template = "images/favicons/16_{serv}.png"
         item_template = "<li><img src='{icon}'/><a href='{url}' target='_blank'>{text}</a></li>"
         services = [
+            ('beefy', 'Community', "https://community.dev.fedoraproject.org/packages/{name}"),
             ('pkgdb', 'Downloads', "https://admin.fedoraproject.org/community/?package={name}#package_maintenance/details/downloads"),
             ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search?terms={name}&type=package&match=exact"),
             ('bodhi', 'Updates', "https://admin.fedoraproject.org/updates/{name}"),
