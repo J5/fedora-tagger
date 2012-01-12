@@ -1,3 +1,5 @@
+import tg
+
 import tw2.core
 import tw2.forms
 import random
@@ -36,6 +38,10 @@ class CardWidget(tw2.forms.LabelField):
     resources = tw2.jqplugins.gritter.gritter_resources
 
     template = 'fedoratagger.widgets.templates.card'
+
+    @property
+    def not_anonymous(self):
+        return tg.request.identity.get('username', 'anonymous') != 'anonymous'
 
     def prepare(self):
         super(CardWidget, self).prepare()

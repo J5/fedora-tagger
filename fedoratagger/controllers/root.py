@@ -4,6 +4,7 @@
 from tg import expose, flash, require, url, request, redirect
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
+from repoze.what.predicates import not_anonymous
 
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
@@ -61,6 +62,7 @@ class RootController(BaseController):
         )
 
     @expose('json')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def add(self, label, package):
         """ Handles /add URL.
 

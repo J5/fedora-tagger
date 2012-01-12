@@ -35,8 +35,10 @@
       </ul>
     </div>
     <div class="clear"></div>
+% if w.not_anonymous:
 	<div class="new">
 		<div class="plus" onclick="javascript:$('#add_dialog').dialog('open');"></div>Add a new tag.
 	</div>
+% endif
   </div>
 </div>
