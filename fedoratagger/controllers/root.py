@@ -2,6 +2,7 @@
 """Main Controller"""
 
 from tg import expose, flash, require, url, request, redirect
+from tg import session
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
 from repoze.what.predicates import not_anonymous
@@ -216,37 +217,48 @@ class RootController(BaseController):
         tag = model.Tag.query.filter_by(id=id).one()
         user = model.get_user()
 
-        # See if they've voted on this before.
-        query = model.Vote.query.filter_by(user=user, tag=tag)
-        if query.count() == 0:
-            # They haven't.  So register a new vote.
-            if like:
-                tag.like += 1
-            else:
-                tag.dislike += 1
-
-            vote = model.Vote(like=like)
-            vote.user = user
-            vote.tag = tag
-            model.DBSession.add(vote)
-        else:
-            # Otherwise, they've voted on this before.  See if they're changing
-            # their vote.
-            vote = query.one()
-            if vote.like == like:
-                # They're casting the same vote, the same way.  Ignore them.
-                pass
-            else:
-                # Okay.  Let them change their vote.
+        if user.not_anonymous:
+            # See if they've voted on this before.
+            query = model.Vote.query.filter_by(user=user, tag=tag)
+            if query.count() == 0:
+                # They haven't.  So register a new vote.
                 if like:
                     tag.like += 1
-                    tag.dislike -= 1
                 else:
-                    tag.like -= 1
                     tag.dislike += 1
 
-                vote.like = like
-                # Done changing vote.
+                vote = model.Vote(like=like)
+                vote.user = user
+                vote.tag = tag
+                model.DBSession.add(vote)
+            else:
+                # Otherwise, they've voted on this before.  See if they're changing
+                # their vote.
+                vote = query.one()
+                if vote.like == like:
+                    # They're casting the same vote, the same way.  Ignore them.
+                    pass
+                else:
+                    # Okay.  Let them change their vote.
+                    if like:
+                        tag.like += 1
+                        tag.dislike -= 1
+                    else:
+                        tag.like -= 1
+                        tag.dislike += 1
+
+                    vote.like = like
+                    # Done changing vote.
+        else:
+            # They *are* anonymous.  Let them vote, but not twice this session.
+            if tag not in session.get('tags_voted_on', []):
+                session['tags_voted_on'] = session.get('tags_voted_on', []) + [tag]
+                session.save()
+
+                if like:
+                    tag.like += 1
+                else:
+                    tag.dislike += 1
 
         json = tag.__json__()
         json['user'] = {

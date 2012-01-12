@@ -193,6 +193,10 @@ class FASUser(DeclarativeBase):
     email = Column(Unicode(255), default=None)
 
     @property
+    def not_anonymous(self):
+        return self.username != 'anonymous'
+
+    @property
     def total_votes(self):
         return len(self.votes)
 
