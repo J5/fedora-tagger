@@ -5,10 +5,11 @@ import tw2.forms
 import random
 import tw2.jqplugins.gritter
 
+
 from sqlalchemy import func
 
 import fedoratagger.model as m
-from fedoratagger.widgets.voting import TagWidget
+from fedoratagger.widgets.voting import TagWidget, voting_js
 
 def pick(tags, N):
     """ Select a subset of tags I haven't voted on yet. """
@@ -35,7 +36,7 @@ class CardWidget(tw2.forms.LabelField):
     package = tw2.core.Param(default=None)
     tags = tw2.core.params.Variable()
     css_class = 'card'
-    resources = tw2.jqplugins.gritter.gritter_resources
+    resources = [voting_js] + tw2.jqplugins.gritter.gritter_resources
 
     template = 'fedoratagger.widgets.templates.card'
 

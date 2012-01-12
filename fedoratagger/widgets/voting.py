@@ -9,7 +9,6 @@ class TagWidget(tw2.forms.LabelField):
     """ Tiny Voting Widget """
 
     css_class = ""
-    resources = [voting_js]
     tag = tw2.core.Param()
     template = 'fedoratagger.widgets.templates.tag'
 
