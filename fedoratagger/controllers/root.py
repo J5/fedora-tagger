@@ -147,7 +147,8 @@ class RootController(BaseController):
         return dict(cards=cards)
 
     index = tagger
-    _default = tagger
+    default = tagger  # For old TG
+    _default = tagger # For new TG
 
     @expose()
     def leaderboard(self, N=10):
