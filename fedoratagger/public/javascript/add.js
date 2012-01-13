@@ -17,8 +17,10 @@ $(document).ready(function () {
         $('#add_dialog').dialog('close');
 
         // Update the user thumbnail widget
-        $('#total_votes').html(json.user.votes);
-        $('#rank').html(json.user.rank);
+        if (json.user) {
+            $('#total_votes').html(json.user.votes);
+            $('#rank').html(json.user.rank);
+        }
 
         request_in_progress = false;
     };
