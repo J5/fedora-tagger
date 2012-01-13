@@ -48,6 +48,32 @@ class RootController(BaseController):
 
         return query
 
+    @expose()
+    def raw(self, name):
+
+        print name
+        package = model.Package.query.filter_by(name=name).one()
+
+        html = "<html><body>"
+        html += "<h1>" + package.name + "</h1>"
+        html += "<h3>Tags/Votes/Voters</h3>"
+        html += "<ul>"
+
+        for tag in package.tags:
+            html += "<li>"
+            html += tag.label.label + "  " + str(tag.total_votes)
+            html += "<ul>"
+            for vote in tag.votes:
+                html += "<li>" + vote.user.username + "</li>"
+            html += "</ul>"
+            html += "</li>"
+
+        html += "</ul>"
+        html += "</body></html>"
+        return html
+
+
+
     @expose('json')
     def search(self, term):
         """ Handles /search URL.
