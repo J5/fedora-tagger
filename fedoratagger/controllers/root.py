@@ -83,6 +83,7 @@ class RootController(BaseController):
         label = label.lower()
         label = pattern.sub('', label)
 
+        # Setup our return object
         json = dict(tag=label, package=package)
 
         if not label:
@@ -112,12 +113,17 @@ class RootController(BaseController):
         model.DBSession.add(tag)
 
         vote = model.Vote(like=True)
-        vote.user = model.get_user()
+        user = model.get_user()
+        vote.user = user
         vote.tag = tag
         model.DBSession.add(vote)
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
             label.label, package.name)
+        json['user'] = {
+            'votes': user.total_votes,
+            'rank': user.rank,
+        }
         return json
 
 
