@@ -80,7 +80,7 @@ class RootController(BaseController):
         """
 
         # Some scrubbing
-        label = label.lower()
+        label = label.lower().strip()
         label = pattern.sub('', label)
 
         # Setup our return object
