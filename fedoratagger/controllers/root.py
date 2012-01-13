@@ -7,6 +7,8 @@ from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from paste.deploy.converters import asbool
 from repoze.what.predicates import not_anonymous
 
+import re
+
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
 
@@ -19,6 +21,7 @@ from fedoratagger.lib.utils import dump2json
 
 __all__ = ['RootController']
 
+pattern = re.compile('[\W_]+')
 
 class RootController(BaseController):
     """ The root controller for the fedora-tagger application. """
@@ -76,9 +79,15 @@ class RootController(BaseController):
 
         """
 
+        # Some scrubbing
+        label = label.lower()
+        label = pattern.sub('', label)
+
         json = dict(tag=label, package=package)
 
-        label = label.lower()
+        if not label:
+            json['msg'] = "You may not use an empty label."
+            return json
 
         query = model.TagLabel.query.filter_by(label=label)
         if query.count() == 0:
