@@ -34,6 +34,7 @@ $(document).ready(function () {
                 text: "Loading package matching '" + json.term + "'.",
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
+            $("#search_dialog input").val('');
             $("#search_dialog").dialog("close");
             navigate_new_card(json.term, navigate_new_card);
         }

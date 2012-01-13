@@ -13,6 +13,7 @@ $(document).ready(function () {
             text: json.msg,
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
+        $("#add_dialog input").val('');
         $('#add_dialog').dialog('close');
 
         // Update the user thumbnail widget
