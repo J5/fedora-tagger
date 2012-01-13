@@ -52,8 +52,11 @@ function change_card() {
         downvote($(this).parent().attr('id'));
     });
 
-    // Set the hash for deep-linkage
-    window.location.hash = $('.center h2').html();
+    // Change the window location for deep-linkage
+    // Thanks to J5 for pointing out HTML5 .pushState
+    var href = window.location.href;
+    var query_string = href.slice(href.indexOf('?'));
+    window.history.pushState({}, "", $('.center h2').html() + query_string);
 }
 
 function init_mouseover() {
@@ -142,7 +145,6 @@ function init_navigation() {
             }
         }
     });
-    navigate_new_card(window.location.hash.substr(1), navigate_new_card);
 }
 
 $(document).ready(init_navigation);

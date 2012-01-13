@@ -111,7 +111,7 @@ class RootController(BaseController):
 
 
     @expose('fedoratagger.templates.tagger')
-    def tagger(self):
+    def tagger(self, name=None):
         """ Really, the main index.
 
         Returns a list of (the first three) card widgets for the
@@ -120,11 +120,17 @@ class RootController(BaseController):
 
         """
 
-        cards = [CardWidget(package=None) for i in range(3)]
+        packages = [None] * 3
+
+        if name:
+            packages[1] = model.Package.query.filter_by(name=name).first()
+
+        cards = [CardWidget(package=packages[i]) for i in range(3)]
         cards[1].css_class = 'card center'
         return dict(cards=cards)
 
     index = tagger
+    _default = tagger
 
     @expose()
     def leaderboard(self, N=10):
