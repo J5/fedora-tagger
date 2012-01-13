@@ -114,7 +114,7 @@ function init_navigation() {
         add: [65, 73],
         help: [27, 112],
         leaderboard: [66],
-        search: [191],
+        search: [83],
     }
 
     callbacks = {
