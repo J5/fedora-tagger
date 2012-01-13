@@ -6,7 +6,10 @@ $.extend({
         {
             hash = hashes[i].split('=');
             vars.push(hash[0]);
-            vars[hash[0]] = hash[1].split('#')[0];
+            vars[hash[0]] = hash[1]
+            if (vars[hash[0]]) {
+                vars[hash[0]] = vars[hash[0]].split('#')[0];
+            }
         }
         return vars;
     },
