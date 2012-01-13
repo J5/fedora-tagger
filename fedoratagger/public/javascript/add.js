@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var error = function() {
+        $.gritter.removeAll();
         $.gritter.add({
             title: 'There was a problem with the server.',
             text: 'Sorry.',
@@ -8,6 +9,7 @@ $(document).ready(function () {
         request_in_progress = false;
     };
     var success = function(json) {
+        $.gritter.removeAll();
         $.gritter.add({
             title: 'Tagging ' + json.package + ' with ' + json.tag,
             text: json.msg,

@@ -85,6 +85,7 @@ function leaderboard() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
+            $.gritter.removeAll();
             $.gritter.add({
                 title: 'There was a problem getting the leaderboard.',
                 text: 'Sorry.',

@@ -20,6 +20,7 @@ function _vote(id, like) {
 }
 
 function failed_vote() {
+    $.gritter.removeAll();
     $.gritter.add({
         title: 'There was a problem with the server.',
         text: 'Sorry.',

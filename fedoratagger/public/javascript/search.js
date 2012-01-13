@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var error = function() {
+        $.gritter.removeAll();
         $.gritter.add({
             title: 'There was a problem with the server.',
             text: 'Sorry.',
@@ -9,6 +10,7 @@ $(document).ready(function () {
     };
     var success = function(json) {
         if ( json.count == 0 ) {
+            $.gritter.removeAll();
             $.gritter.add({
                 title: 'No results found.',
                 text: 'No results found for "' + json.term + '".',
@@ -23,12 +25,14 @@ $(document).ready(function () {
             msg += '</ul>';
 
             msg += 'Try refining your search.';
+            $.gritter.removeAll();
             $.gritter.add({
                 title: json.count + ' results found.',
                 text: msg,
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         } else {
+            $.gritter.removeAll();
             $.gritter.add({
                 title: json.term,
                 text: "Loading package matching '" + json.term + "'.",

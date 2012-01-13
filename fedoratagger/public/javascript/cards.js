@@ -116,6 +116,7 @@ function card_new(name, callback) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
+            $.gritter.removeAll();
             $.gritter.add({
                 title: 'There was a problem getting the next card.',
                 text: 'Sorry.',
@@ -154,6 +155,7 @@ function more_details(name) {
         }),
         error: function() {
             request_in_progress = false;
+            $.gritter.removeAll();
             $.gritter.add({
                 title: 'There was a problem getting the details.',
                 text: 'Sorry.',
