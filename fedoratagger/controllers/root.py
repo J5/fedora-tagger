@@ -21,7 +21,7 @@ from fedoratagger.lib.utils import dump2json
 
 __all__ = ['RootController']
 
-pattern = re.compile('[^\w^\s^-]+')
+pattern = re.compile('[^\w^\s^-^\.^#^+]+')
 
 class RootController(BaseController):
     """ The root controller for the fedora-tagger application. """
