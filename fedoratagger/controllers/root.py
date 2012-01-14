@@ -134,7 +134,7 @@ class RootController(BaseController):
         if query.count() == 0:
             model.DBSession.add(model.TagLabel(label=label))
 
-        label = query.one()
+        label = query.first()
 
         query = model.Package.query.filter_by(name=package)
         if query.count() == 0:
