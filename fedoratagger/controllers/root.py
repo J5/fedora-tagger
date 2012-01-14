@@ -330,6 +330,10 @@ class RootController(BaseController):
                 else:
                     tag.dislike += 1
 
+        # Delete really stupid tags
+        if tag.total < -10:
+            model.DBSession.delete(tag)
+
         json = tag.__json__()
         json['user'] = {
             'votes': user.total_votes,
