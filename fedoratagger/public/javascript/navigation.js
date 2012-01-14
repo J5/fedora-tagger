@@ -55,8 +55,14 @@ function change_card() {
     // Change the window location for deep-linkage
     // Thanks to J5 for pointing out HTML5 .pushState
     var href = window.location.href;
-    var query_string = href.slice(href.indexOf('?'));
-    window.history.pushState({}, "", $('.center h2').html() + query_string);
+    var val = $('.center h2').html();
+    var query_string;
+    if (href.indexOf('?') == -1) {
+        query_string = '';
+    } else {
+        query_string = href.slice(href.indexOf('?'));
+    }
+    window.history.pushState({}, "", val + query_string);
 }
 
 function init_mouseover() {

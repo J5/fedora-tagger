@@ -9,6 +9,7 @@ from repoze.what.predicates import not_anonymous
 
 import re
 import os
+from sqlalchemy import func
 
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
@@ -176,6 +177,10 @@ class RootController(BaseController):
         the /card path.
 
         """
+
+        if not name:
+            name = model.Package.query.order_by(func.random()).first().name
+            redirect(name)
 
         packages = [None] * 3
 
