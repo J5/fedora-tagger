@@ -8,6 +8,7 @@ from paste.deploy.converters import asbool
 from repoze.what.predicates import not_anonymous
 
 import re
+import os
 
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
@@ -20,6 +21,15 @@ from fedoratagger.widgets.card import CardWidget
 from fedoratagger.lib.utils import dump2json
 
 __all__ = ['RootController']
+
+
+def load_dirty_words():
+    sep = os.path.sep
+    fname = sep.join(__file__.split(sep)[:-2]) + "/dirtywords.txt"
+    with open(fname) as f:
+        return [line.strip() for line in f.readlines()]
+
+dirty_words = load_dirty_words()
 
 pattern = re.compile('[^\w^\s^-^\.^#^+]+')
 
@@ -114,6 +124,10 @@ class RootController(BaseController):
 
         if not label:
             json['msg'] = "You may not use an empty label."
+            return json
+
+        if label in dirty_words:
+            json['msg'] = "That's not nice."
             return json
 
         query = model.TagLabel.query.filter_by(label=label)
