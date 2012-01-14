@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var error = function() {
-        $.gritter.removeAll();
-        $.gritter.add({
+        if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+        gritter_id = $.gritter.add({
             title: 'There was a problem with the server.',
             text: 'Sorry.',
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
@@ -9,8 +9,8 @@ $(document).ready(function () {
         request_in_progress = false;
     };
     var success = function(json) {
-        $.gritter.removeAll();
-        $.gritter.add({
+        if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
+        gritter_id = $.gritter.add({
             title: 'Tagging ' + json.package + ' with ' + json.tag,
             text: json.msg,
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',

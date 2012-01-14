@@ -91,8 +91,8 @@ function leaderboard() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            $.gritter.removeAll();
-            $.gritter.add({
+            if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+            gritter_id = $.gritter.add({
                 title: 'There was a problem getting the leaderboard.',
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',

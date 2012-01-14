@@ -2,6 +2,7 @@ var card_size = 0;
 var min_size = 420;
 var board_margin = 10;
 
+var gritter_id;
 var request_in_progress = false;
 var animation_elements = null;
 var waiting_cbs = [];
@@ -116,8 +117,8 @@ function card_new(name, callback) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            $.gritter.removeAll();
-            $.gritter.add({
+            if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+            gritter_id = $.gritter.add({
                 title: 'There was a problem getting the next card.',
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
@@ -155,8 +156,8 @@ function more_details(name) {
         }),
         error: function() {
             request_in_progress = false;
-            $.gritter.removeAll();
-            $.gritter.add({
+            if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+            gritter_id = $.gritter.add({
                 title: 'There was a problem getting the details.',
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',

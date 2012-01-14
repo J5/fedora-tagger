@@ -20,8 +20,8 @@ function _vote(id, like) {
 }
 
 function failed_vote() {
-    $.gritter.removeAll();
-    $.gritter.add({
+    if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
+    gritter_id = $.gritter.add({
         title: 'There was a problem with the server.',
         text: 'Sorry.',
         image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
