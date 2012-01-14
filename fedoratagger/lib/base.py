@@ -43,8 +43,9 @@ class BaseController(TGController):
 
             tmpl_context.hotkeys_dialog = fedoratagger.widgets.dialog.HotkeysDialog
             tmpl_context.search_dialog = fedoratagger.widgets.dialog.SearchDialog
-            tmpl_context.add_dialog = fedoratagger.widgets.dialog.AddTagDialog
             tmpl_context.leaderboard_dialog = fedoratagger.widgets.dialog.LeaderboardDialog
             tmpl_context.user_widget = fedoratagger.widgets.user.UserWidget
+            if request.identity:
+                tmpl_context.add_dialog = fedoratagger.widgets.dialog.AddTagDialog
 
         return TGController.__call__(self, environ, start_response)
