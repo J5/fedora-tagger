@@ -7,8 +7,14 @@ from tg.render import render
 from tg import request
 from pylons.i18n import ugettext as _, ungettext
 import fedoratagger.model as model
-import fedoratagger.widgets.dialog
-import fedoratagger.widgets.user
+
+from fedoratagger.widgets.user import UserWidget
+from fedoratagger.widgets.dialog import (
+    HotkeysDialog,
+    SearchDialog,
+    LeaderboardDialog,
+    AddTagDialog,
+)
 
 import tw2.core as twc
 import tw2.jquery
@@ -41,11 +47,11 @@ class BaseController(TGController):
             for link in ["query.js", "cards.js", "navigation.js"]:
                 twc.JSLink(link="javascript/%s" % link).req().prepare()
 
-            tmpl_context.hotkeys_dialog = fedoratagger.widgets.dialog.HotkeysDialog
-            tmpl_context.search_dialog = fedoratagger.widgets.dialog.SearchDialog
-            tmpl_context.leaderboard_dialog = fedoratagger.widgets.dialog.LeaderboardDialog
-            tmpl_context.user_widget = fedoratagger.widgets.user.UserWidget
+            tmpl_context.hotkeys_dialog = HotkeysDialog
+            tmpl_context.search_dialog = SearchDialog
+            tmpl_context.leaderboard_dialog = LeaderboardDialog
+            tmpl_context.user_widget = UserWidget
             if request.identity:
-                tmpl_context.add_dialog = fedoratagger.widgets.dialog.AddTagDialog
+                tmpl_context.add_dialog = AddTagDialog
 
         return TGController.__call__(self, environ, start_response)
