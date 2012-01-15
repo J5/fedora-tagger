@@ -1,4 +1,5 @@
 graft fedoratagger
 graft apache
 include README.rst
+include LICENSE
 include development.ini

@@ -7,6 +7,9 @@ and downvote tags on packages as well as add new tags alltogether.
 
 Vote it up!  The votes you place are tracked and rank you against other users.
 
+Fedora Tagger is licensed the under the `GPLv2+
+<http://www.gnu.org/licenses/gpl-2.0.txt>`_.
+
 Hotkeys
 -------
 
