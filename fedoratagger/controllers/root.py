@@ -380,7 +380,7 @@ class RootController(BaseController):
                 params=dict(came_from=came_from, __logins=login_counter))
         userid = request.identity['repoze.who.userid']
         flash(_('Welcome back, %s!' % userid))
-        redirect('/')
+        redirect(came_from)
 
     @expose()
     def post_logout(self, came_from=url('/')):

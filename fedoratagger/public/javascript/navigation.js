@@ -1,3 +1,13 @@
+function logout() {
+    window.location = "logout_handler?" + $.param({
+        came_from: window.location.href.split('?')[0]
+    })
+}
+function login() {
+    window.location = "login?" + $.param({
+        came_from: window.location.href.split('?')[0]
+    })
+}
 function next_item() {
     var sel = $('.center .selected');
     if (sel.next().length != 0) {

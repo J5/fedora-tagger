@@ -12,12 +12,11 @@
         <p>Logged in (<span id="username">${str(w.formatted_name)}</span>)</p>
         <p><span id="total_votes">${str(w.total_votes)}</span> votes cast.</p>
         <p>Rank: <span id="rank">${str(w.rank)}</span></p>
-        <p><a href="logout_handler">Logout</a></p>
+        <p><a href="javascript:logout();">Logout</a></p>
 % else:
-	<p>Not logged in.</p>
-	<p><a href="login">Login</a> to increase your rank.</p>
+        <p>Not logged in.</p>
+        <p><a href="javascript:login();">Login</a> to increase your rank.</p>
 % endif
-
       </td>
     </tr>
   </table>
