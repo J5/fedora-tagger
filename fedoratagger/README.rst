@@ -42,9 +42,13 @@ Requires authentication.
 Running from source
 -------------------
 
+You need ``curl-config``::
+
+  $ sudo yum install libcurl-devel
+
 Setup a virtual environment::
 
-  $ virtualenv ~/tagger-env
+  $ virtualenv --system-site-packages ~/tagger-env
   $ source ~/tagger-env/bin/activate
 
 Get ``python-fedora``::
