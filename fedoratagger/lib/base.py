@@ -35,6 +35,7 @@ from fedoratagger.widgets.dialog import (
 
 import tw2.core as twc
 import tw2.jquery
+import tw2.jqplugins.ui
 
 __all__ = ['BaseController']
 
@@ -59,6 +60,9 @@ class BaseController(TGController):
 
         # Include jquery on every page.
         tw2.jquery.jquery_js.req().prepare()
+
+        # Set the theme to 'hot-sneaks'
+        tw2.jqplugins.ui.set_ui_theme_name('hot-sneaks')
 
         if 'login' not in environ['PATH_INFO']:
             for link in ["query.js", "cards.js", "navigation.js"]:

@@ -63,7 +63,7 @@ install_requires=[
     "tw2.core",
     #"tw2.jit",
     "tw2.jqplugins.gritter",
-    "tw2.jqplugins.ui>=2.0b25",
+    "tw2.jqplugins.ui>=2.0b26",
     "docutils",
     #"tw.forms",     # TODO - What is pulling this in?
     ]
