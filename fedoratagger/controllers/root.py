@@ -49,7 +49,7 @@ def load_dirty_words():
 
 dirty_words = load_dirty_words()
 
-pattern = re.compile('[^\w^\s^-^\.^#^+]+')
+pattern = re.compile('[^\w^\s^-^\.^#^+]+', re.UNICODE)
 
 class RootController(BaseController):
     """ The root controller for the fedora-tagger application. """
