@@ -41,31 +41,26 @@ testpkgs=['WebTest >= 1.2.3',
                ]
 
 install_requires=[
+    "Pylons<=1.0",      # This is madness
+    "WebOb<=1.0.8",     # This is also madness
+    "repoze.who<=1.99", # Madness, still
     "TurboGears2",
     "Mako",
     "zope.sqlalchemy >= 0.4",
     "repoze.tm2",
     "sqlalchemy",
-    #"sqlalchemy-migrate",
     "repoze.what >= 1.0.8",
     "repoze.who-friendlyform >= 1.0.4",
     "repoze.what-pylons >= 1.0",
-    "repoze.who",
-    #"repoze.what-quickstart",
     "repoze.what.plugins.sql",
-    "Pylons",  # This is madness
-    "WebOb", # This is also madness
-    #"tg.devtools",
     "bunch",
     "kitchen",
     "python-fedora",
     "pycurl",
     "tw2.core",
-    #"tw2.jit",
     "tw2.jqplugins.gritter",
     "tw2.jqplugins.ui>=2.0b26",
     "docutils",
-    #"tw.forms",     # TODO - What is pulling this in?
     ]
 
 if sys.version_info[:2] == (2,4):
