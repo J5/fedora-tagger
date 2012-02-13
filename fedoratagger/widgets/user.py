@@ -29,9 +29,9 @@ class UserWidget(tw2.core.Widget):
     resources = [photo_css]
     template = 'fedoratagger.widgets.templates.user'
 
-    def avatar_link(self, s=140, d='mm'):
-        hash = hashlib.md5(m.get_user().email).hexdigest()
-        return "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
+    @property
+    def gravatar_tag(self):
+        return m.get_user().gravatar_md
 
     @property
     def formatted_name(self):

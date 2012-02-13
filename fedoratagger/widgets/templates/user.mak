@@ -3,7 +3,7 @@
     <tr>
       <td>
         <div class="photo-64" style="display: inline-block !important;">
-          <img src="${w.avatar_link(s=64)}"></img>
+          ${w.gravatar_tag}
         </div>
       </td>
       <td style="width:4px;"></td>

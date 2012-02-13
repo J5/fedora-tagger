@@ -230,14 +230,23 @@ class FASUser(DeclarativeBase):
         return users.index(self) + 1
 
     @property
+    def gravatar_lg(self):
+        return self._gravatar(s=140)
+
+    @property
+    def gravatar_md(self):
+        return self._gravatar(s=64)
+
+    @property
     def gravatar_sm(self):
-        s=32
+        return self._gravatar(s=32)
+
+    def _gravatar(self, s):
         d='mm'
         email = self.email if self.email else "whatever"
         hash = md5(email).hexdigest()
         url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
         return "<img src='%s'></img>" % url
-
 
     def __json__(self):
         return {
