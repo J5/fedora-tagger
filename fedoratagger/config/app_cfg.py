@@ -45,6 +45,9 @@ class MyAppConfig(AppConfig):
     # If we're deployed to Fedora's dev environment, use the production FAS
     if 'dev.phx2.fedoraproject.org' in socket.gethostname():
         fas_auth = Bunch(fas_url='https://admin-prod.fedoraproject.org/accounts/')
+    else:
+        fas_auth = Bunch(ssl_cookie=False)
+
     add_auth_middleware = add_fas_auth_middleware
     tw2_initialized = False
 
