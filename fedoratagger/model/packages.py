@@ -242,6 +242,10 @@ class FASUser(DeclarativeBase):
         return self._gravatar(s=32)
 
     def _gravatar(self, s):
+        # TODO -- remove this and use
+        # fedora.client.fas2.AccountSystem().gravatar_url(self.username, size=s)
+        #  - need to have faswho put the gravatar url in the metadata
+        #  - need to have different size images available as defaults
         d='mm'
         email = self.email if self.email else "whatever"
         hash = md5(email).hexdigest()
