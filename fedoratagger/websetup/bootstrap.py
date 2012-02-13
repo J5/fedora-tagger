@@ -20,6 +20,7 @@
 
 import logging
 from tg import config
+from paste.deploy.converters import asbool
 from fedoratagger import model
 import transaction
 import commands
@@ -29,31 +30,43 @@ import sqlite3
 import os
 import sys
 import shutil
+import warnings
 
-import yum
+def get_yum_query():
+    yumq = None
+    try:
+        import yum
 
-class YumQuery(yum.YumBase):
+        class YumQuery(yum.YumBase):
 
-    def __init__(self):
-        yum.YumBase.__init__(self)
-        self.setCacheDir()
-        self._pl = self.doPackageLists('all')
+            def __init__(self):
+                yum.YumBase.__init__(self)
+                self.setCacheDir()
+                self._pl = self.doPackageLists('all')
 
-    def summary(self, name):
+            def summary(self, name):
 
-        def exacts(section):
-            exactmatch, matched, unmatched = yum.packages.parsePackages(
-                getattr(self._pl, section), [name])
-            return yum.misc.unique(exactmatch)
+                def exacts(section):
+                    exactmatch, matched, unmatched = yum.packages.parsePackages(
+                        getattr(self._pl, section), [name])
+                    return yum.misc.unique(exactmatch)
 
-        sections = ['installed', 'available', 'updates', 'extras']
-        exactmatch = sum(map(exacts, sections), [])
-        if exactmatch:
-            return exactmatch[0].summary
+                sections = ['installed', 'available', 'updates', 'extras']
+                exactmatch = sum(map(exacts, sections), [])
+                if exactmatch:
+                    return exactmatch[0].summary
+                else:
+                    return ''
+
+        yumq = YumQuery()
+    except ImportError as e:
+        if asbool(config.get('require_yum', True)):
+            raise(e)
         else:
-            return ''
+            warnings.warn("Could not import yum.  Summaries not available.")
+            warnings.warn(str(e))
 
-yumq = YumQuery()
+    return yumq
 
 def get_icons():
     print "Getting icons."
@@ -77,6 +90,7 @@ def get_icons():
 
 def import_pkgdb_tags():
     print "Importing pkgdb tags."
+    yumq = get_yum_query()
     repo = "F-16-i386-u"
     base_url = "https://admin.fedoraproject.org/pkgdb"
     url = base_url + "/lists/sqlitebuildtags/F-16-i386-u"
