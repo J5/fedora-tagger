@@ -56,6 +56,13 @@ class RootController(BaseController):
 
     error = ErrorController()
 
+    @expose()
+    def _heartbeat(self, *args, **kwds):
+        """Fast heartbeat monitor so proxy servers know if we are runnining"""
+        # TODO: perhaps we want to monitor our own internal functions and
+        #       send back an error if we are not completely up and running
+        return "Still running"
+
     @expose('json')
     def dump(self):
         """ A http interface to the dump2json method.
