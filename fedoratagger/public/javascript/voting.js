@@ -20,6 +20,7 @@ function _vote(id, like) {
 }
 
 function failed_vote() {
+    if (! notifications_on) { return; }
     if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
     gritter_id = $.gritter.add({
         title: 'There was a problem with the server.',

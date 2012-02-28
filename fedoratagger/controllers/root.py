@@ -191,6 +191,14 @@ class RootController(BaseController):
         }
         return json
 
+    @expose('json')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
+    def notifs_toggle(self):
+        """ Toggle the currently-logged-in-user's notifications setting """
+        user = model.get_user()
+        user.notifications_on = not user.notifications_on
+        return dict(notifications_on=user.notifications_on)
+
 
     @expose('fedoratagger.templates.tagger')
     def tagger(self, name=None):

@@ -101,13 +101,14 @@ function leaderboard() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
+            request_in_progress = false;
+            if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the leaderboard.',
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
-            request_in_progress = false;
         },
         success: function(html) {
             $("body").append("<div id='leaderboard-dialog'></div>");

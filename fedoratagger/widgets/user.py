@@ -15,18 +15,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
+
 import tw2.core
+import tw2.jquery
 import tg
 import hashlib
 
 import fedoratagger.model as m
 
 photo_css = tw2.core.CSSLink(link='css/photo.css')
+thumbnail_js = tw2.core.JSLink(
+    link='javascript/thumbnail.js',
+    resources=[tw2.jquery.jquery_js],
+)
 
 class UserWidget(tw2.core.Widget):
     """ Gravatar widget """
 
-    resources = [photo_css]
+    resources = [photo_css, thumbnail_js]
     template = 'fedoratagger.widgets.templates.user'
 
     @property
@@ -57,3 +63,13 @@ class UserWidget(tw2.core.Widget):
     def rank(self):
         user = m.get_user(self.username)
         return user.rank
+
+    @property
+    def notifications_on(self):
+        user = m.get_user(self.username)
+        return user.notifications_on and "checked='checked'" or ""
+
+    @property
+    def _notifications_on(self):
+        user = m.get_user(self.username)
+        return user.notifications_on and "true" or "false"

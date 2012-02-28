@@ -75,7 +75,7 @@ body, p, a, li, div, input, button {
   background-color: #EFEFEF;
 
   float: right;
-  height: 90px;
+  height: 100px;
   min-width: 200px;
   display: inline !important;
   position: absolute;

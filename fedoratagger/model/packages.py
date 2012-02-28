@@ -208,6 +208,7 @@ class FASUser(DeclarativeBase):
     username = Column(Unicode(255), nullable=False)
     votes = relation('Vote', backref=('user'))
     email = Column(Unicode(255), default=None)
+    notifications_on = Column(Boolean, default=True)
 
     @property
     def anonymous(self):
