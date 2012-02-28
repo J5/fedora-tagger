@@ -16,6 +16,9 @@
 % if hasattr(tmpl_context, 'add_dialog') and tmpl_context.add_dialog:
 		${tmpl_context.add_dialog.display() | n}
 % endif
+% if hasattr(tmpl_context, 'statistics_dialog') and tmpl_context.statistics_dialog:
+		${tmpl_context.statistics_dialog.display() | n}
+% endif
 % if hasattr(tmpl_context, 'leaderboard_dialog') and tmpl_context.leaderboard_dialog:
 		${tmpl_context.leaderboard_dialog.display() | n}
 % endif

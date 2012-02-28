@@ -216,6 +216,17 @@ div.plus {
 .center .content .selected a:link { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}
 .center .content .selected a:visited { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}
 
+.statistics th {
+    padding-left: 10px;
+    padding-right:10px;
+}
+
+.statistics td {
+    padding-top: 5px;
+    border-top: 1px dashed black;
+    text-align: center;
+}
+
 .leaderboard th {
     padding-left: 10px;
     padding-right:10px;
