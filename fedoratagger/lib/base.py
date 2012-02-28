@@ -30,6 +30,7 @@ from fedoratagger.widgets.dialog import (
     HotkeysDialog,
     SearchDialog,
     LeaderboardDialog,
+    StatisticsDialog,
     AddTagDialog,
 )
 
@@ -71,6 +72,7 @@ class BaseController(TGController):
             tmpl_context.hotkeys_dialog = HotkeysDialog
             tmpl_context.search_dialog = SearchDialog
             tmpl_context.leaderboard_dialog = LeaderboardDialog
+            tmpl_context.statistics_dialog = StatisticsDialog
             tmpl_context.user_widget = UserWidget
             if request.identity:
                 tmpl_context.add_dialog = AddTagDialog
