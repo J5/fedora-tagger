@@ -128,7 +128,7 @@ class RootController(BaseController):
 
     @expose('json')
     @require(not_anonymous(msg="Login with your FAS credentials."))
-    def add(self, label, package):
+    def add(self, labels, package):
         """ Handles /add URL.
 
         Returns a JSON object indicating success or failure.
@@ -141,25 +141,23 @@ class RootController(BaseController):
         """
 
         # Some scrubbing
-        label = label.lower().strip()
-        label = pattern.sub('', label)
+        labels = [l.lower().strip() for l in labels.split(',')]
+        labels = [pattern.sub('', label) for label in labels]
+        # No empty strings
+        labels = [label for label in labels if label]
+        # Uniqify
+        labels = list(set(labels))
 
         # Setup our return object
-        json = dict(tag=label, package=package)
+        json = dict(tags=", ".join(labels), package=package)
 
-        if not label:
+        if not labels:
             json['msg'] = "You may not use an empty label."
             return json
 
-        if label in dirty_words:
+        if any([label in dirty_words for label in labels]):
             json['msg'] = "That's not nice."
             return json
-
-        query = model.TagLabel.query.filter_by(label=label)
-        if query.count() == 0:
-            model.DBSession.add(model.TagLabel(label=label))
-
-        label = query.first()
 
         query = model.Package.query.filter_by(name=package)
         if query.count() == 0:
@@ -168,23 +166,31 @@ class RootController(BaseController):
 
         package = query.one()
 
-        query = model.Tag.query.filter_by(label=label, package=package)
+        for label in labels:
+            query = model.TagLabel.query.filter_by(label=label)
+            if query.count() == 0:
+                model.DBSession.add(model.TagLabel(label=label))
 
-        if query.count() != 0:
-            json['msg'] = "%s already tagged '%s'" % (package.name, label.label)
-            return json
+            label = query.first()
 
-        tag = model.Tag(label=label, package=package)
-        model.DBSession.add(tag)
+            query = model.Tag.query.filter_by(label=label, package=package)
 
-        vote = model.Vote(like=True)
-        user = model.get_user()
-        vote.user = user
-        vote.tag = tag
-        model.DBSession.add(vote)
+            if query.count() != 0:
+                json['msg'] = "%s already tagged '%s'" % (
+                    package.name, label.label)
+                return json
+
+            tag = model.Tag(label=label, package=package)
+            model.DBSession.add(tag)
+
+            vote = model.Vote(like=True)
+            user = model.get_user()
+            vote.user = user
+            vote.tag = tag
+            model.DBSession.add(vote)
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
-            label.label, package.name)
+            ', '.join(labels), package.name)
         json['user'] = {
             'votes': user.total_votes,
             'rank': user.rank,

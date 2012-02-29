@@ -68,7 +68,7 @@ class AddTagDialog(DialogWidget):
     id = 'add_dialog'
     resources = DialogWidget.resources + [add_js]
     options = {
-        'title': 'Add a new tag',
+        'title': 'Add new tags (comma-separated)',
         'autoOpen': False,
         'width': 350,
         'modal': True,

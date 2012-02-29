@@ -37,7 +37,7 @@ $(document).ready(function () {
                 type: "POST",
                 url: "add",
                 data: $.param({
-                    label: $(this).val(),
+                    labels: $(this).val(),
                     package: $('.center * h2').html(),
                     _csrf_token: $.getUrlVar("_csrf_token"),
                 }),
