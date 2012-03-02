@@ -20,6 +20,9 @@
 import os
 import json
 
+import fedmsg
+import fedmsg.schema
+
 from sqlalchemy import *
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode
@@ -209,6 +212,7 @@ class FASUser(DeclarativeBase):
     votes = relation('Vote', backref=('user'))
     email = Column(Unicode(255), default=None)
     notifications_on = Column(Boolean, default=True)
+    _rank = Column(Integer, default=-1)
 
     @property
     def anonymous(self):
@@ -220,6 +224,7 @@ class FASUser(DeclarativeBase):
 
     @property
     def rank(self):
+        _rank = self._rank
 
         if self.username == 'anonymous':
             return -1
@@ -228,7 +233,14 @@ class FASUser(DeclarativeBase):
         users = FASUser.query.filter(FASUser.username!='anonymous').all()
         users.sort(lambda x, y: cmp(x.total_votes, y.total_votes), reverse=True)
 
-        return users.index(self) + 1
+        rank = users.index(self) + 1
+        if rank != _rank:
+            self._rank = rank
+            fedmsg.send_message(topic='user.rank.update', msg={
+                fedmsg.schema.USER: self.__json__(),
+            })
+
+        return self._rank
 
     @property
     def gravatar_lg(self):
