@@ -237,7 +237,7 @@ class FASUser(DeclarativeBase):
         if rank != _rank:
             self._rank = rank
             fedmsg.send_message(topic='user.rank.update', msg={
-                fedmsg.schema.USER: self.__json__(),
+                fedmsg.schema.USER: self,
             })
 
         return self._rank
