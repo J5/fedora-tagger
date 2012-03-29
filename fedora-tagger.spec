@@ -12,6 +12,7 @@ Summary:        A web application for adding and ranking tags for Fedora package
 License:        TODO
 URL:            https://github.com/ralphbean/fedora-tagger
 Source0:        %{name}-%{version}.tar.bz2
+Patch0:         %{name}-webob1.0.patch
 BuildArch:      noarch
 
 BuildRequires:  python-devel
@@ -64,6 +65,7 @@ A web application for adding and ranking tags for Fedora packages.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__python} setup.py build
