@@ -21,7 +21,6 @@ import os
 import json
 
 import fedmsg
-import fedmsg.schema
 
 from sqlalchemy import *
 from sqlalchemy import Table, ForeignKey, Column
@@ -237,7 +236,7 @@ class FASUser(DeclarativeBase):
         if rank != _rank:
             self._rank = rank
             fedmsg.send_message(topic='user.rank.update', msg={
-                fedmsg.schema.USER: self,
+                'user': self,
             })
 
         return self._rank

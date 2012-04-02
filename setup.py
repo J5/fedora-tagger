@@ -61,7 +61,7 @@ install_requires=[
     "tw2.jqplugins.gritter",
     "tw2.jqplugins.ui>=2.0b26",
     "docutils",
-    "fedmsg>=0.0.1a4",
+    "fedmsg>=0.0.8",
     ]
 
 if sys.version_info[:2] == (2,4):

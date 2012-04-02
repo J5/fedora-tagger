@@ -29,7 +29,6 @@ import os
 from sqlalchemy import func
 
 import fedmsg
-import fedmsg.schema
 
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
@@ -193,7 +192,7 @@ class RootController(BaseController):
             model.DBSession.add(vote)
 
             fedmsg.send_message(topic='tag.create', msg={
-                fedmsg.schema.TAG: tag,
+                'tag': tag,
             })
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
@@ -380,8 +379,8 @@ class RootController(BaseController):
                 vote.tag = tag
                 model.DBSession.add(vote)
                 fedmsg.send_message(topic='tag.update', msg={
-                    fedmsg.schema.USER: user,
-                    fedmsg.schema.TAG: tag,
+                    'user': user,
+                    'tag': tag,
                 })
             else:
                 # Otherwise, they've voted on this before.  See if they're changing
@@ -402,8 +401,8 @@ class RootController(BaseController):
                     vote.like = like
                     # Done changing vote.
                     fedmsg.send_message(topic='tag.update', msg={
-                        fedmsg.schema.USER: user,
-                        fedmsg.schema.TAG: tag,
+                        'user': user,
+                        'tag': tag,
                     })
         else:
             # They *are* anonymous.  Let them vote, but not twice this session.
@@ -417,15 +416,15 @@ class RootController(BaseController):
                     tag.dislike += 1
 
                 fedmsg.send_message(topic='tag.update', msg={
-                    fedmsg.schema.USER: user,
-                    fedmsg.schema.TAG: tag,
+                    'user': user,
+                    'tag': tag,
                 })
 
         # Delete really stupid tags
         if tag.total < -10:
             fedmsg.send_message(topic='tag.remove', msg={
-                fedmsg.schema.USER: user,
-                fedmsg.schema.TAG: tag,
+                'user': user,
+                'tag': tag,
             })
             model.DBSession.delete(tag)
 
@@ -460,7 +459,7 @@ class RootController(BaseController):
         flash(_('Welcome back, %s!' % userid))
         # TODO - can we integrate this with faswho?
         fedmsg.send_message(topic='login.tagger', msg={
-            fedmsg.schema.USER: model.get_user(),
+            'user': model.get_user(),
         })
         redirect(came_from)
 
