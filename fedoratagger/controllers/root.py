@@ -192,7 +192,7 @@ class RootController(BaseController):
             vote.tag = tag
             model.DBSession.add(vote)
 
-            fedmsg.send_message(topic='tag.new', msg={
+            fedmsg.send_message(topic='tag.create', msg={
                 fedmsg.schema.TAG: tag,
             })
 
