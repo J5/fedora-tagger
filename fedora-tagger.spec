@@ -6,13 +6,12 @@
 
 Name:           fedora-tagger
 Version:        0.1.2
-Release:        0.22%{?dist}
+Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
 License:        TODO
 URL:            https://github.com/ralphbean/fedora-tagger
-Source0:        %{name}-%{version}.tar.bz2
-Patch0:         %{name}-webob1.0.patch
+Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python-devel
@@ -34,10 +33,10 @@ BuildRequires:  python-repoze-who
 BuildRequires:  python-repoze-what-plugins-sql
 BuildRequires:  python-kitchen
 BuildRequires:  pycurl
-BuildRequires:  python-tw2
+BuildRequires:  python-tw2-core
 BuildRequires:  python-tw2-forms
+BuildRequires:  python-tw2-jqplugins-ui
 BuildRequires:  python-tw2-jqplugins-gritter
-BuildRequires:  python-tw2-jquery-ui
 BuildRequires:  python-docutils
 BuildRequires:  python-bunch
 BuildRequires:  python-fedora
@@ -55,17 +54,24 @@ Requires:       python-repoze-who
 Requires:       python-repoze-what-plugins-sql
 Requires:       python-kitchen
 Requires:       pycurl
-Requires:       python-tw2
-#Requires:       python-jit
-#Requires:       python-tw2-jqplugins-gritter
-Requires:       python-tw2-jquery-ui
+Requires:       python-tw2-core
+Requires:       python-tw2-jqplugins-gritter
+Requires:       python-tw2-jqplugins-ui
 
 %description
 A web application for adding and ranking tags for Fedora packages.
 
 %prep
 %setup -q
-%patch0 -p1
+
+%if %{?rhel}%{!?rhel:0} >= 6
+
+# Make sure that epel/rhel picks up the correct version of webob
+awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"WebOb>=1.0\"]; import pkg_resources"}1' setup.py > setup.py.tmp
+mv setup.py.tmp setup.py
+
+%endif
+
 
 %build
 %{__python} setup.py build
