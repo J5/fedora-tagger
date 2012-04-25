@@ -5,11 +5,11 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.1.2
+Version:        0.1.3
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
-License:        TODO
+License:        LGPLv2
 URL:            https://github.com/ralphbean/fedora-tagger
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
@@ -57,6 +57,8 @@ Requires:       pycurl
 Requires:       python-tw2-core
 Requires:       python-tw2-jqplugins-gritter
 Requires:       python-tw2-jqplugins-ui
+Requires:       python-fedora-turbogears2
+Requires:       python-psycopg2
 
 %description
 A web application for adding and ranking tags for Fedora packages.
@@ -95,6 +97,12 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Wed Apr 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.3-1
+- New version.  Fixes a typo-bug in the gritter notification
+- Added LGPLv2 license.
+* Wed Apr 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.2-2
+- Dependency fixes
+- Removed the patch; using awk instead
 * Thu Mar 29 2012 Ralph Bean <rbean@redhat.com> - 0.1.2-1
 - Statistics window
 - Toggle notifications

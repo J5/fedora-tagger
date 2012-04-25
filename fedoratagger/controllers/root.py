@@ -150,6 +150,7 @@ class RootController(BaseController):
 
         # Setup our return object
         json = dict(tags=", ".join(labels), package=package)
+        json['tag'] = json['tags']
 
         if not labels:
             json['msg'] = "You may not use an empty label."
