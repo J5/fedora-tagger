@@ -64,6 +64,7 @@ class RootController(BaseController):
         return "Still running"
 
     @expose()
+    @require(not_anonymous(msg="Login with your FAS credentials."))
     def _update(self):
         import fedoratagger.websetup.bootstrap
         # This could take a long time
