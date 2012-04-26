@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.1.3
+Version:        0.1.4
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -97,6 +97,9 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Thu Apr 26 2012 Ralph Bean <rbean@redhat.com> - 0.1.4-1
+- Added a controller method /_update to get new packages from pkgdb+yum
+- Unicode safeguards in websetup/bootstrap.py
 * Wed Apr 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.3-1
 - New version.  Fixes a typo-bug in the gritter notification
 - Added LGPLv2 license.
