@@ -63,6 +63,12 @@ class RootController(BaseController):
         #       send back an error if we are not completely up and running
         return "Still running"
 
+    @expose()
+    def _update(self):
+        import fedoratagger.websetup.bootstrap
+        # This could take a long time
+        fedoratagger.websetup.bootstrap.import_pkgdb_tags()
+
     @expose('json')
     def dump(self):
         """ A http interface to the dump2json method.
