@@ -91,6 +91,39 @@ function search() { $("#search_dialog").dialog('open'); }
 
 function add() { $("#add_dialog").dialog('open'); }
 
+function statistics() {
+    request_in_progress = true;
+    $.ajax({
+        type: "POST",
+        url: "statistics",
+        cache: false,
+        data: $.param({
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        }),
+        error: function() {
+            request_in_progress = false;
+            if (! notifications_on) { return; }
+            if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+            gritter_id = $.gritter.add({
+                title: 'There was a problem getting the statistics.',
+                text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            });
+        },
+        success: function(html) {
+            $("body").append("<div id='statistics-dialog'></div>");
+            $("#statistics-dialog").attr('title', "Leaderboard");
+            $("#statistics-dialog").html(html);
+            $("#statistics-dialog").dialog({
+                autoOpen: true,
+                modal: true,
+                close: function() { $('#statistics-dialog').dialog('destroy'); },
+            });
+            request_in_progress = false;
+        }
+    });
+}
+
 function leaderboard() {
     request_in_progress = true;
     $.ajax({
@@ -101,13 +134,14 @@ function leaderboard() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
+            request_in_progress = false;
+            if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
                 title: 'There was a problem getting the leaderboard.',
                 text: 'Sorry.',
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
-            request_in_progress = false;
         },
         success: function(html) {
             $("body").append("<div id='leaderboard-dialog'></div>");
@@ -131,6 +165,7 @@ function init_navigation() {
         add: [65, 73],
         help: [27, 112],
         leaderboard: [66],
+        statistics: [84],
         search: [83],
     }
 
@@ -142,6 +177,7 @@ function init_navigation() {
         add: add,
         help: help,
         leaderboard: leaderboard,
+        statistics: statistics,
         search: search,
     }
 

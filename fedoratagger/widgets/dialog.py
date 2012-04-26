@@ -68,7 +68,7 @@ class AddTagDialog(DialogWidget):
     id = 'add_dialog'
     resources = DialogWidget.resources + [add_js]
     options = {
-        'title': 'Add a new tag',
+        'title': 'Add new tags (comma-separated)',
         'autoOpen': False,
         'width': 350,
         'modal': True,
@@ -81,6 +81,17 @@ class LeaderboardDialog(DialogWidget):
     id = 'leaderboard_dialog'
     options = {
         'title': 'Leaderboard',
+        'autoOpen': False,
+        'width': 350,
+        'modal': True,
+    }
+
+class StatisticsDialog(DialogWidget):
+    """ jQuery UI dialog for showing the statistics. """
+
+    id = 'statistics_dialog'
+    options = {
+        'title': 'Statistics',
         'autoOpen': False,
         'width': 350,
         'modal': True,

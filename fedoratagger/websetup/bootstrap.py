@@ -32,6 +32,8 @@ import sys
 import shutil
 import warnings
 
+from kitchen.text.converters import to_unicode
+
 def get_yum_query():
     yumq = None
     try:
@@ -91,9 +93,9 @@ def get_icons():
 def import_pkgdb_tags():
     print "Importing pkgdb tags."
     yumq = get_yum_query()
-    repo = "F-16-i386-u"
+    repo = "F-17-i386-u"
     base_url = "https://admin.fedoraproject.org/pkgdb"
-    url = base_url + "/lists/sqlitebuildtags/F-16-i386-u"
+    url = base_url + "/lists/sqlitebuildtags/F-17-i386-u"
     f, fname = tempfile.mkstemp(suffix="-%s.db" % repo)
     urllib.urlretrieve(url, fname)
 
@@ -102,16 +104,16 @@ def import_pkgdb_tags():
     cursor.execute('select * from packagetags')
     failed = []
     for row in cursor:
-        name, tag, score = row
+        name, tag, score = map(to_unicode, row)
 
         p = model.Package.query.filter_by(name=name)
         tl = model.TagLabel.query.filter_by(label=tag)
         if p.count() == 0:
             if yumq:
-                summary = yumq.summary(name)
+                summary = to_unicode(yumq.summary(name))
             else:
                 # If we have no access to yum... oh well.
-                summary = "No summaries available."
+                summary = u"No summaries available."
 
             print name, '-', summary
             model.DBSession.add(model.Package(name=name, summary=summary))

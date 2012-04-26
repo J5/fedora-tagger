@@ -1,41 +1,48 @@
 $(document).ready(function () {
     var error = function() {
+        request_in_progress = false;
+        if (! notifications_on) { return; }
         if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
         gritter_id = $.gritter.add({
             title: 'There was a problem with the server.',
             text: 'Sorry.',
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
-        request_in_progress = false;
     };
     var success = function(json) {
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
         if ( json.count == 0 ) {
-            gritter_id = $.gritter.add({
-                title: 'No results found.',
-                text: 'No results found for "' + json.term + '".',
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
-            });
+            if (notifications_on) {
+                gritter_id = $.gritter.add({
+                    title: 'No results found.',
+                    text: 'No results found for "' + json.term + '".',
+                    image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                });
+            }
         } else if ( json.count > 1 ) {
-            var msg = json.count + ' results found for "' + json.term + '", like:';
-            msg += '<ul>';
-            $.each(json.samples, function(key, value) {
-                msg += '<li>' + value + '</li>';
-            });
-            msg += '</ul>';
+            if (notifications_on) {
+                var msg = json.count + ' results found for "' + json.term + '", like:';
+                msg += '<ul>';
+                $.each(json.samples, function(key, value) {
+                    msg += '<li>' + value + '</li>';
+                });
+                msg += '</ul>';
 
-            msg += 'Try refining your search.';
-            gritter_id = $.gritter.add({
-                title: json.count + ' results found.',
-                text: msg,
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
-            });
+                msg += 'Try refining your search.';
+                gritter_id = $.gritter.add({
+                    title: json.count + ' results found.',
+                    text: msg,
+                    image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                });
+            }
         } else {
-            gritter_id = $.gritter.add({
-                title: json.term,
-                text: "Loading package matching '" + json.term + "'.",
-                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
-            });
+            if (notifications_on) {
+                gritter_id = $.gritter.add({
+                    title: json.term,
+                    text: "Loading package matching '" + json.term + "'.",
+                    image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+                });
+            }
             $("#search_dialog input").val('');
             $("#search_dialog").dialog("close");
             navigate_new_card(json.term, navigate_new_card);

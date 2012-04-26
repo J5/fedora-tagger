@@ -63,6 +63,13 @@ class RootController(BaseController):
         #       send back an error if we are not completely up and running
         return "Still running"
 
+    @expose()
+    @require(not_anonymous(msg="Login with your FAS credentials."))
+    def _update(self):
+        import fedoratagger.websetup.bootstrap
+        # This could take a long time
+        fedoratagger.websetup.bootstrap.import_pkgdb_tags()
+
     @expose('json')
     def dump(self):
         """ A http interface to the dump2json method.
@@ -128,7 +135,7 @@ class RootController(BaseController):
 
     @expose('json')
     @require(not_anonymous(msg="Login with your FAS credentials."))
-    def add(self, label, package):
+    def add(self, labels, package):
         """ Handles /add URL.
 
         Returns a JSON object indicating success or failure.
@@ -141,25 +148,24 @@ class RootController(BaseController):
         """
 
         # Some scrubbing
-        label = label.lower().strip()
-        label = pattern.sub('', label)
+        labels = [l.lower().strip() for l in labels.split(',')]
+        labels = [pattern.sub('', label) for label in labels]
+        # No empty strings
+        labels = [label for label in labels if label]
+        # Uniqify
+        labels = list(set(labels))
 
         # Setup our return object
-        json = dict(tag=label, package=package)
+        json = dict(tags=", ".join(labels), package=package)
+        json['tag'] = json['tags']
 
-        if not label:
+        if not labels:
             json['msg'] = "You may not use an empty label."
             return json
 
-        if label in dirty_words:
+        if any([label in dirty_words for label in labels]):
             json['msg'] = "That's not nice."
             return json
-
-        query = model.TagLabel.query.filter_by(label=label)
-        if query.count() == 0:
-            model.DBSession.add(model.TagLabel(label=label))
-
-        label = query.first()
 
         query = model.Package.query.filter_by(name=package)
         if query.count() == 0:
@@ -168,28 +174,44 @@ class RootController(BaseController):
 
         package = query.one()
 
-        query = model.Tag.query.filter_by(label=label, package=package)
+        for label in labels:
+            query = model.TagLabel.query.filter_by(label=label)
+            if query.count() == 0:
+                model.DBSession.add(model.TagLabel(label=label))
 
-        if query.count() != 0:
-            json['msg'] = "%s already tagged '%s'" % (package.name, label.label)
-            return json
+            label = query.first()
 
-        tag = model.Tag(label=label, package=package)
-        model.DBSession.add(tag)
+            query = model.Tag.query.filter_by(label=label, package=package)
 
-        vote = model.Vote(like=True)
-        user = model.get_user()
-        vote.user = user
-        vote.tag = tag
-        model.DBSession.add(vote)
+            if query.count() != 0:
+                json['msg'] = "%s already tagged '%s'" % (
+                    package.name, label.label)
+                return json
+
+            tag = model.Tag(label=label, package=package)
+            model.DBSession.add(tag)
+
+            vote = model.Vote(like=True)
+            user = model.get_user()
+            vote.user = user
+            vote.tag = tag
+            model.DBSession.add(vote)
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
-            label.label, package.name)
+            ', '.join(labels), package.name)
         json['user'] = {
             'votes': user.total_votes,
             'rank': user.rank,
         }
         return json
+
+    @expose('json')
+    @require(not_anonymous(msg="Login with your FAS credentials."))
+    def notifs_toggle(self):
+        """ Toggle the currently-logged-in-user's notifications setting """
+        user = model.get_user()
+        user.notifications_on = not user.notifications_on
+        return dict(notifications_on=user.notifications_on)
 
 
     @expose('fedoratagger.templates.tagger')
@@ -218,6 +240,39 @@ class RootController(BaseController):
     index = tagger
     default = tagger  # For old TG
     _default = tagger # For new TG
+
+    @expose('json')
+    @expose('fedoratagger.templates.statistics', content_type='text/html')
+    def statistics(self):
+        """ Handles the /statistics path.
+
+        Returns an HTML table of statistics on tagged packages.
+        """
+
+        packages = model.Package.query.all()
+        n_tags = model.TagLabel.query.count()
+        raw_data = dict([(p.name, len(p.tags)) for p in packages])
+
+        n_packs = len(raw_data)
+        no_tags = len([v for v in raw_data.values() if not v])
+        with_tags = n_packs - no_tags
+
+        tags_per_package = sum([len(p.tags) for p in packages]) \
+                / float(n_packs)
+        tags_per_package_no_zeroes = sum([len(p.tags) for p in packages]) \
+                / float(with_tags)
+
+        return {
+            'raw': raw_data,
+            'summary': {
+                'total_packages': n_packs,
+                'total_unique_tags': n_tags,
+                'no_tags': no_tags,
+                'with_tags': with_tags,
+                'tags_per_package': "%.2f" % tags_per_package,
+                'tags_per_package_no_zeroes': "%.2f" % tags_per_package_no_zeroes,
+            },
+        }
 
     @expose()
     def leaderboard(self, N=10):
