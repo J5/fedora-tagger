@@ -91,9 +91,9 @@ def get_icons():
 def import_pkgdb_tags():
     print "Importing pkgdb tags."
     yumq = get_yum_query()
-    repo = "F-16-i386-u"
+    repo = "F-17-i386-u"
     base_url = "https://admin.fedoraproject.org/pkgdb"
-    url = base_url + "/lists/sqlitebuildtags/F-16-i386-u"
+    url = base_url + "/lists/sqlitebuildtags/F-17-i386-u"
     f, fname = tempfile.mkstemp(suffix="-%s.db" % repo)
     urllib.urlretrieve(url, fname)
 
