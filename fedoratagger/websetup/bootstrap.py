@@ -113,7 +113,7 @@ def import_pkgdb_tags():
                 summary = to_unicode(yumq.summary(name))
             else:
                 # If we have no access to yum... oh well.
-                summary = u"No summaries available."
+                summary = u''
 
             print name, '-', summary
             model.DBSession.add(model.Package(name=name, summary=summary))
@@ -139,12 +139,55 @@ def import_pkgdb_tags():
     npacks = model.Package.query.count()
     ntags = model.Tag.query.count()
 
-    # TODO -- why are there some packages in koji, but not in pkgdb?
-    print "Done."
+    print "Done with pkgdb import."
     print "Failed on:", failed
     print "Failed on:", len(failed), "packages (see above)."
     print "Imported", npacks, "packages."
     print "Imported", ntags, "tags."
+
+def import_koji_pkgs():
+    """ Get the latest packages from koji.  These might not have made it into
+    yum yet, so we won't even check for their summary until later.
+    """
+    print "Importing koji packages"
+    import koji
+
+    session = koji.ClientSession("https://koji.fedoraproject.org/kojihub")
+    count = 0
+    packages = session.listPackages()
+    print "Whoah.. looking through %i packages from koji." % len(packages)
+    for package in packages:
+        name = to_unicode(package['package_name'])
+        p = model.Package.query.filter_by(name=name)
+        if p.count() == 0:
+            print name, '-'
+            count += 1
+            model.DBSession.add(model.Package(name=name, summary=u''))
+
+    print "Got %i new packages from koji (with no summaries yet)" % count
+
+def update_summaries():
+    """ Some packages we get from koji before their in yum.  Therefore, they
+    exist in our DB for a while with a package name and can receive tags, but
+    they do not yet have a summary.  Consequently, here we can periodically
+    update their summary if they appear in yum.
+    """
+    print "Updating package which have no summary using yum."
+
+    yumq = get_yum_query()
+    if not yumq:
+        print "No access to yum.  Aborting."
+        return
+
+    query = model.Package.query.filter_by(summary=u'')
+    print "There are", query.count(), "such packages."
+
+    for package in query.all():
+        summary = to_unicode(yumq.summary(package.name))
+        print package.name, '-', summary
+        package.summary = summary
+
+    print "Done updating summaries from yum."
 
 def bootstrap(command, conf, vars):
     """Place any commands to setup fedoratagger here"""
@@ -154,6 +197,8 @@ def bootstrap(command, conf, vars):
     try:
         get_icons()
         import_pkgdb_tags()
+        import_koji_pkgs()
+        update_summaries()
 
         transaction.commit()
     except IntegrityError:

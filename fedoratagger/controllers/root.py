@@ -69,6 +69,8 @@ class RootController(BaseController):
         import fedoratagger.websetup.bootstrap
         # This could take a long time
         fedoratagger.websetup.bootstrap.import_pkgdb_tags()
+        fedoratagger.websetup.bootstrap.import_koji_pkgs()
+        fedoratagger.websetup.bootstrap.update_summaries()
 
     @expose('json')
     def dump(self):
