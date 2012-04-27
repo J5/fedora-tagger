@@ -94,8 +94,6 @@ class RootController(BaseController):
 
     @expose()
     def raw(self, name):
-
-        print name
         package = model.Package.query.filter_by(name=name).one()
 
         html = "<html><body>"
