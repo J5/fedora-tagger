@@ -36,6 +36,7 @@ from kitchen.text.converters import to_unicode
 
 log = logging.getLogger()
 
+
 def get_yum_query():
     yumq = None
     try:
@@ -72,6 +73,7 @@ def get_yum_query():
 
     return yumq
 
+
 def get_icons():
     log.info("Getting icons.")
     root = os.path.sep.join(__file__.split(os.path.sep)[:-3])
@@ -104,7 +106,6 @@ def import_pkgdb_tags():
     conn = sqlite3.connect(fname)
     cursor = conn.cursor()
     cursor.execute('select * from packagetags')
-    failed = []
     for row in cursor:
         name, tag, score = map(to_unicode, row)
 
@@ -145,13 +146,13 @@ def import_pkgdb_tags():
     log.debug("Imported %i packages." % npacks)
     log.debug("Imported %i tags." % ntags)
 
+
 def import_koji_pkgs():
     """ Get the latest packages from koji.  These might not have made it into
     yum yet, so we won't even check for their summary until later.
     """
     log.info("Importing koji packages")
     import koji
-
     session = koji.ClientSession("https://koji.fedoraproject.org/kojihub")
     count = 0
     packages = session.listPackages()
@@ -166,42 +167,43 @@ def import_koji_pkgs():
 
     log.info("Got %i new packages from koji (with no summaries yet)" % count)
 
-yumq = get_yum_query()
 
-def _get_summary(pkg_name):
-    summary = to_unicode(yumq.summary(pkg_name))
-    log.info(pkg_name + ' - ' + summary)
-    return summary
-
-
-def update_summaries():
-    """ Some packages we get from koji before their in yum.  Therefore, they
+def update_summaries(N=100):
+    """ Some packages we get from koji before they're in yum.  Therefore, they
     exist in our DB for a while with a package name and can receive tags, but
     they do not yet have a summary.  Consequently, here we can periodically
     update their summary if they appear in yum.
     """
-    log.info("Updating package which have no summary using yum.")
+    log.info("Updating first %i packages which have no summary (w/ yum)" % N)
+
+    yumq = get_yum_query()
 
     if not yumq:
         log.warn("No access to yum.  Aborting.")
         return
 
     query = model.Package.query.filter_by(summary=u'')
-    log.info("There are %i such packages." % query.count())
+    log.info("There are %i such packages... hold on." % query.count())
 
-    for package in query.all():
+    # We limit this to only getting the first N summaries, since querying yum
+    # takes so long.
+    count = 0
+    total = query.count()
+    packages = query.all()
+    for package in packages:
         summary = to_unicode(yumq.summary(package.name))
-        print package.name, '-', summary
-        package.summary = summary
+        log.debug(package.name + ' - ' + summary)
 
         if summary:
+            package.summary = summary
             count += 1
+        else:
+            package.summary = '(no summary)'
 
         if count > N:
             break
 
-    log.info("Done updating summaries from yum.  Got %i of %i." % (
-        count, query.count()))
+    log.info("Done updating summaries from yum.  %i of %i." % (count, total))
 
 def bootstrap(command, conf, vars):
     """Place any commands to setup fedoratagger here"""
@@ -212,7 +214,7 @@ def bootstrap(command, conf, vars):
         get_icons()
         import_pkgdb_tags()
         import_koji_pkgs()
-        update_summaries()
+        update_summaries(N=99999)
 
         transaction.commit()
     except IntegrityError:

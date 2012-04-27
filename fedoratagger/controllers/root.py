@@ -65,12 +65,13 @@ class RootController(BaseController):
 
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
-    def _update(self):
+    def _update(self, N=100):
+        N = int(N)
         import fedoratagger.websetup.bootstrap
         # This could take a long time
         fedoratagger.websetup.bootstrap.import_pkgdb_tags()
         fedoratagger.websetup.bootstrap.import_koji_pkgs()
-        fedoratagger.websetup.bootstrap.update_summaries()
+        fedoratagger.websetup.bootstrap.update_summaries(N=N)
 
     @expose('json')
     def dump(self):
