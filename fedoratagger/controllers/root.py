@@ -315,7 +315,7 @@ class RootController(BaseController):
         icon_template = "images/favicons/16_{serv}.png"
         item_template = "<li><img src='{icon}'/><a href='{url}' target='_blank'>{text}</a></li>"
         services = [
-            ('beefy', 'Community', "https://community.dev.fedoraproject.org/packages/{name}"),
+            ('beefy', 'Community', "/packages/{name}"),
             ('pkgdb', 'Downloads', "https://admin.fedoraproject.org/community/?package={name}#package_maintenance/details/downloads"),
             ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search?terms={name}&type=package&match=exact"),
             ('bodhi', 'Updates', "https://admin.fedoraproject.org/updates/{name}"),
