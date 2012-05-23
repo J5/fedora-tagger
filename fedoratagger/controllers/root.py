@@ -65,10 +65,13 @@ class RootController(BaseController):
 
     @expose()
     @require(not_anonymous(msg="Login with your FAS credentials."))
-    def _update(self):
+    def _update(self, N=100):
+        N = int(N)
         import fedoratagger.websetup.bootstrap
         # This could take a long time
         fedoratagger.websetup.bootstrap.import_pkgdb_tags()
+        fedoratagger.websetup.bootstrap.import_koji_pkgs()
+        fedoratagger.websetup.bootstrap.update_summaries(N=N)
 
     @expose('json')
     def dump(self):
@@ -92,8 +95,6 @@ class RootController(BaseController):
 
     @expose()
     def raw(self, name):
-
-        print name
         package = model.Package.query.filter_by(name=name).one()
 
         html = "<html><body>"
@@ -314,7 +315,7 @@ class RootController(BaseController):
         icon_template = "images/favicons/16_{serv}.png"
         item_template = "<li><img src='{icon}'/><a href='{url}' target='_blank'>{text}</a></li>"
         services = [
-            ('beefy', 'Community', "https://community.dev.fedoraproject.org/packages/{name}"),
+            ('beefy', 'Community', "/packages/{name}"),
             ('pkgdb', 'Downloads', "https://admin.fedoraproject.org/community/?package={name}#package_maintenance/details/downloads"),
             ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search?terms={name}&type=package&match=exact"),
             ('bodhi', 'Updates', "https://admin.fedoraproject.org/updates/{name}"),
