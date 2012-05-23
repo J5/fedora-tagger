@@ -67,6 +67,7 @@ install_requires=[
     "tw2.jqplugins.gritter",
     "tw2.jqplugins.ui>=2.0b26",
     "docutils",
+    "tgscheduler",
     ]
 
 if sys.version_info[:2] == (2,4):
