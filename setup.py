@@ -32,6 +32,13 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
+# Python 2.7 is weird
+try:
+    import multiprocessing
+    import logging
+except ImportError:
+    pass
+
 testpkgs=['WebTest >= 1.2.3',
                'nose',
                'coverage',
