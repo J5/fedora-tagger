@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.1.5
+Version:        0.1.6
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
