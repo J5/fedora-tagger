@@ -36,7 +36,6 @@ from pylons.i18n import ugettext
 from paste.deploy.converters import asbool
 
 import fedoratagger
-import fedoratagger.scheduledupdates
 from fedoratagger import model
 from fedoratagger.lib import app_globals, helpers
 
@@ -118,5 +117,3 @@ base_config.sa_auth.post_logout_url = '/post_logout'
 
 base_config.use_toscawidgets = False
 base_config.use_toscawidgets2 = True
-
-base_config.call_on_startup = [fedoratagger.scheduledupdates.schedule]

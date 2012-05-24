@@ -67,7 +67,6 @@ install_requires=[
     "tw2.jqplugins.gritter",
     "tw2.jqplugins.ui>=2.0b26",
     "docutils",
-    "tgscheduler",
     ]
 
 if sys.version_info[:2] == (2,4):
@@ -76,7 +75,7 @@ if sys.version_info[:2] == (2,4):
 
 setup(
     name='fedora-tagger',
-    version='0.1.5',
+    version='0.1.6',
     description='',
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',

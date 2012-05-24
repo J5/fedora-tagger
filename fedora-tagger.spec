@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.1.5
+Version:        0.1.6
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -41,7 +41,6 @@ BuildRequires:  python-docutils
 BuildRequires:  python-bunch
 BuildRequires:  python-fedora
 BuildRequires:  python-fedora-turbogears2
-BuildRequires:  python-tgscheduler
 
 Requires:       TurboGears2
 Requires:       python-mako
@@ -60,7 +59,6 @@ Requires:       python-tw2-jqplugins-gritter
 Requires:       python-tw2-jqplugins-ui
 Requires:       python-fedora-turbogears2
 Requires:       python-psycopg2
-Requires:       python-tgscheduler
 
 %description
 A web application for adding and ranking tags for Fedora packages.
