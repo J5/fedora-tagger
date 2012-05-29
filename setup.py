@@ -23,7 +23,6 @@
 # mako:       True
 #
 #
-
 import sys
 
 try:
@@ -32,6 +31,13 @@ except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
     from setuptools import setup, find_packages
+
+# Python 2.7 is weird
+try:
+    import multiprocessing
+    import logging
+except ImportError:
+    pass
 
 testpkgs=['WebTest >= 1.2.3',
                'nose',
@@ -42,7 +48,7 @@ testpkgs=['WebTest >= 1.2.3',
 
 install_requires=[
     "Pylons<=1.0",      # This is madness
-    "WebOb<=1.0.8",     # This is also madness
+    "WebOb<=1.1.1",     # This is also madness
     "repoze.who<=1.99", # Madness, still
     "TurboGears2",
     "Mako",
@@ -70,7 +76,7 @@ if sys.version_info[:2] == (2,4):
 
 setup(
     name='fedora-tagger',
-    version='0.1.1',
+    version='0.1.6',
     description='',
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',

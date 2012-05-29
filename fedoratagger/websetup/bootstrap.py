@@ -32,6 +32,11 @@ import sys
 import shutil
 import warnings
 
+from kitchen.text.converters import to_unicode
+
+log = logging.getLogger()
+
+
 def get_yum_query():
     yumq = None
     try:
@@ -68,16 +73,17 @@ def get_yum_query():
 
     return yumq
 
+
 def get_icons():
-    print "Getting icons."
+    log.info("Getting icons.")
     root = os.path.sep.join(__file__.split(os.path.sep)[:-3])
     cwd = os.getcwd()
 
     if os.path.exists(cwd + "/icons.tar.xz"):
-        print "Icons have already been downloaded."
+        log.info("Icons have already been downloaded.")
     else:
         url = "http://johnp.fedorapeople.org/downloads/xapian/icons.tar.xz"
-        print "Getting", url
+        log.info("Getting " + url)
         urllib.urlretrieve(url, cwd + "/icons.tar.xz")
 
     status, output = commands.getstatusoutput('tar xvf %s/icons.tar.xz' % cwd)
@@ -89,31 +95,30 @@ def get_icons():
 
 
 def import_pkgdb_tags():
-    print "Importing pkgdb tags."
+    log.info("Importing pkgdb tags.")
     yumq = get_yum_query()
-    repo = "F-16-i386-u"
+    repo = "F-17-i386-u"
     base_url = "https://admin.fedoraproject.org/pkgdb"
-    url = base_url + "/lists/sqlitebuildtags/F-16-i386-u"
+    url = base_url + "/lists/sqlitebuildtags/F-17-i386-u"
     f, fname = tempfile.mkstemp(suffix="-%s.db" % repo)
     urllib.urlretrieve(url, fname)
 
     conn = sqlite3.connect(fname)
     cursor = conn.cursor()
     cursor.execute('select * from packagetags')
-    failed = []
     for row in cursor:
-        name, tag, score = row
+        name, tag, score = map(to_unicode, row)
 
         p = model.Package.query.filter_by(name=name)
         tl = model.TagLabel.query.filter_by(label=tag)
         if p.count() == 0:
             if yumq:
-                summary = yumq.summary(name)
+                summary = to_unicode(yumq.summary(name))
             else:
                 # If we have no access to yum... oh well.
-                summary = "No summaries available."
+                summary = u''
 
-            print name, '-', summary
+            log.debug(name + ' - ' + summary)
             model.DBSession.add(model.Package(name=name, summary=summary))
 
         if tl.count() == 0:
@@ -137,12 +142,68 @@ def import_pkgdb_tags():
     npacks = model.Package.query.count()
     ntags = model.Tag.query.count()
 
-    # TODO -- why are there some packages in koji, but not in pkgdb?
-    print "Done."
-    print "Failed on:", failed
-    print "Failed on:", len(failed), "packages (see above)."
-    print "Imported", npacks, "packages."
-    print "Imported", ntags, "tags."
+    log.info("Done with pkgdb import.")
+    log.debug("Imported %i packages." % npacks)
+    log.debug("Imported %i tags." % ntags)
+
+
+def import_koji_pkgs():
+    """ Get the latest packages from koji.  These might not have made it into
+    yum yet, so we won't even check for their summary until later.
+    """
+    log.info("Importing koji packages")
+    import koji
+    session = koji.ClientSession("https://koji.fedoraproject.org/kojihub")
+    count = 0
+    packages = session.listPackages()
+    log.info("Looking through %i packages from koji." % len(packages))
+    for package in packages:
+        name = to_unicode(package['package_name'])
+        p = model.Package.query.filter_by(name=name)
+        if p.count() == 0:
+            log.debug(name + ' -')
+            count += 1
+            model.DBSession.add(model.Package(name=name, summary=u''))
+
+    log.info("Got %i new packages from koji (with no summaries yet)" % count)
+
+
+def update_summaries(N=100):
+    """ Some packages we get from koji before they're in yum.  Therefore, they
+    exist in our DB for a while with a package name and can receive tags, but
+    they do not yet have a summary.  Consequently, here we can periodically
+    update their summary if they appear in yum.
+    """
+    log.info("Updating first %i packages which have no summary (w/ yum)" % N)
+
+    yumq = get_yum_query()
+
+    if not yumq:
+        log.warn("No access to yum.  Aborting.")
+        return
+
+    query = model.Package.query.filter_by(summary=u'')
+    log.info("There are %i such packages... hold on." % query.count())
+
+    # We limit this to only getting the first N summaries, since querying yum
+    # takes so long.
+    count = 0
+    total = query.count()
+    packages = query.all()
+    for package in packages:
+        summary = to_unicode(yumq.summary(package.name))
+        log.debug(package.name + ' - ' + summary)
+
+        if summary:
+            package.summary = summary
+            count += 1
+        else:
+            package.summary = '(no summary)'
+
+        if count > N:
+            break
+
+    log.info("Done updating summaries from yum.  %i of %i." % (count, total))
 
 def bootstrap(command, conf, vars):
     """Place any commands to setup fedoratagger here"""
@@ -152,12 +213,14 @@ def bootstrap(command, conf, vars):
     try:
         get_icons()
         import_pkgdb_tags()
+        import_koji_pkgs()
+        update_summaries(N=99999)
 
         transaction.commit()
     except IntegrityError:
         import traceback
-        print traceback.format_exc()
+        log.error(traceback.format_exc())
         transaction.abort()
-        print 'Continuing with bootstrapping...'
+        log.info('Continuing with bootstrapping...')
 
     # <websetup.bootstrap.after.auth>
