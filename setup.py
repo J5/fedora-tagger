@@ -76,7 +76,7 @@ if sys.version_info[:2] == (2,4):
 
 setup(
     name='fedora-tagger',
-    version='0.1.6',
+    version='0.2.0a',
     description='',
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',

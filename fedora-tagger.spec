@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.1.6
+Version:        0.2.0a
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -25,7 +25,11 @@ BuildRequires:  TurboGears2
 BuildRequires:  python-pylons
 BuildRequires:  python-mako
 BuildRequires:  python-zope-sqlalchemy
+%if %{?rhel}%{!?rhel:0} >= 6
+BuildRequires:  python-sqlalchemy0.7
+%else
 BuildRequires:  python-sqlalchemy
+%endif
 BuildRequires:  python-repoze-what
 BuildRequires:  python-repoze-who-friendlyform
 BuildRequires:  python-repoze-what-pylons
@@ -41,11 +45,16 @@ BuildRequires:  python-docutils
 BuildRequires:  python-bunch
 BuildRequires:  python-fedora
 BuildRequires:  python-fedora-turbogears2
+BuildRequires:  fedmsg >= 0.1.5
 
 Requires:       TurboGears2
 Requires:       python-mako
 Requires:       python-zope-sqlalchemy
-Requires:       python-sqlalchemy
+%if %{?rhel}%{!?rhel:0} >= 6
+Requires:  python-sqlalchemy0.7
+%else
+Requires:  python-sqlalchemy
+%endif
 Requires:       python-repoze-what
 Requires:       python-repoze-who-friendlyform
 Requires:       python-repoze-what-pylons
@@ -59,6 +68,7 @@ Requires:       python-tw2-jqplugins-gritter
 Requires:       python-tw2-jqplugins-ui
 Requires:       python-fedora-turbogears2
 Requires:       python-psycopg2
+Requires:       fedmsg >= 0.1.5
 
 %description
 A web application for adding and ranking tags for Fedora packages.
@@ -69,7 +79,7 @@ A web application for adding and ranking tags for Fedora packages.
 %if %{?rhel}%{!?rhel:0} >= 6
 
 # Make sure that epel/rhel picks up the correct version of webob
-awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"WebOb>=1.0\"]; import pkg_resources"}1' setup.py > setup.py.tmp
+awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"WebOb>=1.0\", \"sqlalchemy>=0.7\"]; import pkg_resources"}1' setup.py > setup.py.tmp
 mv setup.py.tmp setup.py
 
 %endif
@@ -97,6 +107,10 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Tue May 29 2012 Ralph Bean <rbean@redhat.com> - 0.2.0a-1
+- First stab at fedmsg in stg.
+* Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.6-1
+- Emergency revert of python-tgscheduler.  It was barfing on db01.
 * Wed May 23 2012 Ralph Bean <rbean@redhat.com> - 0.1.5-1
 - python-tgscheduler now handles updating package metadata.
 - Removed a hardcoded link to the stg deployment of f-packages.
