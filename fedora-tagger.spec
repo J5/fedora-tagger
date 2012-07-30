@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.2.0a
+Version:        0.2.1
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -100,6 +100,12 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{__install} apache/%{modname}.wsgi %{buildroot}%{_datadir}/%{name}/apache/%{modname}.wsgi
 
 
+%pre
+%{_sbindir}/groupadd -r %{modname} &>/dev/null || :
+%{_sbindir}/useradd  -r -s /sbin/nologin -d %{_datadir}/%{modname} -M \
+              -c 'Fedora Tagger' -g %{modname} %{modname} &>/dev/null || :
+
+
 %files
 %doc README.rst
 %{_datadir}/%{name}/
@@ -107,6 +113,8 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Mon Jul 30 2012 Ralph Bean <rbean@redhat.com> - 0.2.1-1
+- Creating a fedoratagger user and group for mod_wsgi.
 * Tue May 29 2012 Ralph Bean <rbean@redhat.com> - 0.2.0a-1
 - First stab at fedmsg in stg.
 * Fri May 25 2012 Ralph Bean <rbean@redhat.com> - 0.1.6-1
