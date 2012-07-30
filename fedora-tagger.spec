@@ -46,6 +46,9 @@ BuildRequires:  python-bunch
 BuildRequires:  python-fedora
 BuildRequires:  python-fedora-turbogears2
 BuildRequires:  fedmsg >= 0.1.5
+%if %{?rhel}%{!?rhel:0} >= 6
+BuildRequires:  python-argparse
+%endif
 
 Requires:       TurboGears2
 Requires:       python-mako
@@ -69,6 +72,9 @@ Requires:       python-tw2-jqplugins-ui
 Requires:       python-fedora-turbogears2
 Requires:       python-psycopg2
 Requires:       fedmsg >= 0.1.5
+%if %{?rhel}%{!?rhel:0} >= 6
+Requires:  python-argparse
+%endif
 
 %description
 A web application for adding and ranking tags for Fedora packages.
