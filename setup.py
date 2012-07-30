@@ -67,6 +67,7 @@ install_requires=[
     "tw2.jqplugins.gritter",
     "tw2.jqplugins.ui>=2.0b26",
     "docutils",
+    "fedmsg>=0.0.8",
     ]
 
 if sys.version_info[:2] == (2,4):
@@ -75,7 +76,7 @@ if sys.version_info[:2] == (2,4):
 
 setup(
     name='fedora-tagger',
-    version='0.1.6',
+    version='0.2.1',
     description='',
     author='Ralph Bean',
     author_email='ralph.bean@gmail.com',

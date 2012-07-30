@@ -28,6 +28,8 @@ import re
 import os
 from sqlalchemy import func
 
+import fedmsg
+
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
 
@@ -197,6 +199,10 @@ class RootController(BaseController):
             vote.user = user
             vote.tag = tag
             model.DBSession.add(vote)
+
+            fedmsg.send_message(topic='tag.create', msg={
+                'tag': tag,
+            })
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
             ', '.join(labels), package.name)
@@ -381,6 +387,10 @@ class RootController(BaseController):
                 vote.user = user
                 vote.tag = tag
                 model.DBSession.add(vote)
+                fedmsg.send_message(topic='tag.update', msg={
+                    'user': user,
+                    'tag': tag,
+                })
             else:
                 # Otherwise, they've voted on this before.  See if they're changing
                 # their vote.
@@ -399,6 +409,10 @@ class RootController(BaseController):
 
                     vote.like = like
                     # Done changing vote.
+                    fedmsg.send_message(topic='tag.update', msg={
+                        'user': user,
+                        'tag': tag,
+                    })
         else:
             # They *are* anonymous.  Let them vote, but not twice this session.
             if tag not in session.get('tags_voted_on', []):
@@ -410,8 +424,17 @@ class RootController(BaseController):
                 else:
                     tag.dislike += 1
 
+                fedmsg.send_message(topic='tag.update', msg={
+                    'user': user,
+                    'tag': tag,
+                })
+
         # Delete really stupid tags
         if tag.total < -10:
+            fedmsg.send_message(topic='tag.remove', msg={
+                'user': user,
+                'tag': tag,
+            })
             model.DBSession.delete(tag)
 
         json = tag.__json__()
@@ -443,6 +466,10 @@ class RootController(BaseController):
                 params=dict(came_from=came_from, __logins=login_counter))
         userid = request.identity['repoze.who.userid']
         flash(_('Welcome back, %s!' % userid))
+        # TODO - can we integrate this with faswho?
+        fedmsg.send_message(topic='login.tagger', msg={
+            'user': model.get_user(),
+        })
         redirect(came_from)
 
     @expose()
