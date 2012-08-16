@@ -466,10 +466,6 @@ class RootController(BaseController):
                 params=dict(came_from=came_from, __logins=login_counter))
         userid = request.identity['repoze.who.userid']
         flash(_('Welcome back, %s!' % userid))
-        # TODO - can we integrate this with faswho?
-        fedmsg.send_message(topic='login.tagger', msg={
-            'user': model.get_user(),
-        })
         redirect(came_from)
 
     @expose()
