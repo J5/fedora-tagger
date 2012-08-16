@@ -201,7 +201,7 @@ class RootController(BaseController):
             model.DBSession.add(vote)
 
             fedmsg.send_message(topic='tag.create', msg={
-                'tag': tag,
+                'vote': vote,
             })
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
@@ -388,8 +388,7 @@ class RootController(BaseController):
                 vote.tag = tag
                 model.DBSession.add(vote)
                 fedmsg.send_message(topic='tag.update', msg={
-                    'user': user,
-                    'tag': tag,
+                    'vote': vote,
                 })
             else:
                 # Otherwise, they've voted on this before.  See if they're changing
@@ -410,8 +409,7 @@ class RootController(BaseController):
                     vote.like = like
                     # Done changing vote.
                     fedmsg.send_message(topic='tag.update', msg={
-                        'user': user,
-                        'tag': tag,
+                        'vote': vote,
                     })
         else:
             # They *are* anonymous.  Let them vote, but not twice this session.
@@ -425,8 +423,7 @@ class RootController(BaseController):
                     tag.dislike += 1
 
                 fedmsg.send_message(topic='tag.update', msg={
-                    'user': user,
-                    'tag': tag,
+                    'vote': vote,
                 })
 
         # Delete really stupid tags

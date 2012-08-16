@@ -333,7 +333,7 @@ class FASUser(DeclarativeBase):
             'rank': self.rank,
         }
 
-        if not cls_name in visited:
+        if not (cls_name in visited or 'Vote' in visited):
             obj.update({
                 'all_votes': [v.__json__(visited=visited+[cls_name])
                               for v in self.votes],
