@@ -106,11 +106,20 @@ class Package(DeclarativeBase):
     def __unicode__(self):
         return self.name
 
-    def __json__(self):
+    def __json__(self, visited=None):
         """ JSON.. kinda. """
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        if cls_name in visited:
+            return self.name
+
+        # else
+
         return {
             self.name: [
-                tag.__json__() for tag in sorted(self.tags, tag_sorter)
+                tag.__json__(visited=visited+[cls_name])
+                for tag in sorted(self.tags, tag_sorter)
                 if not tag.banned
             ]
         }
@@ -134,6 +143,20 @@ class TagLabel(DeclarativeBase):
 
     def __unicode__(self):
         return self.label
+
+    def __json__(self, visited=None):
+        """ JSON.. kinda. """
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        if cls_name in visited:
+            return self.label
+
+        return {
+            'label': self.label,
+            'tags': [t.__json__(visited=visited+[cls_name])
+                     for t in self.tags],
+        }
 
 
 class Tag(DeclarativeBase):
@@ -171,14 +194,26 @@ class Tag(DeclarativeBase):
     def __unicode__(self):
         return self.label.label + " on " + self.package.name
 
-    def __json__(self):
-        return {
+    def __json__(self, visited=None):
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        result = {
             'tag': self.label.label,
             'like': self.like,
             'dislike': self.dislike,
             'total': self.total,
             'votes': self.total_votes,
         }
+
+        if not cls_name in visited:
+            visited = visited + [cls_name]
+            result.update({
+                'label': self.label.__json__(visited),
+                'package': self.package.__json__(visited),
+            })
+
+        return result
 
     def __jit_data__(self):
         return {
@@ -206,6 +241,23 @@ class Vote(DeclarativeBase):
     like = Column(Boolean, nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     tag_id = Column(Integer, ForeignKey('tag.id'))
+
+    def __json__(self, visited=None):
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        result = {
+            'like': self.like,
+        }
+
+        if not cls_name in visited:
+            visited = visited + [cls_name]
+            result.update({
+                'user': self.user.__json__(visited),
+                'tag': self.tag.__json__(visited),
+            })
+
+        return result
 
 
 class FASUser(DeclarativeBase):
@@ -272,15 +324,19 @@ class FASUser(DeclarativeBase):
         url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
         return "<img src='%s'></img>" % url
 
-    def __json__(self, recurse=True):
+    def __json__(self, visited=None):
+        cls_name = type(self).__name__
+        visited = visited or []
         obj = {
             'username': self.username,
             'votes': self.total_votes,
             'rank': self.rank,
         }
 
-        if recurse:
+        if not cls_name in visited:
             obj.update({
+                'all_votes': [v.__json__(visited=visited+[cls_name])
+                              for v in self.votes],
             })
 
         return obj
