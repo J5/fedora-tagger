@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is a part of Fedora Tagger
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,7 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
-# -*- coding: utf-8 -*-
 """Setup the fedora-tagger application"""
 
 import logging
