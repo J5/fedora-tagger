@@ -35,6 +35,7 @@ from fedoratagger.model import DBSession, metadata
 
 from fedoratagger.lib.base import BaseController
 from fedoratagger.controllers.error import ErrorController
+from fedoratagger.controllers.yumdb import YumDBController
 
 from fedoratagger.widgets.card import CardWidget
 
@@ -57,6 +58,7 @@ class RootController(BaseController):
     """ The root controller for the fedora-tagger application. """
 
     error = ErrorController()
+    yumdb = YumDBController()
 
     @expose()
     def _heartbeat(self, *args, **kwds):
