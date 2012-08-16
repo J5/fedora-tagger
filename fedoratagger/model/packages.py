@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
 # -*- coding: utf-8 -*-
@@ -37,8 +37,8 @@ except ImportError:
 
 def tag_sorter(tag1, tag2):
     """ The tag list for each package should be sorted in descending order by
-    the total score, ties are broken by the number of votes cast and if there is
-    still a tie, alphabetically by the tag.
+    the total score, ties are broken by the number of votes cast and if there
+    is still a tie, alphabetically by the tag.
     """
     for attr in ['total', 'votes', 'label']:
         result = cmp(getattr(tag1, attr), getattr(tag2, attr))
@@ -51,6 +51,7 @@ package_tag_association_table = Table(
     Column('package_id', Integer, ForeignKey('package.id')),
     Column('tag_label_id', Integer, ForeignKey('tag_label.id')),
 )
+
 
 class Package(DeclarativeBase):
     __tablename__ = 'package'
@@ -83,7 +84,10 @@ class Package(DeclarativeBase):
         query = qp.parse_query(search_string)
         enquire.set_query(query)
         matches = enquire.get_mset(0, 1)
-        if len(matches) == 0: return None
+
+        if len(matches) == 0:
+            return None
+
         result = json.loads(matches[0].document.get_data())
         return result
 
@@ -113,11 +117,11 @@ class Package(DeclarativeBase):
 
     def __jit_data__(self):
         return {
-            'hover_html' :
+            'hover_html':
             u"<h2>Package: {name}</h2><ul>" + \
             " ".join([
-                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>".format(
-                    tag=tag) for tag in self.tags
+                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>"\
+                .format(tag=tag) for tag in self.tags
             ]) + "</ul>"
         }
 
@@ -178,7 +182,7 @@ class Tag(DeclarativeBase):
 
     def __jit_data__(self):
         return {
-            'hover_html' :
+            'hover_html':
             u""" <h2>Tag: {label}</h2>
             <ul>
                 <li>Likes: {like}</li>
@@ -229,8 +233,11 @@ class FASUser(DeclarativeBase):
             return -1
 
         # TODO - there's a more optimal way to do this in SQL land.
-        users = FASUser.query.filter(FASUser.username!='anonymous').all()
-        users.sort(lambda x, y: cmp(x.total_votes, y.total_votes), reverse=True)
+        users = FASUser.query.filter(FASUser.username != 'anonymous').all()
+        users.sort(
+            lambda x, y: cmp(x.total_votes, y.total_votes),
+            reverse=True
+        )
 
         rank = users.index(self) + 1
         if rank != _rank:
@@ -255,18 +262,25 @@ class FASUser(DeclarativeBase):
 
     def _gravatar(self, s):
         # TODO -- remove this and use
-        # fedora.client.fas2.AccountSystem().gravatar_url(self.username, size=s)
+        # fedora.client.fas2.AccountSystem().gravatar_url(
+        #                                   self.username, size=s)
         #  - need to have faswho put the gravatar url in the metadata
         #  - need to have different size images available as defaults
-        d='mm'
+        d = 'mm'
         email = self.email if self.email else "whatever"
         hash = md5(email).hexdigest()
         url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
         return "<img src='%s'></img>" % url
 
-    def __json__(self):
-        return {
+    def __json__(self, recurse=True):
+        obj = {
             'username': self.username,
             'votes': self.total_votes,
             'rank': self.rank,
         }
+
+        if recurse:
+            obj.update({
+            })
+
+        return obj
