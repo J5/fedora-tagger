@@ -71,11 +71,19 @@ class CardWidget(tw2.forms.LabelField):
 
         allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 
+        count = 0
         # Weird corner cases of obsoleted packages, etc.
         while (not self.package.xapian_summary or
                 (user.anonymous and not allowed_tags)):
             self.package = select_random_package()
             allowed_tags = filter(lambda t: not t.banned, self.package.tags)
+
+            # In development, sometimes the developer's DB has 0 packages with
+            # any tags.  This loop then spins infintely.  This is included to
+            # break out of that.
+            count = count + 1
+            if count > 500:
+                break
 
         if len(allowed_tags) >= self.N:
             picked_tags = random.sample(allowed_tags, self.N)
