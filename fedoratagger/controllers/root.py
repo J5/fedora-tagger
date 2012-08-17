@@ -424,9 +424,9 @@ class RootController(BaseController):
                 else:
                     tag.dislike += 1
 
-                fedmsg.publish(topic='tag.update', msg={
-                    'vote': vote,
-                })
+                fedmsg.publish(topic='tag.update', msg=dict(
+                    vote=dict(tag=tag, user=user, like=like),
+                ))
 
         # Delete really stupid tags
         if tag.total < -10:
