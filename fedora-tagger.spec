@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.2.1
+Version:        0.2.2
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -119,6 +119,12 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Fri Aug 17 2012 Ralph Bean <rbean@redhat.com> - 0.2.2-1
+- Removing duplicates when updating from koji and yum.
+- F17->F18
+- Greater detail in fedmsg messages.
+- No more .login fedmsg event.
+- Export a yumdb.. migration of functionality from pkgdb.
 * Mon Jul 30 2012 Ralph Bean <rbean@redhat.com> - 0.2.1-1
 - Creating a fedoratagger user and group for mod_wsgi.
 * Tue May 29 2012 Ralph Bean <rbean@redhat.com> - 0.2.0a-1

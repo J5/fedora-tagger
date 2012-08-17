@@ -76,6 +76,7 @@ class RootController(BaseController):
         fedoratagger.websetup.bootstrap.import_pkgdb_tags()
         fedoratagger.websetup.bootstrap.import_koji_pkgs()
         fedoratagger.websetup.bootstrap.update_summaries(N=N)
+        fedoratagger.websetup.bootstrap.remove_duplicates
 
     @expose('json')
     def dump(self):
@@ -202,7 +203,7 @@ class RootController(BaseController):
             vote.tag = tag
             model.DBSession.add(vote)
 
-            fedmsg.send_message(topic='tag.create', msg={
+            fedmsg.publish(topic='tag.create', msg={
                 'vote': vote,
             })
 
@@ -389,7 +390,7 @@ class RootController(BaseController):
                 vote.user = user
                 vote.tag = tag
                 model.DBSession.add(vote)
-                fedmsg.send_message(topic='tag.update', msg={
+                fedmsg.publish(topic='tag.update', msg={
                     'vote': vote,
                 })
             else:
@@ -410,7 +411,7 @@ class RootController(BaseController):
 
                     vote.like = like
                     # Done changing vote.
-                    fedmsg.send_message(topic='tag.update', msg={
+                    fedmsg.publish(topic='tag.update', msg={
                         'vote': vote,
                     })
         else:
@@ -424,13 +425,13 @@ class RootController(BaseController):
                 else:
                     tag.dislike += 1
 
-                fedmsg.send_message(topic='tag.update', msg={
-                    'vote': vote,
-                })
+                fedmsg.publish(topic='tag.update', msg=dict(
+                    vote=dict(tag=tag, user=user, like=like),
+                ))
 
         # Delete really stupid tags
         if tag.total < -10:
-            fedmsg.send_message(topic='tag.remove', msg={
+            fedmsg.publish(topic='tag.remove', msg={
                 'user': user,
                 'tag': tag,
             })
