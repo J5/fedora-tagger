@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is a part of Fedora Tagger
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,7 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
-# -*- coding: utf-8 -*-
 """Setup the fedora-tagger application"""
 
 import logging
@@ -97,9 +97,9 @@ def get_icons():
 def import_pkgdb_tags():
     log.info("Importing pkgdb tags.")
     yumq = get_yum_query()
-    repo = "F-17-i386-u"
+    repo = "F-18-i386-u"
     base_url = "https://admin.fedoraproject.org/pkgdb"
-    url = base_url + "/lists/sqlitebuildtags/F-17-i386-u"
+    url = base_url + "/lists/sqlitebuildtags/F-18-i386-u"
     f, fname = tempfile.mkstemp(suffix="-%s.db" % repo)
     urllib.urlretrieve(url, fname)
 
@@ -205,6 +205,35 @@ def update_summaries(N=100):
 
     log.info("Done updating summaries from yum.  %i of %i." % (count, total))
 
+
+def remove_duplicates():
+    """ lmacken discovered that sometimes (under conditions we don't
+    understand), packages get added to the DB twice.  Here, we detect and remove
+    them.
+    """
+
+    log.info("Looking into any duplicates")
+    removed = []  # For book keeping
+
+    all_packages = model.Package.query.all()
+
+    for package in all_packages:
+
+        if package.name in removed:
+            continue
+
+        query = model.Package.query.filter_by(name=package.name)
+
+        if query.count() > 1:
+
+            # Then remove all the duplicates, leaving this package.
+            for dupe in query.all()[1:]:
+                removed.append(dupe.name)
+                model.DBSession.delete(dupe)
+
+    log.info("Found and removed %i duplicates: %r" % (len(removed), removed))
+
+
 def bootstrap(command, conf, vars):
     """Place any commands to setup fedoratagger here"""
 
@@ -215,6 +244,8 @@ def bootstrap(command, conf, vars):
         import_pkgdb_tags()
         import_koji_pkgs()
         update_summaries(N=99999)
+
+        remove_duplicates()
 
         transaction.commit()
     except IntegrityError:

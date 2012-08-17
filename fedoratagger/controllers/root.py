@@ -28,11 +28,14 @@ import re
 import os
 from sqlalchemy import func
 
+import fedmsg
+
 from fedoratagger import model
 from fedoratagger.model import DBSession, metadata
 
 from fedoratagger.lib.base import BaseController
 from fedoratagger.controllers.error import ErrorController
+from fedoratagger.controllers.yumdb import YumDBController
 
 from fedoratagger.widgets.card import CardWidget
 
@@ -55,6 +58,7 @@ class RootController(BaseController):
     """ The root controller for the fedora-tagger application. """
 
     error = ErrorController()
+    yumdb = YumDBController()
 
     @expose()
     def _heartbeat(self, *args, **kwds):
@@ -72,6 +76,7 @@ class RootController(BaseController):
         fedoratagger.websetup.bootstrap.import_pkgdb_tags()
         fedoratagger.websetup.bootstrap.import_koji_pkgs()
         fedoratagger.websetup.bootstrap.update_summaries(N=N)
+        fedoratagger.websetup.bootstrap.remove_duplicates
 
     @expose('json')
     def dump(self):
@@ -197,6 +202,10 @@ class RootController(BaseController):
             vote.user = user
             vote.tag = tag
             model.DBSession.add(vote)
+
+            fedmsg.publish(topic='tag.create', msg={
+                'vote': vote,
+            })
 
         json['msg'] = "Success.  '%s' added to package '%s'" % (
             ', '.join(labels), package.name)
@@ -381,6 +390,9 @@ class RootController(BaseController):
                 vote.user = user
                 vote.tag = tag
                 model.DBSession.add(vote)
+                fedmsg.publish(topic='tag.update', msg={
+                    'vote': vote,
+                })
             else:
                 # Otherwise, they've voted on this before.  See if they're changing
                 # their vote.
@@ -399,6 +411,9 @@ class RootController(BaseController):
 
                     vote.like = like
                     # Done changing vote.
+                    fedmsg.publish(topic='tag.update', msg={
+                        'vote': vote,
+                    })
         else:
             # They *are* anonymous.  Let them vote, but not twice this session.
             if tag not in session.get('tags_voted_on', []):
@@ -410,8 +425,16 @@ class RootController(BaseController):
                 else:
                     tag.dislike += 1
 
+                fedmsg.publish(topic='tag.update', msg=dict(
+                    vote=dict(tag=tag, user=user, like=like),
+                ))
+
         # Delete really stupid tags
         if tag.total < -10:
+            fedmsg.publish(topic='tag.remove', msg={
+                'user': user,
+                'tag': tag,
+            })
             model.DBSession.delete(tag)
 
         json = tag.__json__()

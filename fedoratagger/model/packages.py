@@ -12,13 +12,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
 # -*- coding: utf-8 -*-
 
 import os
 import json
+
+import fedmsg
 
 from sqlalchemy import *
 from sqlalchemy import Table, ForeignKey, Column
@@ -35,8 +37,8 @@ except ImportError:
 
 def tag_sorter(tag1, tag2):
     """ The tag list for each package should be sorted in descending order by
-    the total score, ties are broken by the number of votes cast and if there is
-    still a tie, alphabetically by the tag.
+    the total score, ties are broken by the number of votes cast and if there
+    is still a tie, alphabetically by the tag.
     """
     for attr in ['total', 'votes', 'label']:
         result = cmp(getattr(tag1, attr), getattr(tag2, attr))
@@ -49,6 +51,7 @@ package_tag_association_table = Table(
     Column('package_id', Integer, ForeignKey('package.id')),
     Column('tag_label_id', Integer, ForeignKey('tag_label.id')),
 )
+
 
 class Package(DeclarativeBase):
     __tablename__ = 'package'
@@ -81,7 +84,10 @@ class Package(DeclarativeBase):
         query = qp.parse_query(search_string)
         enquire.set_query(query)
         matches = enquire.get_mset(0, 1)
-        if len(matches) == 0: return None
+
+        if len(matches) == 0:
+            return None
+
         result = json.loads(matches[0].document.get_data())
         return result
 
@@ -100,22 +106,31 @@ class Package(DeclarativeBase):
     def __unicode__(self):
         return self.name
 
-    def __json__(self):
+    def __json__(self, visited=None):
         """ JSON.. kinda. """
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        if cls_name in visited:
+            return self.name
+
+        # else
+
         return {
             self.name: [
-                tag.__json__() for tag in sorted(self.tags, tag_sorter)
+                tag.__json__(visited=visited+[cls_name])
+                for tag in sorted(self.tags, tag_sorter)
                 if not tag.banned
             ]
         }
 
     def __jit_data__(self):
         return {
-            'hover_html' :
+            'hover_html':
             u"<h2>Package: {name}</h2><ul>" + \
             " ".join([
-                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>".format(
-                    tag=tag) for tag in self.tags
+                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>"\
+                .format(tag=tag) for tag in self.tags
             ]) + "</ul>"
         }
 
@@ -128,6 +143,20 @@ class TagLabel(DeclarativeBase):
 
     def __unicode__(self):
         return self.label
+
+    def __json__(self, visited=None):
+        """ JSON.. kinda. """
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        if cls_name in visited:
+            return self.label
+
+        return {
+            'label': self.label,
+            'tags': [t.__json__(visited=visited+[cls_name])
+                     for t in self.tags],
+        }
 
 
 class Tag(DeclarativeBase):
@@ -165,8 +194,11 @@ class Tag(DeclarativeBase):
     def __unicode__(self):
         return self.label.label + " on " + self.package.name
 
-    def __json__(self):
-        return {
+    def __json__(self, visited=None):
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        result = {
             'tag': self.label.label,
             'like': self.like,
             'dislike': self.dislike,
@@ -174,9 +206,18 @@ class Tag(DeclarativeBase):
             'votes': self.total_votes,
         }
 
+        if not cls_name in visited:
+            visited = visited + [cls_name]
+            result.update({
+                'label': self.label.__json__(visited),
+                'package': self.package.__json__(visited),
+            })
+
+        return result
+
     def __jit_data__(self):
         return {
-            'hover_html' :
+            'hover_html':
             u""" <h2>Tag: {label}</h2>
             <ul>
                 <li>Likes: {like}</li>
@@ -201,6 +242,23 @@ class Vote(DeclarativeBase):
     user_id = Column(Integer, ForeignKey('user.id'))
     tag_id = Column(Integer, ForeignKey('tag.id'))
 
+    def __json__(self, visited=None):
+        cls_name = type(self).__name__
+        visited = visited or []
+
+        result = {
+            'like': self.like,
+        }
+
+        if not cls_name in visited:
+            visited = visited + [cls_name]
+            result.update({
+                'user': self.user.__json__(visited),
+                'tag': self.tag.__json__(visited),
+            })
+
+        return result
+
 
 class FASUser(DeclarativeBase):
     __tablename__ = 'user'
@@ -209,6 +267,7 @@ class FASUser(DeclarativeBase):
     votes = relation('Vote', backref=('user'))
     email = Column(Unicode(255), default=None)
     notifications_on = Column(Boolean, default=True)
+    _rank = Column(Integer, default=-1)
 
     @property
     def anonymous(self):
@@ -220,15 +279,26 @@ class FASUser(DeclarativeBase):
 
     @property
     def rank(self):
+        _rank = self._rank
 
         if self.username == 'anonymous':
             return -1
 
         # TODO - there's a more optimal way to do this in SQL land.
-        users = FASUser.query.filter(FASUser.username!='anonymous').all()
-        users.sort(lambda x, y: cmp(x.total_votes, y.total_votes), reverse=True)
+        users = FASUser.query.filter(FASUser.username != 'anonymous').all()
+        users.sort(
+            lambda x, y: cmp(x.total_votes, y.total_votes),
+            reverse=True
+        )
 
-        return users.index(self) + 1
+        rank = users.index(self) + 1
+        if rank != _rank:
+            self._rank = rank
+            fedmsg.send_message(topic='user.rank.update', msg={
+                'user': self,
+            })
+
+        return self._rank
 
     @property
     def gravatar_lg(self):
@@ -244,18 +314,29 @@ class FASUser(DeclarativeBase):
 
     def _gravatar(self, s):
         # TODO -- remove this and use
-        # fedora.client.fas2.AccountSystem().gravatar_url(self.username, size=s)
+        # fedora.client.fas2.AccountSystem().gravatar_url(
+        #                                   self.username, size=s)
         #  - need to have faswho put the gravatar url in the metadata
         #  - need to have different size images available as defaults
-        d='mm'
+        d = 'mm'
         email = self.email if self.email else "whatever"
         hash = md5(email).hexdigest()
         url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
         return "<img src='%s'></img>" % url
 
-    def __json__(self):
-        return {
+    def __json__(self, visited=None):
+        cls_name = type(self).__name__
+        visited = visited or []
+        obj = {
             'username': self.username,
             'votes': self.total_votes,
             'rank': self.rank,
         }
+
+        if not (cls_name in visited or 'Vote' in visited):
+            obj.update({
+                'all_votes': [v.__json__(visited=visited+[cls_name])
+                              for v in self.votes],
+            })
+
+        return obj
