@@ -76,6 +76,7 @@ class RootController(BaseController):
         fedoratagger.websetup.bootstrap.import_pkgdb_tags()
         fedoratagger.websetup.bootstrap.import_koji_pkgs()
         fedoratagger.websetup.bootstrap.update_summaries(N=N)
+        fedoratagger.websetup.bootstrap.remove_duplicates
 
     @expose('json')
     def dump(self):
