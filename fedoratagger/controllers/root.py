@@ -178,7 +178,7 @@ class RootController(BaseController):
             json['msg'] = "No such package '%s'" % package
             return json
 
-        package = query.one()
+        package = query.first()
 
         for label in labels:
             query = model.TagLabel.query.filter_by(label=label)
