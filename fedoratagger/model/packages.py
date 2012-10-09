@@ -284,16 +284,24 @@ class FASUser(DeclarativeBase):
         if self.username == 'anonymous':
             return -1
 
-        # TODO - there's a more optimal way to do this in SQL land.
         users = FASUser.query.filter(FASUser.username != 'anonymous').all()
-        users.sort(
-            lambda x, y: cmp(x.total_votes, y.total_votes),
-            reverse=True
-        )
+        lookup = set([user.total_votes for user in users])
+        rank = sorted(lookup).index(self.total_votes) + 1
 
-        rank = users.index(self) + 1
-        if rank != _rank:
+        # If their rank has changed.
+        changed = rank != _rank
+
+        # And it didn't change to last place.  We check last_place only to try
+        # and avoid spamming the fedmsg bus.  We have a number of users who have
+        # logged in once, and never voted.  Everytime a *new* user logs in and
+        # votes once, *all* the users in last place get bumped down one notch.
+        # No need to spew that to the message bus.
+        is_last = rank == len(lookup)
+
+        if changed:
             self._rank = rank
+
+        if changed and not is_last:
             fedmsg.send_message(topic='user.rank.update', msg={
                 'user': self,
             })
