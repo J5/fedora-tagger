@@ -6,7 +6,7 @@
 
 Name:           fedora-tagger
 Version:        0.2.3
-Release:        1%{?dist}
+Release:        5%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
 License:        LGPLv2
@@ -119,6 +119,14 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-5
+- Don't spam the bus with users' entire voting histories.
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-4
+- Bugfix.  Iterators don't have a .__len__.
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-3
+- Bugfix.  Iterators don't have a .index method.
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-2
+- Reverse the rank ordering.
 * Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-1
 - More intelligent rank calculation.
 - Unescape nested widgets to support tw2.core>=2.1.2.
