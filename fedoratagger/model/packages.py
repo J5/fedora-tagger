@@ -341,10 +341,13 @@ class FASUser(DeclarativeBase):
             'rank': self.rank,
         }
 
-        if not (cls_name in visited or 'Vote' in visited):
-            obj.update({
-                'all_votes': [v.__json__(visited=visited+[cls_name])
-                              for v in self.votes],
-            })
+        ## Let's just not send all this information along to fedmsg.  It is way
+        ## too much to share the entire voting history of every user every time
+        ## they vote.
+        #if not (cls_name in visited or 'Vote' in visited):
+        #    obj.update({
+        #        'all_votes': [v.__json__(visited=visited+[cls_name])
+        #                      for v in self.votes],
+        #    })
 
         return obj
