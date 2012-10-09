@@ -178,6 +178,20 @@ class RootController(BaseController):
             json['msg'] = "No such package '%s'" % package
             return json
 
+        if query.count() > 1:
+            # Jeez.. how did this happen?  Take the later ones and merge their
+            # votes into the first.
+            packages = query.all()
+            first = packages[0]
+            for package in packages[1:]:
+                while len(package.tags):
+                    first.tags.append(package.tags.pop())
+
+                while len(package.tag_labels):
+                    first.tag_labels.append(package.tag_labels.pop())
+
+                model.DBSession.delete(package)
+
         package = query.first()
 
         for label in labels:
