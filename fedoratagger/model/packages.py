@@ -338,7 +338,7 @@ class FASUser(DeclarativeBase):
         obj = {
             'username': self.username,
             'votes': self.total_votes,
-            'rank': self.rank,
+            'rank': self._rank,
         }
 
         ## Let's just not send all this information along to fedmsg.  It is way
