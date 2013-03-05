@@ -112,7 +112,7 @@ function statistics() {
         },
         success: function(html) {
             $("body").append("<div id='statistics-dialog'></div>");
-            $("#statistics-dialog").attr('title', "Leaderboard");
+            $("#statistics-dialog").attr('title', "Statistics");
             $("#statistics-dialog").html(html);
             $("#statistics-dialog").dialog({
                 autoOpen: true,
