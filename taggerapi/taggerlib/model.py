@@ -44,13 +44,10 @@ except ImportError:
 from kitchen.text.converters import to_unicode
 
 
-# Base class for all of our model classes: By default, the data model is
-# defined with SQLAlchemy's declarative extension, but if you need more
-# control, you can switch to the traditional method.
 DeclarativeBase = declarative_base()
 
 
-def create_tables(db_url, debug=False):
+def create_tables(db_url, alembic_ini=None, debug=False):
     """ Create the tables in the database using the information from the
     url obtained.
 
@@ -58,14 +55,25 @@ def create_tables(db_url, debug=False):
     information with regards to the database engine, the host to connect
     to, the user and password and the database name.
       ie: <engine>://<user>:<password>@<host>/<dbname>
+    :kwarg alembic_ini, path to the alembic ini file. This is necessary
+        to be able to use alembic correctly, but not for the unit-tests.
     :arg debug, a boolean specifying wether we should have the verbose
     output of sqlalchemy or not.
     :return a session that can be used to query the database.
     """
     engine = create_engine(db_url, echo=debug)
     DeclarativeBase.metadata.create_all(engine)
-    sessionmak = sessionmaker(bind=engine)
-    return sessionmak()
+
+    if alembic_ini is not None:
+        # then, load the Alembic configuration and generate the
+        # version table, "stamping" it with the most recent rev:
+        from alembic.config import Config
+        from alembic import command
+        alembic_cfg = Config(alembic_ini)
+        command.stamp(alembic_cfg, "head")
+
+    scopedsession = scoped_session(sessionmaker(bind=engine))
+    return scopedsession
 
 
 
@@ -164,23 +172,44 @@ class Package(DeclarativeBase):
     def __unicode__(self):
         return self.name
 
-    def __json__(self, visited=None):
+    def __json__(self, session):
         """ JSON.. kinda. """
-        cls_name = type(self).__name__
-        visited = visited or []
 
-        if cls_name in visited:
-            return self.name
+        tags = []
+        for tag in self.tags:
+            tags.append(tag.__json__())
 
-        # else
-
-        return {
-            self.name: [
-                tag.__json__(visited=visited+[cls_name])
-                for tag in sorted(self.tags, tag_sorter)
-                if not tag.banned
-            ]
+        result = {
+            'name': self.name,
+            'summary': self.summary,
+            'tags': tags,
+            'rating': Rating.rating_of_package(session, self.id),
+            'icon': self.icon,
         }
+
+        return result
+
+    def __tag_json__(self):
+
+        tags = []
+        for tag in self.tags:
+            tags.append(tag.__json__())
+
+        result = {
+            'name': self.name,
+            'tags': tags,
+        }
+
+        return result
+
+    def __rating_json__(self, session):
+
+        result = {
+            'name': self.name,
+            'rating': Rating.rating_of_package(session, self.id),
+        }
+
+        return result
 
     def __jit_data__(self):
         return {
@@ -193,65 +222,18 @@ class Package(DeclarativeBase):
         }
 
 
-class TagLabel(DeclarativeBase):
-    __tablename__ = 'tag_label'
-    id = Column(Integer, primary_key=True)
-    label = Column(Unicode(255), nullable=False)
-    tags = relation('Tag', backref=('label'))
-
-    __table_args__ = (
-        UniqueConstraint('label'),
-    )
-
-    def __unicode__(self):
-        return self.label
-
-    @classmethod
-    def get_or_insert(cls, session, tag):
-        """ Retrieve a TagLabel from its label or create a new one.
-
-        :arg session: the session used to query the database
-        :arg pkgname: the name of the package (string)
-        :raise sqlalchemy.orm.exc.NoResultFound: when the query selects
-            no rows.
-        :raise sqlalchemy.orm.exc.MultipleResultsFound: when multiple
-            rows are matching.
-        """
-        try:
-            taglabel = session.query(cls).filter_by(label = tag).one()
-        except NoResultFound:
-            taglabel = TagLabel(label=tag)
-            session.add(taglabel)
-            session.flush()
-        return taglabel
-
-    def __json__(self, visited=None):
-        """ JSON.. kinda. """
-        cls_name = type(self).__name__
-        visited = visited or []
-
-        if cls_name in visited:
-            return self.label
-
-        return {
-            'label': self.label,
-            'tags': [t.__json__(visited=visited+[cls_name])
-                     for t in self.tags],
-        }
-
-
 class Tag(DeclarativeBase):
     __tablename__ = 'tag'
     id = Column(Integer, primary_key=True)
     package_id = Column(Integer, ForeignKey('package.id'))
-    label_id = Column(Integer, ForeignKey('tag_label.id'))
+    label = Column(Unicode(255), nullable=False)
     votes = relation('Vote', backref=('tag'))
 
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
 
     __table_args__ = (
-        UniqueConstraint('package_id', 'label_id'),
+        UniqueConstraint('package_id', 'label'),
     )
 
     @property
@@ -262,10 +244,10 @@ class Tag(DeclarativeBase):
         """
 
         return any([
-            self.label.label.startswith('X-'),
-            self.label.label == 'Application',
-            self.label.label == 'System',
-            self.label.label == 'Utility',
+            self.label.startswith('X-'),
+            self.label == 'Application',
+            self.label == 'System',
+            self.label == 'Utility',
         ])
 
     @property
@@ -277,26 +259,17 @@ class Tag(DeclarativeBase):
         return self.like + self.dislike
 
     def __unicode__(self):
-        return self.label.label + " on " + self.package.name
+        return self.label + " on " + self.package.name
 
-    def __json__(self, visited=None):
-        cls_name = type(self).__name__
-        visited = visited or []
+    def __json__(self):
 
         result = {
-            'tag': self.label.label,
+            'tag': self.label,
             'like': self.like,
             'dislike': self.dislike,
             'total': self.total,
             'votes': self.total_votes,
         }
-
-        if not cls_name in visited:
-            visited = visited + [cls_name]
-            result.update({
-                'label': self.label.__json__(visited),
-                'package': self.package.__json__(visited),
-            })
 
         return result
 
@@ -331,22 +304,48 @@ class Vote(DeclarativeBase):
         UniqueConstraint('user_id', 'tag_id'),
     )
 
-    def __json__(self, visited=None):
-        cls_name = type(self).__name__
-        visited = visited or []
+    def __json__(self):
 
         result = {
             'like': self.like,
+            'user': self.user.__json__(),
+            'tag': self.tag.__json__(),
         }
 
-        if not cls_name in visited:
-            visited = visited + [cls_name]
-            result.update({
-                'user': self.user.__json__(visited),
-                'tag': self.tag.__json__(visited),
-            })
+        return result
+
+
+class Rating(DeclarativeBase):
+    __tablename__ = 'rating'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'package_id'),
+    )
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    package_id = Column(Integer, ForeignKey('package.id'))
+    rating = Column(Integer, nullable=False)
+
+    @classmethod
+    def rating_of_package(cls, session, pkgid):
+        """ Return the average rating of the package specified by his
+        package.id.
+
+        :arg session: the session used to query the database
+        :arg pkgid: the identifier of the package in the database (integer)
+        """
+        return session.query(func.avg(cls.rating)).filter_by(package_id=pkgid).one()[0]
+
+    def __json__(self):
+
+        result = {
+            'rating': self.rating,
+            'user': self.user.__json__(),
+            'tag': self.tag.__json__(),
+        }
 
         return result
+
 
 
 class FASUser(DeclarativeBase):
@@ -422,21 +421,10 @@ class FASUser(DeclarativeBase):
         return "<img src='%s'></img>" % url
 
     def __json__(self, visited=None):
-        cls_name = type(self).__name__
-        visited = visited or []
         obj = {
             'username': self.username,
             'votes': self.total_votes,
             'rank': self._rank,
         }
-
-        ## Let's just not send all this information along to fedmsg.  It is way
-        ## too much to share the entire voting history of every user every time
-        ## they vote.
-        #if not (cls_name in visited or 'Vote' in visited):
-        #    obj.update({
-        #        'all_votes': [v.__json__(visited=visited+[cls_name])
-        #                      for v in self.votes],
-        #    })
 
         return obj
