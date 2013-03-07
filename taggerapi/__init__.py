@@ -75,8 +75,10 @@ def post_tag_pkg(pkgname):
             else:
                 tag = [tag]
             messages = []
+            ipaddress = flask.request.remote_addr
             for item in tag:
-                messages.append(taggerlib.add_tag(SESSION, pkgname, item))
+                messages.append(taggerlib.add_tag(SESSION, pkgname, item,
+                    ipaddress))
             SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = messages
@@ -159,6 +161,44 @@ def post_rating_pkg(pkgname):
     jsonout.status_code = httpcode
     return jsonout
 
+def post_vote_pkg(pkgname):
+    """ Performs the POST request of vote_tag_pkg. """
+    httpcode = 200
+    output = {}
+    form = forms.VoteTagForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        pkgname = form.pkgname.data
+        tag = form.tag.data
+        vote = int(form.vote.data) == 1
+        try:
+            message= taggerlib.add_vote(SESSION, pkgname, tag, vote,
+                flask.request.remote_addr)
+            SESSION.commit()
+            output['output'] = 'ok'
+            output['messages'] = [message]
+        except taggerlib.TaggerapiException, err:
+            output['output'] = 'notok'
+            output['error'] = err.message
+            httpcode = 500
+        except SQLAlchemyError, err:
+            SESSION.rollback()
+            output['output'] = 'notok'
+            output['error'] = err.message
+            httpcode = 500
+    else:
+        output['output'] = 'notok'
+        output['error'] = 'Invalid input submitted'
+        if form.errors:
+            detail = []
+            for error in form.errors:
+                detail.append('%s: %s' % (error, '; '.join(form.errors[error])))
+            output['error_detail'] = detail
+        httpcode = 500
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+    
 
 ## Flask application
 @APP.route('/')
@@ -186,6 +226,14 @@ def rating_pkg(pkgname):
         return get_rating_pkg(pkgname)
     elif flask.request.method == 'POST':
         return post_rating_pkg(pkgname)
+
+
+@APP.route('/vote/<pkgname>/', methods=['POST'])
+def vote_tag_pkg(pkgname):
+    """ Vote on a specific tag of a package
+    """
+    if flask.request.method == 'POST':
+        return post_vote_pkg(pkgname)
 
 
 if __name__ == '__main__':  # pragma: no cover
