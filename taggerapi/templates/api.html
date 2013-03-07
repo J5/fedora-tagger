@@ -1,0 +1,89 @@
+{% extends "master.html" %}
+
+{% block title %} API documentation {% endblock %}
+
+
+{% block content %}
+
+  <h1 class="entry-title">Tagger API</h1>
+  <div class="entry-content">
+    <p>The API can be used to add a tag, a rating or retrieve the tags,
+    rating associated with a package.</p>
+
+
+    <h2>Retriete tags</h2>
+    <p>
+      This happens at the url <code>{{ url_for('tag_pkg', pkgname='pkgname') }}</code>
+      It needs one argument and will just return a json containing
+      the tags associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl http://.../tag/guake/
+
+    {
+      "package": "guake",
+      "tags": [
+        {
+          "vote": 1,
+          "dislike": 0,
+          "tag": "test",
+          "like": 1
+        }
+      ]
+    }
+    </code>
+
+    <h2>Set tags</h2>
+    <p>
+      This happens at the url <code>{{ url_for('tag_pkg', pkgname='pkgname') }}</code>
+      It needs two arguments, relies on POST requests and will just
+      return a json with information on how the request performed.
+    </p>
+    <ul>
+      <li>Package name</li>
+      <li>Tag</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl -X POST --data "tag=test&pkgnme=guake" http://.../tag/guake/
+
+    {
+      "output": "notok",
+      "error_detail": [
+        "Pkgname: This field is required."
+      ],
+      "error": "Invalid input submitted"
+    }
+
+    curl -X POST --data "tag=test&pkgname=guake" http://.../tag/guake/
+
+    {
+      "output": "ok",
+      "messages": [
+        "Tag \"test\" added to the package \"guake\""
+      ]
+    }
+    </code>
+
+    <h2>Retriete rating</h2>
+    <p>
+      This happens at the url <code>{{ url_for('rating_pkg', pkgname='pkgname') }}</code>
+      It needs one argument and will just return a json containing
+      the rating associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl http://.../rating/test/
+
+    {"user": "EF3LIBCCSQNL5LBZ5LQL8W00YL4254"}
+    </code>
+
+  </div>
+{% endblock %}
