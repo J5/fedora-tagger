@@ -107,15 +107,15 @@ class YumTags(DeclarativeBase):
 
 class Package(DeclarativeBase):
     __tablename__ = 'package'
+    __table_args__ = (
+        UniqueConstraint('name'),
+    )
+
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
     summary = Column(Unicode(1023), nullable=False)
 
     tags = relation('Tag', backref=('package'))
-
-    __table_args__ = (
-        UniqueConstraint('name'),
-    )
 
     def _get_xapian_data(self):
         xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
@@ -224,6 +224,10 @@ class Package(DeclarativeBase):
 
 class Tag(DeclarativeBase):
     __tablename__ = 'tag'
+    __table_args__ = (
+        UniqueConstraint('package_id', 'label'),
+    )
+
     id = Column(Integer, primary_key=True)
     package_id = Column(Integer, ForeignKey('package.id'))
     label = Column(Unicode(255), nullable=False)
@@ -231,10 +235,6 @@ class Tag(DeclarativeBase):
 
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
-
-    __table_args__ = (
-        UniqueConstraint('package_id', 'label'),
-    )
 
     @property
     def banned(self):
@@ -295,14 +295,14 @@ class Tag(DeclarativeBase):
 
 class Vote(DeclarativeBase):
     __tablename__ = 'vote'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'tag_id'),
+    )
+
     id = Column(Integer, primary_key=True)
     like = Column(Boolean, nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     tag_id = Column(Integer, ForeignKey('tag.id'))
-
-    __table_args__ = (
-        UniqueConstraint('user_id', 'tag_id'),
-    )
 
     def __json__(self):
 
@@ -332,7 +332,8 @@ class Rating(DeclarativeBase):
         package.id.
 
         :arg session: the session used to query the database
-        :arg pkgid: the identifier of the package in the database (integer)
+        :arg pkgid: the identifier of the package in the database
+            (integer)
         """
         return session.query(func.avg(cls.rating)).filter_by(package_id=pkgid).one()[0]
 
@@ -350,6 +351,10 @@ class Rating(DeclarativeBase):
 
 class FASUser(DeclarativeBase):
     __tablename__ = 'user'
+    __table_args__ = (
+        UniqueConstraint('username'),
+    )
+
     id = Column(Integer, primary_key=True)
     username = Column(Unicode(255), nullable=False)
     votes = relation('Vote', backref=('user'))
@@ -419,6 +424,26 @@ class FASUser(DeclarativeBase):
         hash = md5(email).hexdigest()
         url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
         return "<img src='%s'></img>" % url
+
+    @classmethod
+    def get_or_create(cls, session, username, email=None):
+        """ Get or Add a user to the database using its username.
+        This function simply tries to find the specified username in the
+        database and if that person is not known, add a new user with
+        this username.
+
+        :arg session: the session used to query the database.
+        :arg username: the username of the user to search for or to
+            create. In some cases it will be his IP address.
+        :kwarg email: the email address to associate with this user.
+        """
+        try:
+            user = session.query(cls).filter_by(username=username).one()
+        except NoResultFound:
+            user = FASUser(username=username, email=email)
+            session.add(user)
+            session.flush()
+        return user
 
     def __json__(self, visited=None):
         obj = {
