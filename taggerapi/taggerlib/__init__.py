@@ -45,10 +45,7 @@ def create_session(db_url, debug=False, pool_recycle=3600):
 def add_tag(session, pkgname, tag):
     """ Add a provided tag to a given package. """
     package = model.Package.by_name(session, pkgname)
-    taglabel = model.TagLabel.get_or_insert(session, tag)
-    print package
-    print taglabel
-    tagobj = model.Tag(package_id=package.id, label_id=taglabel.id)
+    tagobj = model.Tag(package_id=package.id, label=tag)
     session.add(tagobj)
     session.flush()
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
