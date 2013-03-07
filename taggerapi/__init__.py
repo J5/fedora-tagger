@@ -80,7 +80,7 @@ def get_tag_pkg(pkgname):
 
 
 def post_tag_pkg(pkgname):
-    """ Performs the POST request of tag_pkg. """
+    """ Performs the PUT request of tag_pkg. """
     httpcode = 200
     output = {}
     form = forms.AddTagForm(csrf_enabled=False)
@@ -143,7 +143,7 @@ def get_rating_pkg(pkgname):
 
 
 def post_rating_pkg(pkgname):
-    """ Performs the POST request of rating_pkg. """
+    """ Performs the PUT request of rating_pkg. """
     httpcode = 200
     output = {}
     form = forms.AddRatingForm(csrf_enabled=False)
@@ -180,7 +180,7 @@ def post_rating_pkg(pkgname):
     return jsonout
 
 def post_vote_pkg(pkgname):
-    """ Performs the POST request of vote_tag_pkg. """
+    """ Performs the PUT request of vote_tag_pkg. """
     httpcode = 200
     output = {}
     form = forms.VoteTagForm(csrf_enabled=False)
@@ -235,32 +235,32 @@ def pkg(pkgname):
     """
     return get_pkg(pkgname)
 
-@APP.route('/tag/<pkgname>/', methods=['GET', 'POST'])
+@APP.route('/tag/<pkgname>/', methods=['GET', 'PUT'])
 def tag_pkg(pkgname):
     """ Returns the tags associated with a package
     """
     if flask.request.method == 'GET':
         return get_tag_pkg(pkgname)
-    elif flask.request.method == 'POST':
+    elif flask.request.method == 'PUT':
         return post_tag_pkg(pkgname)
 
 
-@APP.route('/rating/<pkgname>/', methods=['GET', 'POST'])
+@APP.route('/rating/<pkgname>/', methods=['GET', 'PUT'])
 def rating_pkg(pkgname):
     """ Returns the rating associated with a package
     """
     if flask.request.method == 'GET':
         return get_rating_pkg(pkgname)
-    elif flask.request.method == 'POST':
+    elif flask.request.method == 'PUT':
         return post_rating_pkg(pkgname)
 
 
-@APP.route('/vote/<pkgname>/', methods=['POST'])
+@APP.route('/vote/<pkgname>/', methods=['PUT'])
 def vote_tag_pkg(pkgname):
     """ Vote on a specific tag of a package
     """
-    if flask.request.method == 'POST':
-        return post_vote_pkg(pkgname)
+    return post_vote_pkg(pkgname)
+
 
 if __name__ == '__main__':  # pragma: no cover
     import sys

@@ -85,7 +85,7 @@
     <h2>Set tags</h2>
     <p>
       This happens at the url <code>{{ url_for('tag_pkg', pkgname='pkgname') }}</code>
-      It needs two arguments, relies on POST requests and will just
+      It needs two arguments, relies on PUT requests and will just
       return a json with information on how the request performed.
     </p>
     <ul>
@@ -94,7 +94,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X POST --data "tag=terminal&pkgnme=guake" http://.../tag/guake/
+    curl -X PUT --data "tag=terminal&pkgnme=guake" http://.../tag/guake/
 
     {
       "output": "notok",
@@ -104,7 +104,7 @@
       "error": "Invalid input submitted"
     }
 
-    curl -X POST --data "tag=terminal&pkgname=guake" http://.../tag/guake/
+    curl -X PUT --data "tag=terminal&pkgname=guake" http://.../tag/guake/
 
     {
       "output": "ok",
@@ -136,7 +136,7 @@
     <h2>Set rating</h2>
     <p>
       This happens at the url <code>{{ url_for('rating_pkg', pkgname='pkgname') }}</code>
-      It needs two arguments, relies on POST requests and will just return a json containing
+      It needs two arguments, relies on PUT requests and will just return a json containing
       the rating associated to this package.
     </p>
     <ul>
@@ -145,7 +145,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X POST --data "pkgname=guake&ratin=100" http://.../rating/guake/
+    curl -X PUT --data "pkgname=guake&ratin=100" http://.../rating/guake/
 
     {
       "output": "notok", 
@@ -155,7 +155,7 @@
       "error": "Invalid input submitted"
     }
 
-    curl -X POST --data "pkgname=guake&rating=100" http://.../rating/guake/
+    curl -X PUT --data "pkgname=guake&rating=100" http://.../rating/guake/
 
     {
       "output": "ok", 
@@ -169,7 +169,7 @@
     <h2>Vote on the tag of a package</h2>
     <p>
       This happens at the url <code>{{ url_for('vote_tag_pkg', pkgname='pkgname') }}</code>
-      It needs three arguments, relies on POST requests and will just return a json containing
+      It needs three arguments, relies on PUT requests and will just return a json containing
       the rating associated to this package.
     </p>
     <ul>
@@ -179,7 +179,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X POST --data "pkgname=guake&tag=terminal&vote=1" http://.../vote/guake/
+    curl -X PUT --data "pkgname=guake&tag=terminal&vote=1" http://.../vote/guake/
 
     {
       "output": "ok", 
@@ -202,7 +202,7 @@
       ]
     }
 
-    curl -X POST --data "pkgname=guake&tag=terminal&vote=-1" http://.../vote/guake/
+    curl -X PUT --data "pkgname=guake&tag=terminal&vote=-1" http://.../vote/guake/
 
     {
       "output": "ok", 
