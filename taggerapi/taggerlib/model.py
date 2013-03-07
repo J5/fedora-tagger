@@ -169,6 +169,14 @@ class Package(DeclarativeBase):
         """
         return session.query(cls).filter_by(name = pkgname).one()
 
+    @classmethod
+    def all(cls, session):
+        """ Returns all Package entries in the database.
+
+        :arg session: the session used to query the database
+        """
+        return session.query(cls).all()
+
     def __unicode__(self):
         return self.name
 
