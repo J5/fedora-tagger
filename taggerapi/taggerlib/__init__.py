@@ -43,13 +43,23 @@ def create_session(db_url, debug=False, pool_recycle=3600):
 
 
 def add_tag(session, pkgname, tag):
-    """ Add a provided tag to a given package. """
+    """ Add a provided tag to the specified package. """
     package = model.Package.by_name(session, pkgname)
     tagobj = model.Tag(package_id=package.id, label=tag)
     session.add(tagobj)
     session.flush()
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
 
+
+def add_rating(session, pkgname, rating, ipaddress):
+    """ Add the provided rating to the specified package. """
+    package = model.Package.by_name(session, pkgname)
+    user = model.FASUser.get_or_create(session, ipaddress)
+    ratingobj = model.Rating(package_id=package.id, user_id=user.id,
+        rating=rating)
+    session.add(ratingobj)
+    session.flush()
+    return 'Rating "%s" added to the package "%s"' % (rating, pkgname)
 
 
 class TaggerapiException(Exception):
