@@ -57,7 +57,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X POST --data "tag=test&pkgnme=guake" http://.../tag/guake/
+    curl -X POST --data "tag=terminal&pkgnme=guake" http://.../tag/guake/
 
     {
       "output": "notok",
@@ -67,12 +67,12 @@
       "error": "Invalid input submitted"
     }
 
-    curl -X POST --data "tag=test&pkgname=guake" http://.../tag/guake/
+    curl -X POST --data "tag=terminal&pkgname=guake" http://.../tag/guake/
 
     {
       "output": "ok",
       "messages": [
-        "Tag \"test\" added to the package \"guake\""
+        "Tag \"terminal\" added to the package \"guake\""
       ]
     }
     </code>
@@ -95,7 +95,7 @@
       "name": "guake"
     }
     </code>
-    
+
     <h2>Set rating</h2>
     <p>
       This happens at the url <code>{{ url_for('rating_pkg', pkgname='pkgname') }}</code>
@@ -118,12 +118,73 @@
       "error": "Invalid input submitted"
     }
 
-    curl -X POST --data "pkgname=guake&rating=100" http://127.0.0.1:5000/rating/guake/
+    curl -X POST --data "pkgname=guake&rating=100" http://.../rating/guake/
 
     {
       "output": "ok", 
       "messages": [
         "Rating \"100\" added to the package \"guake\""
+      ]
+    }
+
+    </code>
+
+    <h2>Vote on the tag of a package</h2>
+    <p>
+      This happens at the url <code>{{ url_for('vote_tag_pkg', pkgname='pkgname') }}</code>
+      It needs three arguments, relies on POST requests and will just return a json containing
+      the rating associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+      <li>Tag</li>
+      <li>Vote (either -1 or 1)</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl -X POST --data "pkgname=guake&tag=terminal&vote=1" http://.../vote/guake/
+
+    {
+      "output": "ok", 
+      "messages": [
+        "Vote added to the tag \"terminal\" of the package \"guake\""
+      ]
+    }
+
+    curl http://.../tag/guake/
+    {
+      "name": "guake", 
+      "tags": [
+        {
+          "total": 2, 
+          "dislike": 0, 
+          "tag": "terminal", 
+          "votes": 2, 
+          "like": 2
+        }, 
+      ]
+    }
+
+    curl -X POST --data "pkgname=guake&tag=terminal&vote=-1" http://.../vote/guake/
+
+    {
+      "output": "ok", 
+      "messages": [
+        "Vote changed to the tag \"terminal\" of the package \"guake\""
+      ]
+    }
+
+    curl http://.../tag/guake/
+    {
+      "name": "guake", 
+      "tags": [
+        {
+          "total": 0, 
+          "dislike": 1, 
+          "tag": "terminal", 
+          "votes": 2, 
+          "like": 1
+        }
       ]
     }
 
