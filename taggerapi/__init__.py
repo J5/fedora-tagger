@@ -62,7 +62,7 @@ def get_tag_pkg(pkgname):
 
 
 def post_tag_pkg(pkgname):
-
+    """ Performs the POST request of tag_pkg. """
     httpcode = 200
     output = {}
     form = forms.AddTagForm(csrf_enabled=False)
@@ -95,7 +95,7 @@ def post_tag_pkg(pkgname):
         if form.errors:
             detail = []
             for error in form.errors:
-                detail.append('%s: %s' % (error.title(), '; '.join(form.errors[error])))
+                detail.append('%s: %s' % (error, '; '.join(form.errors[error])))
             output['error_detail'] = detail
         httpcode = 500
 
@@ -103,6 +103,61 @@ def post_tag_pkg(pkgname):
     jsonout.status_code = httpcode
     return jsonout
 
+
+def get_rating_pkg(pkgname):
+    """ Performs the GET request of rating_pkg. """
+    httpcode = 200
+    output = {}
+    try:
+        package = model.Package.by_name(SESSION, pkgname)
+        output = package.__rating_json__(SESSION)
+    except SQLAlchemyError, err:
+        SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = err.message
+        httpcode = 500
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
+
+def post_rating_pkg(pkgname):
+    """ Performs the POST request of rating_pkg. """
+    httpcode = 200
+    output = {}
+    form = forms.AddRatingForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        pkgname = form.pkgname.data
+        rating = form.rating.data
+        try:
+            message= taggerlib.add_rating(SESSION, pkgname, rating,
+                flask.request.remote_addr)
+            SESSION.commit()
+            output['output'] = 'ok'
+            output['messages'] = [message]
+        except taggerlib.TaggerapiException, err:
+            output['output'] = 'notok'
+            output['error'] = err.message
+            httpcode = 500
+        except SQLAlchemyError, err:
+            SESSION.rollback()
+            output['output'] = 'notok'
+            output['error'] = err.message
+            httpcode = 500
+    else:
+        output['output'] = 'notok'
+        output['error'] = 'Invalid input submitted'
+        if form.errors:
+            detail = []
+            for error in form.errors:
+                detail.append('%s: %s' % (error, '; '.join(form.errors[error])))
+            output['error_detail'] = detail
+        httpcode = 500
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
 
 
 ## Flask application
@@ -123,29 +178,14 @@ def tag_pkg(pkgname):
         return post_tag_pkg(pkgname)
 
 
-
-@APP.route('/rating/<pkgname>/')
+@APP.route('/rating/<pkgname>/', methods=['GET', 'POST'])
 def rating_pkg(pkgname):
     """ Returns the rating associated with a package
     """
-
-    httpcode = 200
-    output = {}
-    #try:
-        #package = model.Package.by_name(SESSION, pkgname)
-        #output['package'] = package.name
-        #tags = {}
-        #for tag in package.tags:
-            #tags[tag] = tag.__json__()
-        #output['tags'] = tags
-    #except SQLAlchemyError, err:
-    output['output'] = 'notok'
-    output['error'] = 'not implemented'
-    httpcode = 500
-
-    jsonout = flask.jsonify(output)
-    jsonout.status_code = httpcode
-    return jsonout
+    if flask.request.method == 'GET':
+        return get_rating_pkg(pkgname)
+    elif flask.request.method == 'POST':
+        return post_rating_pkg(pkgname)
 
 
 if __name__ == '__main__':  # pragma: no cover
