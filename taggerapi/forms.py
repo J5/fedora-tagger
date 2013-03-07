@@ -36,6 +36,18 @@ def validate_package(form, field):
     pass
 
 
+def validate_percentage(form, field):
+    """ Validate if the field data contains a value between 0 and 100.
+    """
+    value = None
+    try:
+        value = int(field.data)
+    except ValueError:
+        raise ValidationError('Input cannot be cast to an integer')
+    if value < 0 or value > 100:
+        raise ValidationError('Input is not a percentage')
+
+
 class AddTagForm(wtf.Form):
     """ Form used to add a tag to a package. """
     pkgname = wtf.TextField('Package name',
@@ -47,4 +59,5 @@ class AddRatingForm(wtf.Form):
     """ Form used to add a rating to a package. """
     pkgname = wtf.TextField('Package name',
         [wtf.validators.Required(), validate_package])
-    rating= wtf.IntegerField('Rating', [wtf.validators.Required()])
+    rating = wtf.IntegerField('Rating', [wtf.validators.Required(),
+        validate_percentage])
