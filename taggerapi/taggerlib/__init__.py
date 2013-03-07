@@ -42,11 +42,15 @@ def create_session(db_url, debug=False, pool_recycle=3600):
     return scopedsession
 
 
-def add_tag(session, pkgname, tag):
+def add_tag(session, pkgname, tag, ipaddress):
     """ Add a provided tag to the specified package. """
     package = model.Package.by_name(session, pkgname)
-    tagobj = model.Tag(package_id=package.id, label=tag)
+    user = model.FASUser.get_or_create(session, ipaddress)
+    tagobj = model.Tag.get_or_create(session, package.id, tag)
+    tagobj.like += 1
     session.add(tagobj)
+    voteobj = model.Vote(user_id=user.id, tag_id=tagobj.id, like=True)
+    session.add(voteobj)
     session.flush()
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
 
@@ -60,6 +64,43 @@ def add_rating(session, pkgname, rating, ipaddress):
     session.add(ratingobj)
     session.flush()
     return 'Rating "%s" added to the package "%s"' % (rating, pkgname)
+
+
+def add_vote(session, pkgname, tag, vote, ipaddress):
+    """ Cast a vote for a tag of a specified package. """
+    package = model.Package.by_name(session, pkgname)
+    user = model.FASUser.get_or_create(session, ipaddress)
+    try:
+        tagobj = model.Tag.get(session, package.id, tag)
+    except SQLAlchemyError, err:
+        raise TaggerapiException('This tag could not be found associated'
+        'to this package')
+    try:
+        # if the vote already exist, replace it
+        voteobj = model.Vote.get(session, user_id=user.id,
+            tag_id=tagobj.id)
+        if voteobj.like == vote:
+            return 'Your vote on the tag "%s" for the package "%s" did ' \
+            'not changed' %(tag, pkgname)
+        else:
+            if voteobj.like:
+                tagobj.like -= 1
+                tagobj.dislike += 1
+            else:
+                tagobj.dislike -= 1
+                tagobj.like += 1
+            voteobj.like = vote
+    except SQLAlchemyError:
+        # otherwise, create it
+        voteobj = model.Vote(user_id=user.id, tag_id=tagobj.id, like=vote)
+        if vote:
+            tagobj.like += 1
+        else:
+            tagobj.dislike += 1
+    session.add(tagobj)
+    session.add(voteobj)
+    session.flush()
+    return 'Vote added to the tag "%s" of the package "%s"' % (tag, pkgname)
 
 
 class TaggerapiException(Exception):
