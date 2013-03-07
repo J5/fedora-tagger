@@ -49,17 +49,9 @@ def get_tag_pkg(pkgname):
     output = {}
     try:
         package = model.Package.by_name(SESSION, pkgname)
-        output['package'] = package.name
-        tags = []
-        for tag in package.tags:
-            tmp = {}
-            tmp['tag'] = tag.label.label
-            tmp['like'] = tag.like
-            tmp['dislike'] = tag.dislike
-            tmp['vote'] = tag.like - tag.dislike
-            tags.append(tmp)
-        output['tags'] = tags
+        output = package.__tag_json__()
     except SQLAlchemyError, err:
+        SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = err.message
         httpcode = 500
@@ -93,6 +85,7 @@ def post_tag_pkg(pkgname):
             output['error'] = err.message
             httpcode = 500
         except SQLAlchemyError, err:
+            SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = err.message
             httpcode = 500
