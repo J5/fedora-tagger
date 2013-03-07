@@ -47,6 +47,13 @@ def validate_percentage(form, field):
     if value < 0 or value > 100:
         raise ValidationError('Input is not a percentage')
 
+def validate_boolean(form, field):
+    """ Validate that the input can be converted safely to a boolean
+    value.
+    """
+    if int(field.data) not in [-1, 1]:
+        raise ValidationError('Input must be either -1 (dislike) or 1 (like')
+
 
 class AddTagForm(wtf.Form):
     """ Form used to add a tag to a package. """
@@ -61,3 +68,12 @@ class AddRatingForm(wtf.Form):
         [wtf.validators.Required(), validate_package])
     rating = wtf.IntegerField('Rating', [wtf.validators.Required(),
         validate_percentage])
+
+
+class VoteTagForm(wtf.Form):
+    """ Form used to add a rating to a package. """
+    pkgname = wtf.TextField('Package name',
+        [wtf.validators.Required(), validate_package])
+    tag = wtf.TextField('Tag', [wtf.validators.Required()])
+    vote = wtf.IntegerField('vote', [wtf.validators.Required(),
+        validate_boolean])
