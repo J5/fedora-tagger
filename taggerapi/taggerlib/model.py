@@ -258,6 +258,31 @@ class Tag(DeclarativeBase):
     def total_votes(self):
         return self.like + self.dislike
 
+    @classmethod
+    def get_or_create(cls, session, packageid, label):
+        """ Get or Add a Tag entry to the database for a specified
+        package and tag.
+        This function simply tries to find the specified Tag in the
+        database and if that Tag is new, it adds it do the package.
+
+        :arg session: the session used to query the database.
+        :arg packageid: the package identifier from the database
+        :arg label: the tag to associate to the package.
+        """
+        try:
+            tagobj = session.query(cls).filter_by(package_id=packageid
+                ).filter_by(label=label).one()
+        except NoResultFound:
+            tagobj = Tag(package_id=packageid, label=label)
+            session.add(tagobj)
+            session.flush()
+        return tagobj
+
+    @classmethod
+    def get(cls, session, package_id, tag):
+        return session.query(cls).filter_by(package_id=package_id
+            ).filter_by(label=tag).one()
+
     def __unicode__(self):
         return self.label + " on " + self.package.name
 
@@ -303,6 +328,11 @@ class Vote(DeclarativeBase):
     like = Column(Boolean, nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     tag_id = Column(Integer, ForeignKey('tag.id'))
+
+    @classmethod
+    def get(cls, session, user_id, tag_id):
+        return session.query(cls).filter_by(user_id=user_id
+            ).filter_by(tag_id=tag_id).one()
 
     def __json__(self):
 
