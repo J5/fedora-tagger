@@ -245,6 +245,19 @@ def tag_pkg(pkgname):
         return post_tag_pkg(pkgname)
 
 
+@APP.route('/tag/dump/')
+def tag_pkg_dump():
+    """ Returns a tab separated list of all tags for all packages
+    """
+    output = []
+    for package in model.Package.all(SESSION):
+        tmp = []
+        for tag in package.tags:
+            tmp.append('%s\t%s' % (package.name, tag.label))
+        output.append('\n'.join(tmp))
+    return flask.Response( '\n'.join(output), mimetype='text/plain')
+
+
 @APP.route('/rating/<pkgname>/', methods=['GET', 'PUT'])
 def rating_pkg(pkgname):
     """ Returns the rating associated with a package
@@ -254,6 +267,16 @@ def rating_pkg(pkgname):
     elif flask.request.method == 'PUT':
         return post_rating_pkg(pkgname)
 
+@APP.route('/rating/dump/')
+def rating_pkg_dump():
+    """ Returns a tab separated list of the rating of each packages
+    """
+    #TODO: we might want to optimize this
+    output = []
+    for package in model.Package.all(SESSION):
+        output.append('%s\t%s' % (package.name,
+            model.Rating.rating_of_package(SESSION, package.id)))
+    return flask.Response( '\n'.join(output), mimetype='text/plain')
 
 @APP.route('/vote/<pkgname>/', methods=['PUT'])
 def vote_tag_pkg(pkgname):
