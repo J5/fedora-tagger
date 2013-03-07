@@ -10,6 +10,43 @@
     <p>The API can be used to add a tag, a rating or retrieve the tags,
     rating associated with a package.</p>
 
+    <h2>Get package information</h2>
+    <p>
+      This happens at the url <code>{{ url_for('pkg', pkgname='pkgname') }}</code>
+      It needs one argument and will just return a json containing
+      the information about this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl http://.../guake/
+
+    {
+      "rating": 83.333333333333329, 
+      "icon": "/packages/images/icons/__no_xapian_available__.png", 
+      "summary": "", 
+      "name": "guake", 
+      "tags": [
+        {
+          "total": 1, 
+          "dislike": 0, 
+          "tag": "terminal", 
+          "votes": 1, 
+          "like": 1
+        }, 
+        {
+          "total": 0, 
+          "dislike": 1, 
+          "tag": "gnome", 
+          "votes": 2, 
+          "like": 1
+        }
+      ]
+    }
+    </code>
+
 
     <h2>Retriete tags</h2>
     <p>

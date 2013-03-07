@@ -43,6 +43,24 @@ APP.config.from_object('taggerapi.default_config')
 SESSION = taggerlib.create_session(APP.config['DB_URL'])
 
 
+def get_pkg(pkgname):
+    """ Performs the GET request of pkg. """
+    httpcode = 200
+    output = {}
+    try:
+        package = model.Package.by_name(SESSION, pkgname)
+        output = package.__json__(SESSION)
+    except SQLAlchemyError, err:
+        SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = err.message
+        httpcode = 500
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
+
 def get_tag_pkg(pkgname):
     """ Performs the GET request of tag_pkg. """
     httpcode = 200
@@ -201,12 +219,21 @@ def post_vote_pkg(pkgname):
     
 
 ## Flask application
+
+
 @APP.route('/')
 def index():
     """ Displays the information page on how to use the API.
     """
     return flask.render_template('api.html')
 
+
+@APP.route('/<pkgname>/')
+def pkg(pkgname):
+    """ Returns all known information about a package including it's
+    icon, it's rating, it's tags...
+    """
+    return get_pkg(pkgname)
 
 @APP.route('/tag/<pkgname>/', methods=['GET', 'POST'])
 def tag_pkg(pkgname):
@@ -234,7 +261,6 @@ def vote_tag_pkg(pkgname):
     """
     if flask.request.method == 'POST':
         return post_vote_pkg(pkgname)
-
 
 if __name__ == '__main__':  # pragma: no cover
     import sys
