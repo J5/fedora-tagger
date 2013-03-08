@@ -22,6 +22,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm.exc import NoResultFound
 
 import model
 
@@ -46,8 +47,13 @@ def add_tag(session, pkgname, tag, ipaddress):
     """ Add a provided tag to the specified package. """
     package = model.Package.by_name(session, pkgname)
     user = model.FASUser.get_or_create(session, ipaddress)
-    tagobj = model.Tag.get_or_create(session, package.id, tag)
-    session.add(tagobj)
+    try:
+        tagobj = model.Tag.get(session, package.id, tag)
+        tagobj.like += 1
+    except NoResultFound:
+        tagobj = model.Tag(package_id=package.id, label=tag)
+        session.add(tagobj)
+        session.flush()
     voteobj = model.Vote(user_id=user.id, tag_id=tagobj.id, like=True)
     session.add(voteobj)
     session.flush()
