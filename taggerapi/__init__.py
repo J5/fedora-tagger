@@ -107,7 +107,7 @@ def post_tag_pkg(pkgname):
         except SQLAlchemyError, err:
             SESSION.rollback()
             output['output'] = 'notok'
-            output['error'] = err.message
+            output['error'] = 'This tag is already associated to this package'
             httpcode = 500
     else:
         output['output'] = 'notok'
@@ -163,7 +163,7 @@ def post_rating_pkg(pkgname):
         except SQLAlchemyError, err:
             SESSION.rollback()
             output['output'] = 'notok'
-            output['error'] = err.message
+            output['error'] = 'You have already rated this package'
             httpcode = 500
     else:
         output['output'] = 'notok'
