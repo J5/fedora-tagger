@@ -364,6 +364,8 @@ class Rating(DeclarativeBase):
     package_id = Column(Integer, ForeignKey('package.id'))
     rating = Column(Integer, nullable=False)
 
+    package = relation('Package')
+
     @classmethod
     def rating_of_package(cls, session, pkgid):
         """ Return the average rating of the package specified by his
@@ -374,6 +376,14 @@ class Rating(DeclarativeBase):
             (integer)
         """
         return session.query(func.avg(cls.rating)).filter_by(package_id=pkgid).one()[0]
+
+    @classmethod
+    def all(cls, session):
+        """ Return the average rating of all the packages in the database.
+
+        :arg session: the session used to query the database
+        """
+        return session.query(cls, func.avg(cls.rating)).group_by(cls.package_id).all()
 
     def __json__(self):
 
