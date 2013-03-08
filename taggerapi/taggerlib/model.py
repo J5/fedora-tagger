@@ -214,7 +214,7 @@ class Package(DeclarativeBase):
 
         result = {
             'name': self.name,
-            'rating': Rating.rating_of_package(session, self.id),
+            'rating': float(Rating.rating_of_package(session, self.id)),
         }
 
         return result
@@ -267,29 +267,9 @@ class Tag(DeclarativeBase):
         return self.like + self.dislike
 
     @classmethod
-    def get_or_create(cls, session, packageid, label):
-        """ Get or Add a Tag entry to the database for a specified
-        package and tag.
-        This function simply tries to find the specified Tag in the
-        database and if that Tag is new, it adds it do the package.
-
-        :arg session: the session used to query the database.
-        :arg packageid: the package identifier from the database
-        :arg label: the tag to associate to the package.
-        """
-        try:
-            tagobj = session.query(cls).filter_by(package_id=packageid
-                ).filter_by(label=label).one()
-        except NoResultFound:
-            tagobj = Tag(package_id=packageid, label=label)
-            session.add(tagobj)
-            session.flush()
-        return tagobj
-
-    @classmethod
-    def get(cls, session, package_id, tag):
+    def get(cls, session, package_id, label):
         return session.query(cls).filter_by(package_id=package_id
-            ).filter_by(label=tag).one()
+            ).filter_by(label=label).one()
 
     def __unicode__(self):
         return self.label + " on " + self.package.name
@@ -383,7 +363,8 @@ class Rating(DeclarativeBase):
 
         :arg session: the session used to query the database
         """
-        return session.query(cls, func.avg(cls.rating)).group_by(cls.package_id).all()
+        return session.query(cls, func.avg(cls.rating)).group_by(
+            cls.package_id, cls.id, cls.user_id, cls.rating).all()
 
     def __json__(self):
 
