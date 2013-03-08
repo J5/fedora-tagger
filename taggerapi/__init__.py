@@ -216,7 +216,7 @@ def post_vote_pkg(pkgname):
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
-    
+
 
 ## Flask application
 
@@ -271,11 +271,10 @@ def rating_pkg(pkgname):
 def rating_pkg_dump():
     """ Returns a tab separated list of the rating of each packages
     """
-    #TODO: we might want to optimize this
     output = []
-    for package in model.Package.all(SESSION):
-        output.append('%s\t%s' % (package.name,
-            model.Rating.rating_of_package(SESSION, package.id)))
+    for (ratingobj, rating) in model.Rating.all(SESSION):
+        output.append('%s\t%s' % (ratingobj.package.name,
+            rating))
     return flask.Response( '\n'.join(output), mimetype='text/plain')
 
 @APP.route('/vote/<pkgname>/', methods=['PUT'])
