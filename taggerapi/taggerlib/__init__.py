@@ -47,7 +47,6 @@ def add_tag(session, pkgname, tag, ipaddress):
     package = model.Package.by_name(session, pkgname)
     user = model.FASUser.get_or_create(session, ipaddress)
     tagobj = model.Tag.get_or_create(session, package.id, tag)
-    tagobj.like += 1
     session.add(tagobj)
     voteobj = model.Vote(user_id=user.id, tag_id=tagobj.id, like=True)
     session.add(voteobj)
