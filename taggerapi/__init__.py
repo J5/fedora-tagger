@@ -39,7 +39,8 @@ import taggerlib.model as model
 APP = flask.Flask(__name__)
 # set up FAS
 APP.config.from_object('taggerapi.default_config')
-#APP.config.from_envvar('TAGGERAPI_CONFIG')
+if 'TAGGERAPI_CONFIG' in os.environ:
+    APP.config.from_envvar('TAGGERAPI_CONFIG')
 SESSION = taggerlib.create_session(APP.config['DB_URL'])
 
 
