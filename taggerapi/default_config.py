@@ -18,6 +18,10 @@
 # Refer to the README.rst and LICENSE files for full details of the license
 # -*- coding: utf-8 -*-
 
+"""
+Default configuration for taggerapi
+"""
+
 
 # url to the database server:
 DB_URL = 'sqlite:////var/tmp/taggerapi.sqlite'
