@@ -4,5 +4,5 @@ flask
 sqlalchemy
 wtforms
 Flask-wtf
-psycopg2
+#psycopg2 ## Not needed for testing only when working with postgresql
 kitchen
