@@ -187,11 +187,12 @@ class Package(DeclarativeBase):
         for tag in self.tags:
             tags.append(tag.__json__())
 
+        rating = Rating.rating_of_package(session, self.id) or -1
         result = {
             'name': self.name,
             'summary': self.summary,
             'tags': tags,
-            'rating': Rating.rating_of_package(session, self.id),
+            'rating': float(rating),
             'icon': self.icon,
         }
 
@@ -212,9 +213,10 @@ class Package(DeclarativeBase):
 
     def __rating_json__(self, session):
 
+        rating = Rating.rating_of_package(session, self.id) or -1
         result = {
             'name': self.name,
-            'rating': float(Rating.rating_of_package(session, self.id)),
+            'rating': float(rating),
         }
 
         return result
@@ -364,7 +366,7 @@ class Rating(DeclarativeBase):
         :arg session: the session used to query the database
         """
         return session.query(cls, func.avg(cls.rating)).group_by(
-            cls.package_id, cls.id, cls.user_id, cls.rating).all()
+            cls.package_id).all()
 
     def __json__(self):
 
