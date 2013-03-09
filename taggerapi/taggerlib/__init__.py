@@ -66,7 +66,7 @@ def add_rating(session, pkgname, rating, ipaddress):
     package = model.Package.by_name(session, pkgname)
     user = model.FASUser.get_or_create(session, ipaddress)
     ratingobj = model.Rating(package_id=package.id, user_id=user.id,
-        rating=rating)
+                             rating=rating)
     session.add(ratingobj)
     session.flush()
     return 'Rating "%s" added to the package "%s"' % (rating, pkgname)
@@ -80,15 +80,15 @@ def add_vote(session, pkgname, tag, vote, ipaddress):
         tagobj = model.Tag.get(session, package.id, tag)
     except SQLAlchemyError, err:
         raise TaggerapiException('This tag could not be found associated'
-        ' to this package')
+                                 ' to this package')
     verb = 'changed'
     try:
         # if the vote already exist, replace it
         voteobj = model.Vote.get(session, user_id=user.id,
-            tag_id=tagobj.id)
+                                 tag_id=tagobj.id)
         if voteobj.like == vote:
             return 'Your vote on the tag "%s" for the package "%s" did ' \
-            'not changed' %(tag, pkgname)
+                   'not changed' %(tag, pkgname)
         else:
             if voteobj.like:
                 tagobj.like -= 1

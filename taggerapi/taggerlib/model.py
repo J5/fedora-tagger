@@ -26,7 +26,7 @@ from datetime import datetime
 WITH_FEDMSG = True
 try:
     import fedmsg
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     WITH_FEDMSG = False
 
 from sqlalchemy import *
@@ -39,7 +39,7 @@ from sqlalchemy.types import Integer, Unicode
 
 try:
     from hashlib import md5
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     import md5
 
 from kitchen.text.converters import to_unicode
@@ -65,7 +65,7 @@ def create_tables(db_url, alembic_ini=None, debug=False):
     engine = create_engine(db_url, echo=debug)
     DeclarativeBase.metadata.create_all(engine)
 
-    if alembic_ini is not None: # pragma: no cover
+    if alembic_ini is not None:  # pragma: no cover
         # then, load the Alembic configuration and generate the
         # version table, "stamping" it with the most recent rev:
         from alembic.config import Config
@@ -75,7 +75,6 @@ def create_tables(db_url, alembic_ini=None, debug=False):
 
     scopedsession = scoped_session(sessionmaker(bind=engine))
     return scopedsession
-
 
 
 def tag_sorter(tag1, tag2):
@@ -168,7 +167,7 @@ class Package(DeclarativeBase):
         :raise sqlalchemy.orm.exc.MultipleResultsFound: when multiple
             rows are matching.
         """
-        return session.query(cls).filter_by(name = pkgname).one()
+        return session.query(cls).filter_by(name=pkgname).one()
 
     @classmethod
     def all(cls, session):
@@ -225,9 +224,9 @@ class Package(DeclarativeBase):
     def __jit_data__(self):
         return {
             'hover_html':
-            u"<h2>Package: {name}</h2><ul>" + \
+            u"<h2>Package: {name}</h2><ul>" +
             " ".join([
-                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>"\
+                "<li>{tag.label.label} - {tag.like} / {tag.dislike}</li>"
                 .format(tag=tag) for tag in self.tags
             ]) + "</ul>"
         }
@@ -272,7 +271,7 @@ class Tag(DeclarativeBase):
     @classmethod
     def get(cls, session, package_id, label):
         return session.query(cls).filter_by(package_id=package_id
-            ).filter_by(label=label).one()
+                                            ).filter_by(label=label).one()
 
     def __unicode__(self):
         return self.label + " on " + self.package.name
@@ -323,7 +322,7 @@ class Vote(DeclarativeBase):
     @classmethod
     def get(cls, session, user_id, tag_id):
         return session.query(cls).filter_by(user_id=user_id
-            ).filter_by(tag_id=tag_id).one()
+                                            ).filter_by(tag_id=tag_id).one()
 
     def __json__(self):
 
@@ -358,7 +357,8 @@ class Rating(DeclarativeBase):
         :arg pkgid: the identifier of the package in the database
             (integer)
         """
-        return session.query(func.avg(cls.rating)).filter_by(package_id=pkgid).one()[0]
+        return session.query(func.avg(cls.rating)
+                            ).filter_by(package_id=pkgid).one()[0]
 
     @classmethod
     def all(cls, session):
@@ -366,8 +366,8 @@ class Rating(DeclarativeBase):
 
         :arg session: the session used to query the database
         """
-        return session.query(cls, func.avg(cls.rating)).group_by(
-            cls.package_id).all()
+        return session.query(cls, func.avg(cls.rating)
+                            ).group_by(cls.package_id).all()
 
     def __json__(self):
 
@@ -378,7 +378,6 @@ class Rating(DeclarativeBase):
         }
 
         return result
-
 
 
 class FASUser(DeclarativeBase):
@@ -417,9 +416,10 @@ class FASUser(DeclarativeBase):
         changed = rank != _rank
 
         # And it didn't change to last place.  We check last_place only to try
-        # and avoid spamming the fedmsg bus.  We have a number of users who have
-        # logged in once, and never voted.  Everytime a *new* user logs in and
-        # votes once, *all* the users in last place get bumped down one notch.
+        # and avoid spamming the fedmsg bus.  We have a number of users who
+        # have logged in once, and never voted.  Everytime a *new* user logs
+        # in and votes once, *all* the users in last place get bumped down
+        # one notch.
         # No need to spew that to the message bus.
         is_last = rank == len(lookup)
 

@@ -56,22 +56,24 @@ def validate_boolean(form, field):
 class AddTagForm(wtf.Form):
     """ Form used to add a tag to a package. """
     pkgname = wtf.TextField('Package name',
-        [wtf.validators.Required(), validate_package])
+                            [wtf.validators.Required(), validate_package])
     tag = wtf.TextField('Tag', [wtf.validators.Required()])
 
 
 class AddRatingForm(wtf.Form):
     """ Form used to add a rating to a package. """
     pkgname = wtf.TextField('Package name',
-        [wtf.validators.Required(), validate_package])
+                            [wtf.validators.Required(), validate_package]
+                            )
     rating = wtf.IntegerField('Rating', [wtf.validators.Required(),
-        validate_percentage])
+                              validate_percentage])
 
 
 class VoteTagForm(wtf.Form):
     """ Form used to add a rating to a package. """
     pkgname = wtf.TextField('Package name',
-        [wtf.validators.Required(), validate_package])
+                            [wtf.validators.Required(), validate_package]
+                            )
     tag = wtf.TextField('Tag', [wtf.validators.Required()])
     vote = wtf.IntegerField('vote', [wtf.validators.Required(),
-        validate_boolean])
+                            validate_boolean])

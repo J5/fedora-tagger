@@ -41,7 +41,7 @@ import taggerlib.model as model
 APP = flask.Flask(__name__)
 # set up FAS
 APP.config.from_object('taggerapi.default_config')
-if 'TAGGERAPI_CONFIG' in os.environ: # pragma: no cover
+if 'TAGGERAPI_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('TAGGERAPI_CONFIG')
 SESSION = taggerlib.create_session(APP.config['DB_URL'])
 
@@ -101,7 +101,7 @@ def tag_pkg_put(pkgname):
                 item = item.strip()
                 if item:
                     messages.append(taggerlib.add_tag(SESSION, pkgname,
-                        item, ipaddress))
+                                    item, ipaddress))
             SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = messages
@@ -121,7 +121,8 @@ def tag_pkg_put(pkgname):
         if form.errors:
             detail = []
             for error in form.errors:
-                detail.append('%s: %s' % (error, '; '.join(form.errors[error])))
+                detail.append('%s: %s' % (error,
+                              '; '.join(form.errors[error])))
             output['error_detail'] = detail
         httpcode = 500
 
@@ -158,7 +159,7 @@ def rating_pkg_put(pkgname):
         rating = form.rating.data
         try:
             message= taggerlib.add_rating(SESSION, pkgname, rating,
-                flask.request.remote_addr)
+                                          flask.request.remote_addr)
             SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
@@ -178,7 +179,8 @@ def rating_pkg_put(pkgname):
         if form.errors:
             detail = []
             for error in form.errors:
-                detail.append('%s: %s' % (error, '; '.join(form.errors[error])))
+                detail.append('%s: %s' % (error,
+                              '; '.join(form.errors[error])))
             output['error_detail'] = detail
         httpcode = 500
 
@@ -198,7 +200,7 @@ def vote_pkg_put(pkgname):
         vote = int(form.vote.data) == 1
         try:
             message= taggerlib.add_vote(SESSION, pkgname, tag, vote,
-                flask.request.remote_addr)
+                                        flask.request.remote_addr)
             SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
@@ -212,7 +214,8 @@ def vote_pkg_put(pkgname):
         if form.errors:
             detail = []
             for error in form.errors:
-                detail.append('%s: %s' % (error, '; '.join(form.errors[error])))
+                detail.append('%s: %s' % (error,
+                              '; '.join(form.errors[error])))
             output['error_detail'] = detail
         httpcode = 500
 
@@ -259,7 +262,7 @@ def tag_pkg_dump():
         for tag in package.tags:
             tmp.append('%s\t%s' % (package.name, tag.label))
         output.append('\n'.join(tmp))
-    return flask.Response( '\n'.join(output), mimetype='text/plain')
+    return flask.Response('\n'.join(output), mimetype='text/plain')
 
 
 @APP.route('/rating/<pkgname>/', methods=['GET', 'PUT'])
@@ -279,8 +282,8 @@ def rating_pkg_dump():
     output = []
     for (ratingobj, rating) in model.Rating.all(SESSION):
         output.append('%s\t%s' % (ratingobj.package.name,
-            rating))
-    return flask.Response( '\n'.join(output), mimetype='text/plain')
+                      rating))
+    return flask.Response('\n'.join(output), mimetype='text/plain')
 
 
 @APP.route('/vote/<pkgname>/', methods=['PUT'])
