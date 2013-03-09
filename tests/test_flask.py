@@ -26,10 +26,11 @@ taggerapi tests lib.
 __requires__ = ['SQLAlchemy >= 0.7']
 import pkg_resources
 
-from werkzeug import wrappers
+import json
 import unittest
 import sys
 import os
+from werkzeug import wrappers
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import SQLAlchemyError
@@ -65,17 +66,21 @@ class Flasktests(Modeltests):
 
         output = self.app.get('/guake/')
         self.assertEqual(output.status_code, 404)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  "error":'
-                         ' "Package \\"guake\\" not found"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
 
         create_package(self.session)
 
         output = self.app.get('/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "rating": -1.0,\n '
-        ' "icon": "/packages/images/icons/__no_xapian_available__.png",\n'
-        '  "summary": "drop-down terminal for gnome",\n  "name": "guake",\n'
-        '  "tags": []\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['name'], 'guake')
+        self.assertEqual(output['summary'], 'drop-down terminal for gnome')
+        self.assertEqual(output['icon'], '/packages/images/icons/__no_xapian_available__.png')
+        self.assertEqual(output['rating'], -1)
+        self.assertEqual(output['tags'], [])
+        
 
     def test_tag_get(self):
         """ Test the tag_pkg_get function.  """
@@ -85,24 +90,32 @@ class Flasktests(Modeltests):
 
         output = self.app.get('/tag/guake/')
         self.assertEqual(output.status_code, 404)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  "error":'
-                         ' "Package \\"guake\\" not found"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
 
         create_package(self.session)
 
         output = self.app.get('/tag/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "name": "guake",\n  "tags": []\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['name'], 'guake')
+        self.assertEqual(output['tags'], [])
 
         create_tag(self.session)
 
         output = self.app.get('/tag/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "name": "guake",\n  "tags": '
-        '[\n    {\n      "total": 1,\n      "dislike": 0,\n      "tag": '
-        '"gnome",\n      "votes": 1,\n      "like": 1\n    },\n    {\n  '
-        '    "total": 1,\n      "dislike": 0,\n      "tag": "terminal",\n'
-        '      "votes": 1,\n      "like": 1\n    }\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['name'], 'guake')
+        self.assertEqual(output['tags'][0]['tag'], 'gnome')
+        self.assertEqual(output['tags'][0]['votes'], 1)
+        self.assertEqual(output['tags'][0]['like'], 1)
+        self.assertEqual(output['tags'][0]['dislike'], 0)
+        self.assertEqual(output['tags'][1]['tag'], 'terminal')
+        self.assertEqual(output['tags'][0]['votes'], 1)
+        self.assertEqual(output['tags'][0]['like'], 1)
+        self.assertEqual(output['tags'][0]['dislike'], 0)
 
     def test_tag_put(self):
         """ Test the tag_pkg_put function.  """
@@ -111,9 +124,10 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/tag/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "tag: This field is required."\n  ],\n  '
-        '"error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'][0], 'tag: This field is required.')
 
         data = {'pkgname': 'guake', 'tag': 'terminal'}
 
@@ -122,8 +136,9 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/tag/guake/', data=data)
         self.assertEqual(output.status_code, 404)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  "error":'
-                         ' "Package \\"guake\\" not found"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
 
         create_package(self.session)
 
@@ -131,32 +146,42 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/tag/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n  "messages":'
-        ' [\n    "Tag \\"terminal\\" added to the package \\"guake\\""\n'
-        '  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'][0], 
+                          'Tag "terminal" added to the package "guake"')
 
         output = self.app.put('/tag/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error": "This tag is already associated to this package"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 
+                         'This tag is already associated to this package')
 
         wrappers.BaseRequest.remote_addr = 'test2'
         data = {'pkgname': 'guake', 'tag': 'terminal,, gnome'}
 
         output = self.app.put('/tag/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n  '
-        '"messages": [\n    "Tag \\"terminal\\" added to the package '
-        '\\"guake\\"",\n    "Tag \\"gnome\\" added to the package '
-        '\\"guake\\""\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'][0], 
+                          'Tag "terminal" added to the package "guake"')
+        self.assertEqual(output['messages'][1], 
+                          'Tag "gnome" added to the package "guake"')
 
         output = self.app.get('/tag/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "name": "guake",\n  "tags": '
-        '[\n    {\n      "total": 1,\n      "dislike": 0,\n      "tag": '
-        '"gnome",\n      "votes": 1,\n      "like": 1\n    },\n    '
-        '{\n      "total": 2,\n      "dislike": 0,\n      "tag": '
-        '"terminal",\n      "votes": 2,\n      "like": 2\n    }\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['name'], 'guake')
+        self.assertEqual(output['tags'][0]['tag'], 'gnome')
+        self.assertEqual(output['tags'][0]['votes'], 1)
+        self.assertEqual(output['tags'][0]['like'], 1)
+        self.assertEqual(output['tags'][0]['dislike'], 0)
+        self.assertEqual(output['tags'][1]['tag'], 'terminal')
+        self.assertEqual(output['tags'][1]['votes'], 2)
+        self.assertEqual(output['tags'][1]['like'], 2)
+        self.assertEqual(output['tags'][1]['dislike'], 0)
 
     def test_rating_get(self):
         """ Test the rating_pkg_get function.  """
@@ -166,20 +191,25 @@ class Flasktests(Modeltests):
 
         output = self.app.get('/rating/guake/')
         self.assertEqual(output.status_code, 404)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  "error":'
-                         ' "Package \\"guake\\" not found"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
 
         create_package(self.session)
 
         output = self.app.get('/rating/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "rating": -1.0,\n  "name": "guake"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['rating'], -1.0)
+        self.assertEqual(output['name'], 'guake')
 
         create_rating(self.session)
 
         output = self.app.get('/rating/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "rating": 75.0,\n  "name": "guake"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['rating'], 75.0)
+        self.assertEqual(output['name'], 'guake')
 
 
     def test_rating_put(self):
@@ -189,33 +219,41 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "rating: This field is required."\n  ],\n  '
-        '"error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'], 
+                         ["rating: This field is required."])
 
         data = {'pkgname': 'guake', 'rating': '110'}
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "rating: Input is not a percentage"\n  ],'
-        '\n  "error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'],
+                         ["rating: Input is not a percentage"])
 
         data = {'pkgname': 'guake', 'rating': '-1'}
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "rating: Input is not a percentage"\n  ],'
-        '\n  "error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'],
+                         ["rating: Input is not a percentage"])
 
         data = {'pkgname': 'guake', 'rating': 'asd'}
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "rating: This field is required."\n  ],'
-        '\n  "error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'], 
+                         ["rating: This field is required."])
 
         data = {'pkgname': 'guake', 'rating': 100}
 
@@ -224,8 +262,9 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 404)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  "error":'
-                         ' "Package \\"guake\\" not found"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
 
         create_package(self.session)
 
@@ -233,27 +272,32 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n '
-        ' "messages": [\n    "Rating \\"100\\" added to the package '
-        '\\"guake\\""\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'], [
+                         'Rating "100" added to the package "guake"'])
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error": "You have already rated this package"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'You have already rated this package')
 
         wrappers.BaseRequest.remote_addr = 'test2'
         data = {'pkgname': 'guake', 'rating': 50}
 
         output = self.app.put('/rating/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n '
-        ' "messages": [\n    "Rating \\"50\\" added to the package '
-        '\\"guake\\""\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'], [
+                         'Rating "50" added to the package "guake"'])
 
         output = self.app.get('/rating/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "rating": 75.0,\n  "name": "guake"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['rating'], 75.0)
+        self.assertEqual(output['name'], 'guake')
 
 
     def test_vote_put(self):
@@ -264,25 +308,32 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "tag: This field is required."\n  ],\n  '
-        '"error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'], 
+                         ["tag: This field is required."])
 
         data = {'pkgname': 'guake', 'tag': 'terminal', 'vote': '110'}
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "vote: Input must be either -1 (dislike) '
-        'or 1 (like"\n  ],\n  "error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'], 
+                         ['vote: Input must be either -1 (dislike) '
+        'or 1 (like)'])
 
         data = {'pkgname': 'guake', 'tag': 'terminal', 'vote': 'as'}
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error_detail": [\n    "vote: This field is required."\n  ],\n  '
-        '"error": "Invalid input submitted"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Invalid input submitted')
+        self.assertEqual(output['error_detail'], 
+                         ["vote: This field is required."])
 
         ### Test with right input format but non-existing package
         data = {'pkgname': 'guake', 'tag': 'terminal', 'vote': '-1'}
@@ -292,8 +343,10 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 500)
-        self.assertEqual(output.data, '{\n  "output": "notok",\n  '
-        '"error": "This tag could not be found associatedto this package"\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'This tag could not be found '
+                        'associated to this package')
 
         create_package(self.session)
         create_tag(self.session)
@@ -303,31 +356,39 @@ class Flasktests(Modeltests):
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n  '
-        '"messages": [\n    "Vote added to the tag \\"terminal\\"'
-        ' of the package \\"guake\\""\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'], ['Vote added on the tag "terminal"'
+        ' of the package "guake"'])
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n  '
-        '"messages": [\n    "Your vote on the tag \\"terminal\\" for '
-        'the package \\"guake\\" did not changed"\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'], ['Your vote on the tag "terminal" for '
+        'the package "guake" did not changed'])
 
         data = {'pkgname': 'guake', 'tag': 'terminal', 'vote': '1'}
 
         output = self.app.put('/vote/guake/', data=data)
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "output": "ok",\n  '
-        '"messages": [\n    "Vote changed to the tag \\"terminal\\" of '
-        'the package \\"guake\\""\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'], ['Vote changed on the tag "terminal" of '
+        'the package "guake"'])
 
         output = self.app.get('/tag/guake/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, '{\n  "name": "guake",\n  "tags": '
-        '[\n    {\n      "total": 1,\n      "dislike": 0,\n      "tag": '
-        '"gnome",\n      "votes": 1,\n      "like": 1\n    },\n    '
-        '{\n      "total": 2,\n      "dislike": 0,\n      "tag": '
-        '"terminal",\n      "votes": 2,\n      "like": 2\n    }\n  ]\n}')
+        output = json.loads(output.data)
+        self.assertEqual(output['name'], 'guake')
+        self.assertEqual(output['tags'][0]['tag'], 'gnome')
+        self.assertEqual(output['tags'][0]['votes'], 1)
+        self.assertEqual(output['tags'][0]['like'], 1)
+        self.assertEqual(output['tags'][0]['dislike'], 0)
+        self.assertEqual(output['tags'][1]['tag'], 'terminal')
+        self.assertEqual(output['tags'][1]['votes'], 2)
+        self.assertEqual(output['tags'][1]['like'], 2)
+        self.assertEqual(output['tags'][1]['dislike'], 0)
 
     def test_api(self):
         """ Test the front page """
