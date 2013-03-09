@@ -49,7 +49,7 @@ def validate_boolean(form, field):
     value.
     """
     if int(field.data) not in [-1, 1]:
-        raise ValidationError('Input must be either -1 (dislike) or 1 (like')
+        raise ValidationError('Input must be either -1 (dislike) or 1 (like)')
 
 
 class AddTagForm(wtf.Form):
