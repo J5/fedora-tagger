@@ -260,8 +260,10 @@ def tag_pkg_dump():
     for package in model.Package.all(SESSION):
         tmp = []
         for tag in package.tags:
-            tmp.append('%s\t%s' % (package.name, tag.label))
-        output.append('\n'.join(tmp))
+            if tag.label.strip():
+                tmp.append('%s\t%s' % (package.name, tag.label.strip()))
+        if tmp:
+            output.append('\n'.join(tmp))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
 
