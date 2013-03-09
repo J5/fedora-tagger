@@ -73,9 +73,9 @@ def add_rating(session, pkgname, rating, ipaddress):
 
 def add_vote(session, pkgname, tag, vote, ipaddress):
     """ Cast a vote for a tag of a specified package. """
-    package = model.Package.by_name(session, pkgname)
     user = model.FASUser.get_or_create(session, ipaddress)
     try:
+        package = model.Package.by_name(session, pkgname)
         tagobj = model.Tag.get(session, package.id, tag)
     except SQLAlchemyError, err:
         raise TaggerapiException('This tag could not be found associated'
