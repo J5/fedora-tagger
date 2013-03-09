@@ -409,7 +409,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         self.assertEqual(output.data, 'guake\tgnome\n'
         'guake\tterminal\n'
-        'geany\tide\n')
+        'geany\tide')
 
     def test_rating_dump(self):
         """ Test rating_pkg_dump """
