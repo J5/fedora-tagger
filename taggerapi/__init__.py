@@ -27,7 +27,8 @@ import ConfigParser
 import os
 import datetime
 from urlparse import urljoin, urlparse
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
 import flask
 
@@ -39,12 +40,12 @@ import taggerlib.model as model
 APP = flask.Flask(__name__)
 # set up FAS
 APP.config.from_object('taggerapi.default_config')
-if 'TAGGERAPI_CONFIG' in os.environ:
+if 'TAGGERAPI_CONFIG' in os.environ: # pragma: no cover
     APP.config.from_envvar('TAGGERAPI_CONFIG')
 SESSION = taggerlib.create_session(APP.config['DB_URL'])
 
 
-def get_pkg(pkgname):
+def pkg_get(pkgname):
     """ Performs the GET request of pkg. """
     httpcode = 200
     output = {}
@@ -54,15 +55,15 @@ def get_pkg(pkgname):
     except SQLAlchemyError, err:
         SESSION.rollback()
         output['output'] = 'notok'
-        output['error'] = err.message
-        httpcode = 500
+        output['error'] = 'Package "%s" not found' % pkgname
+        httpcode = 404
 
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
 
 
-def get_tag_pkg(pkgname):
+def tag_pkg_get(pkgname):
     """ Performs the GET request of tag_pkg. """
     httpcode = 200
     output = {}
@@ -72,15 +73,15 @@ def get_tag_pkg(pkgname):
     except SQLAlchemyError, err:
         SESSION.rollback()
         output['output'] = 'notok'
-        output['error'] = err.message
-        httpcode = 500
+        output['error'] = 'Package "%s" not found' % pkgname
+        httpcode = 404
 
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
 
 
-def post_tag_pkg(pkgname):
+def tag_pkg_put(pkgname):
     """ Performs the PUT request of tag_pkg. """
     httpcode = 200
     output = {}
@@ -96,15 +97,18 @@ def post_tag_pkg(pkgname):
             messages = []
             ipaddress = flask.request.remote_addr
             for item in tag:
-                messages.append(taggerlib.add_tag(SESSION, pkgname, item,
-                    ipaddress))
+                item = item.strip()
+                if item:
+                    messages.append(taggerlib.add_tag(SESSION, pkgname,
+                        item, ipaddress))
             SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = messages
-        except taggerlib.TaggerapiException, err:
+        except NoResultFound, err:
+            SESSION.rollback()
             output['output'] = 'notok'
-            output['error'] = err.message
-            httpcode = 500
+            output['error'] = 'Package "%s" not found' % pkgname
+            httpcode = 404
         except SQLAlchemyError, err:
             SESSION.rollback()
             output['output'] = 'notok'
@@ -125,7 +129,7 @@ def post_tag_pkg(pkgname):
     return jsonout
 
 
-def get_rating_pkg(pkgname):
+def rating_pkg_get(pkgname):
     """ Performs the GET request of rating_pkg. """
     httpcode = 200
     output = {}
@@ -135,15 +139,15 @@ def get_rating_pkg(pkgname):
     except SQLAlchemyError, err:
         SESSION.rollback()
         output['output'] = 'notok'
-        output['error'] = err.message
-        httpcode = 500
+        output['error'] = 'Package "%s" not found' % pkgname
+        httpcode = 404
 
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
 
 
-def post_rating_pkg(pkgname):
+def rating_pkg_put(pkgname):
     """ Performs the PUT request of rating_pkg. """
     httpcode = 200
     output = {}
@@ -157,10 +161,11 @@ def post_rating_pkg(pkgname):
             SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
-        except taggerlib.TaggerapiException, err:
+        except NoResultFound, err:
+            SESSION.rollback()
             output['output'] = 'notok'
-            output['error'] = err.message
-            httpcode = 500
+            output['error'] = 'Package "%s" not found' % pkgname
+            httpcode = 404
         except SQLAlchemyError, err:
             SESSION.rollback()
             output['output'] = 'notok'
@@ -180,7 +185,8 @@ def post_rating_pkg(pkgname):
     jsonout.status_code = httpcode
     return jsonout
 
-def post_vote_pkg(pkgname):
+
+def vote_pkg_put(pkgname):
     """ Performs the PUT request of vote_tag_pkg. """
     httpcode = 200
     output = {}
@@ -196,11 +202,6 @@ def post_vote_pkg(pkgname):
             output['output'] = 'ok'
             output['messages'] = [message]
         except taggerlib.TaggerapiException, err:
-            output['output'] = 'notok'
-            output['error'] = err.message
-            httpcode = 500
-        except SQLAlchemyError, err:
-            SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = err.message
             httpcode = 500
@@ -234,16 +235,17 @@ def pkg(pkgname):
     """ Returns all known information about a package including it's
     icon, it's rating, it's tags...
     """
-    return get_pkg(pkgname)
+    return pkg_get(pkgname)
+
 
 @APP.route('/tag/<pkgname>/', methods=['GET', 'PUT'])
 def tag_pkg(pkgname):
     """ Returns the tags associated with a package
     """
     if flask.request.method == 'GET':
-        return get_tag_pkg(pkgname)
+        return tag_pkg_get(pkgname)
     elif flask.request.method == 'PUT':
-        return post_tag_pkg(pkgname)
+        return tag_pkg_put(pkgname)
 
 
 @APP.route('/tag/dump/')
@@ -264,9 +266,10 @@ def rating_pkg(pkgname):
     """ Returns the rating associated with a package
     """
     if flask.request.method == 'GET':
-        return get_rating_pkg(pkgname)
+        return rating_pkg_get(pkgname)
     elif flask.request.method == 'PUT':
-        return post_rating_pkg(pkgname)
+        return rating_pkg_put(pkgname)
+
 
 @APP.route('/rating/dump/')
 def rating_pkg_dump():
@@ -278,11 +281,12 @@ def rating_pkg_dump():
             rating))
     return flask.Response( '\n'.join(output), mimetype='text/plain')
 
+
 @APP.route('/vote/<pkgname>/', methods=['PUT'])
 def vote_tag_pkg(pkgname):
     """ Vote on a specific tag of a package
     """
-    return post_vote_pkg(pkgname)
+    return vote_pkg_put(pkgname)
 
 
 if __name__ == '__main__':  # pragma: no cover
