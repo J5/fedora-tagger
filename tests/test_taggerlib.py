@@ -143,7 +143,7 @@ class TaggerLibtests(Modeltests):
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
                                            'terminal', False , 'pingou')
-        self.assertEqual(out, 'Vote changed to the tag "terminal" of the'
+        self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
 
         self.assertEqual(2, len(pkg.tags))
@@ -156,7 +156,7 @@ class TaggerLibtests(Modeltests):
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
                                            'terminal', True , 'toshio')
-        self.assertEqual(out, 'Vote added to the tag "terminal" of the'
+        self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
 
         self.assertEqual(2, len(pkg.tags))
@@ -169,7 +169,7 @@ class TaggerLibtests(Modeltests):
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
                                            'terminal', True , 'pingou')
-        self.assertEqual(out, 'Vote changed to the tag "terminal" of the'
+        self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
 
         self.assertEqual(2, len(pkg.tags))
@@ -182,7 +182,7 @@ class TaggerLibtests(Modeltests):
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
                                            'terminal', False , 'kevin')
-        self.assertEqual(out, 'Vote added to the tag "terminal" of the'
+        self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
 
         self.assertEqual(2, len(pkg.tags))
