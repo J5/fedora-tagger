@@ -158,7 +158,7 @@ def rating_pkg_put(pkgname):
         pkgname = form.pkgname.data
         rating = form.rating.data
         try:
-            message= taggerlib.add_rating(SESSION, pkgname, rating,
+            message = taggerlib.add_rating(SESSION, pkgname, rating,
                                           flask.request.remote_addr)
             SESSION.commit()
             output['output'] = 'ok'
@@ -199,7 +199,7 @@ def vote_pkg_put(pkgname):
         tag = form.tag.data
         vote = int(form.vote.data) == 1
         try:
-            message= taggerlib.add_vote(SESSION, pkgname, tag, vote,
+            message = taggerlib.add_vote(SESSION, pkgname, tag, vote,
                                         flask.request.remote_addr)
             SESSION.commit()
             output['output'] = 'ok'
