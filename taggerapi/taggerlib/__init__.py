@@ -79,7 +79,7 @@ def add_vote(session, pkgname, tag, vote, ipaddress):
         tagobj = model.Tag.get(session, package.id, tag)
     except SQLAlchemyError, err:
         raise TaggerapiException('This tag could not be found associated'
-        'to this package')
+        ' to this package')
     verb = 'changed'
     try:
         # if the vote already exist, replace it
@@ -107,7 +107,7 @@ def add_vote(session, pkgname, tag, vote, ipaddress):
     session.add(tagobj)
     session.add(voteobj)
     session.flush()
-    return 'Vote %s to the tag "%s" of the package "%s"' % (verb, tag, pkgname)
+    return 'Vote %s on the tag "%s" of the package "%s"' % (verb, tag, pkgname)
 
 
 class TaggerapiException(Exception):
