@@ -364,7 +364,7 @@ class Rating(DeclarativeBase):
     package_id = Column(Integer, ForeignKey('package.id'))
     rating = Column(Integer, nullable=False)
 
-    package = relation('Package')
+    packages = relation('Package')
 
     @classmethod
     def rating_of_package(cls, session, pkgid):
@@ -386,6 +386,21 @@ class Rating(DeclarativeBase):
         """
         return session.query(cls, func.avg(cls.rating)
                             ).group_by(cls.package_id).all()
+
+    @classmethod
+    def by_rating(cls, session, ratingscore):
+        """ Return all the packages in the database having the specified
+        rating.
+
+        :arg session: the session used to query the database
+        """
+        stmt = session.query(Rating.id,
+                            func.avg(Rating.rating).label('avg')
+                             ).group_by(Rating.package_id).subquery()
+        rating = session.query(Rating).filter(Rating.id == stmt.c.id
+                                     ).filter(stmt.c.avg==ratingscore
+                                     ).all()
+        return rating
 
     def __json__(self):
 
