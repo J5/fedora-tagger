@@ -170,6 +170,15 @@ class Package(DeclarativeBase):
         return session.query(cls).filter_by(name=pkgname).one()
 
     @classmethod
+    def random(cls, session):
+        """ Returns a random package from the database.
+
+        :arg session: the session used to query the database
+        :arg pkgname: the name of the package (string)
+        """
+        return session.query(cls).order_by(func.random()).first()
+
+    @classmethod
     def all(cls, session):
         """ Returns all Package entries in the database.
 
