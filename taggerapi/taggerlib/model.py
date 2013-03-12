@@ -120,7 +120,7 @@ class Package(DeclarativeBase):
     def _get_xapian_data(self):
         xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
         if not os.path.exists(xapian_dir):
-            NO_XAP = '__no_xapian_available__'
+            NO_XAP = 'package_128x128'
             keys = ['icon', 'summary']
             dumb_data = dict([(key, NO_XAP) for key in keys])
             return dumb_data
@@ -147,7 +147,7 @@ class Package(DeclarativeBase):
     def icon(self):
         result = self._get_xapian_data()
         if result:
-            return "/packages/images/icons/%s.png" % result['icon']
+            return "https://apps.fedoraproject.org/packages/images/icons/%s.png" % result['icon']
 
     @property
     def xapian_summary(self):
