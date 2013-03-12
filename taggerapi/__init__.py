@@ -286,6 +286,23 @@ def index():
     """
     return flask.render_template('api.html')
 
+@APP.route('/random/')
+def pkg_random():
+    """ Returns a random package from the database.
+    """
+    httpcode = 200
+    output = {}
+
+    package = model.Package.random(SESSION)
+    if not package:
+        output['output'] = 'notok'
+        output['error'] = 'No package could be found'
+    else:
+        output = package.__json__(SESSION)
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
 
 @APP.route('/<pkgname>/')
 def pkg(pkgname):
