@@ -79,10 +79,10 @@ class Flasktests(Modeltests):
         self.assertEqual(output['icon'], '/packages/images/icons/__no_xapian_available__.png')
         self.assertEqual(output['rating'], -1)
         self.assertEqual(output['tags'], [])
-        
 
-    def test_tag_get(self):
-        """ Test the tag_pkg_get function.  """
+
+    def test_pkg_get_tag(self):
+        """ Test the pkg_get_tag function.  """
 
         output = self.app.get('/guake/tag')
         self.assertEqual(output.status_code, 301)
@@ -115,6 +115,28 @@ class Flasktests(Modeltests):
         self.assertEqual(output['tags'][0]['votes'], 1)
         self.assertEqual(output['tags'][0]['like'], 1)
         self.assertEqual(output['tags'][0]['dislike'], 0)
+
+    def test_tag_get(self):
+        """ Test the tag_get function.  """
+
+        output = self.app.get('/tag/gnome')
+        self.assertEqual(output.status_code, 301)
+
+        output = self.app.get('/tag/gnome/')
+        self.assertEqual(output.status_code, 404)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Tag "gnome" not found')
+
+        create_package(self.session)
+        create_tag(self.session)
+
+        output = self.app.get('/tag/gnome/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output['tag'], 'gnome')
+        self.assertEqual(len(output['packages']), 2)
+        self.assertEqual(output['packages'][0]['package'], 'guake')
 
     def test_tag_put(self):
         """ Test the tag_pkg_put function.  """
@@ -182,8 +204,8 @@ class Flasktests(Modeltests):
         self.assertEqual(output['tags'][1]['like'], 2)
         self.assertEqual(output['tags'][1]['dislike'], 0)
 
-    def test_rating_get(self):
-        """ Test the rating_pkg_get function.  """
+    def test_pkg_get_rating(self):
+        """ Test the pkg_get_rating function.  """
 
         output = self.app.get('/guake/rating')
         self.assertEqual(output.status_code, 301)
@@ -209,6 +231,26 @@ class Flasktests(Modeltests):
         output = json.loads(output.data)
         self.assertEqual(output['rating'], 75.0)
         self.assertEqual(output['name'], 'guake')
+
+    #def test_rating_get(self):
+        #""" Test the rating_get function.  """
+
+        #output = self.app.get('/rating/guake')
+        #self.assertEqual(output.status_code, 301)
+
+        #output = self.app.get('/guake/rating/')
+        #self.assertEqual(output.status_code, 404)
+        #output = json.loads(output.data)
+        #self.assertEqual(output['output'], 'notok')
+        #self.assertEqual(output['error'], 'Package "guake" not found')
+
+        #create_package(self.session)
+
+        #output = self.app.get('/guake/rating/')
+        #self.assertEqual(output.status_code, 200)
+        #output = json.loads(output.data)
+        #self.assertEqual(output['rating'], -1.0)
+        #self.assertEqual(output['name'], 'guake')
 
 
     def test_rating_put(self):
@@ -251,7 +293,7 @@ class Flasktests(Modeltests):
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'notok')
         self.assertEqual(output['error'], 'Invalid input submitted')
-        self.assertEqual(output['error_detail'], 
+        self.assertEqual(output['error_detail'],
                          ["rating: This field is required."])
 
         data = {'pkgname': 'guake', 'rating': 100}
@@ -409,7 +451,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         self.assertEqual(output.data, 'guake\tgnome\n'
         'guake\tterminal\n'
-        'geany\tide')
+        'geany\tgnome\ngeany\tide')
 
     def test_rating_dump(self):
         """ Test rating_pkg_dump """

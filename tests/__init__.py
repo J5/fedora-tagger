@@ -94,6 +94,7 @@ def create_tag(session):
     taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', 'pingou')
     taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', 'pingou')
     taggerapi.taggerlib.add_tag(session, 'geany', 'ide', 'pingou')
+    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', 'pingou')
 
     session.commit()
 

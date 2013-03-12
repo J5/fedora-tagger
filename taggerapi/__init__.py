@@ -100,11 +100,27 @@ def pkg_get_rating(pkgname):
     return jsonout
 
 
-def tag_pkg_get(Tag):
+def tag_pkg_get(tag):
     """ Performs the GET request of tag_pkg.
     Returns all the package associated to this tag.
     """
-    pass
+    httpcode = 200
+    output = {}
+    try:
+        package = model.Tag.by_label(SESSION, tag)
+        if not package:
+            raise SQLAlchemyError()
+        output = {'tag': tag}
+        output['packages'] = [pkg.__pkg_json__() for pkg in package]
+    except SQLAlchemyError, err:
+        SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = 'Tag "%s" not found' % tag
+        httpcode = 404
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
 
 
 def tag_pkg_put(pkgname):
