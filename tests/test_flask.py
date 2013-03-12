@@ -76,7 +76,8 @@ class Flasktests(Modeltests):
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
         self.assertEqual(output['summary'], 'drop-down terminal for gnome')
-        self.assertEqual(output['icon'], '/packages/images/icons/__no_xapian_available__.png')
+        self.assertEqual(output['icon'],'https://apps.fedoraproject.org/'
+                         'packages/images/icons/package_128x128.png')
         self.assertEqual(output['rating'], -1)
         self.assertEqual(output['tags'], [])
 
@@ -474,6 +475,25 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         self.assertEqual(output.data, 'guake\t75.0\n'
         'geany\t100.0')
+
+    def test_random(self):
+        """ Test pkg_random """
+        output = self.app.get('/random/')
+        self.assertEqual(output.status_code, 404)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'No package could be found')
+
+        create_package(self.session)
+        create_rating(self.session)
+
+        output = self.app.get('/random/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        keys = output.keys()
+        keys.sort()
+        self.assertEqual(output.keys(), ['rating', 'summary', 'name',
+                         'tags', 'icon'])
 
 
 if __name__ == '__main__':
