@@ -64,8 +64,8 @@ def pkg_get(pkgname):
     return jsonout
 
 
-def tag_pkg_get(pkgname):
-    """ Performs the GET request of tag_pkg. """
+def pkg_get_tag(pkgname):
+    """ Performs the GET request of pkg_tag. """
     httpcode = 200
     output = {}
     try:
@@ -80,6 +80,31 @@ def tag_pkg_get(pkgname):
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
+
+
+def pkg_get_rating(pkgname):
+    """ Performs the GET request of pkg_rating. """
+    httpcode = 200
+    output = {}
+    try:
+        package = model.Package.by_name(SESSION, pkgname)
+        output = package.__rating_json__(SESSION)
+    except SQLAlchemyError, err:
+        SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = 'Package "%s" not found' % pkgname
+        httpcode = 404
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
+
+def tag_pkg_get(Tag):
+    """ Performs the GET request of tag_pkg.
+    Returns all the package associated to this tag.
+    """
+    pass
 
 
 def tag_pkg_put(pkgname):
@@ -131,22 +156,11 @@ def tag_pkg_put(pkgname):
     return jsonout
 
 
-def rating_pkg_get(pkgname):
-    """ Performs the GET request of rating_pkg. """
-    httpcode = 200
-    output = {}
-    try:
-        package = model.Package.by_name(SESSION, pkgname)
-        output = package.__rating_json__(SESSION)
-    except SQLAlchemyError, err:
-        SESSION.rollback()
-        output['output'] = 'notok'
-        output['error'] = 'Package "%s" not found' % pkgname
-        httpcode = 404
-
-    jsonout = flask.jsonify(output)
-    jsonout.status_code = httpcode
-    return jsonout
+def rating_pkg_get(rating):
+    """ Performs the GET request of rating pkg.
+    Returns the list of packages having this rating.
+    """
+    pass
 
 
 def rating_pkg_put(pkgname):
@@ -240,6 +254,22 @@ def pkg(pkgname):
     icon, it's rating, it's tags...
     """
     return pkg_get(pkgname)
+
+
+@APP.route('/<pkgname>/tag/')
+def pkg_tag(pkgname):
+    """ Returns all known information about a package including it's
+    icon, it's rating, it's tags...
+    """
+    return pkg_get_tag(pkgname)
+
+
+@APP.route('/<pkgname>/rating/')
+def pkg_rating(pkgname):
+    """ Returns all known information about a package including it's
+    icon, it's rating, it's tags...
+    """
+    return pkg_get_rating(pkgname)
 
 
 @APP.route('/tag/<pkgname>/', methods=['GET', 'PUT'])

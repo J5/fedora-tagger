@@ -84,10 +84,10 @@ class Flasktests(Modeltests):
     def test_tag_get(self):
         """ Test the tag_pkg_get function.  """
 
-        output = self.app.get('/tag/guake')
+        output = self.app.get('/guake/tag')
         self.assertEqual(output.status_code, 301)
 
-        output = self.app.get('/tag/guake/')
+        output = self.app.get('/guake/tag/')
         self.assertEqual(output.status_code, 404)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'notok')
@@ -95,7 +95,7 @@ class Flasktests(Modeltests):
 
         create_package(self.session)
 
-        output = self.app.get('/tag/guake/')
+        output = self.app.get('/guake/tag/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
@@ -103,7 +103,7 @@ class Flasktests(Modeltests):
 
         create_tag(self.session)
 
-        output = self.app.get('/tag/guake/')
+        output = self.app.get('/guake/tag/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
@@ -169,7 +169,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['messages'][1], 
                           'Tag "gnome" added to the package "guake"')
 
-        output = self.app.get('/tag/guake/')
+        output = self.app.get('/guake/tag/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
@@ -185,10 +185,10 @@ class Flasktests(Modeltests):
     def test_rating_get(self):
         """ Test the rating_pkg_get function.  """
 
-        output = self.app.get('/rating/guake')
+        output = self.app.get('/guake/rating')
         self.assertEqual(output.status_code, 301)
 
-        output = self.app.get('/rating/guake/')
+        output = self.app.get('/guake/rating/')
         self.assertEqual(output.status_code, 404)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'notok')
@@ -196,7 +196,7 @@ class Flasktests(Modeltests):
 
         create_package(self.session)
 
-        output = self.app.get('/rating/guake/')
+        output = self.app.get('/guake/rating/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['rating'], -1.0)
@@ -204,7 +204,7 @@ class Flasktests(Modeltests):
 
         create_rating(self.session)
 
-        output = self.app.get('/rating/guake/')
+        output = self.app.get('/guake/rating/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['rating'], 75.0)
@@ -292,7 +292,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['messages'], [
                          'Rating "50" added to the package "guake"'])
 
-        output = self.app.get('/rating/guake/')
+        output = self.app.get('/guake/rating/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['rating'], 75.0)
@@ -376,7 +376,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['messages'], ['Vote changed on the tag "terminal" of '
         'the package "guake"'])
 
-        output = self.app.get('/tag/guake/')
+        output = self.app.get('/guake/tag/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
