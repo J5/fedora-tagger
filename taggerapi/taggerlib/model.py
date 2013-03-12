@@ -246,6 +246,8 @@ class Tag(DeclarativeBase):
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
 
+    packages = relation('Package')
+
     @property
     def banned(self):
         """ We want to exclude some tags permanently.
@@ -273,6 +275,10 @@ class Tag(DeclarativeBase):
         return session.query(cls).filter_by(package_id=package_id
                                             ).filter_by(label=label).one()
 
+    @classmethod
+    def by_label(cls, session, label):
+        return session.query(cls).filter_by(label=label).all()
+
     def __unicode__(self):
         return self.label + " on " + self.package.name
 
@@ -284,6 +290,18 @@ class Tag(DeclarativeBase):
             'dislike': self.dislike,
             'total': self.total,
             'votes': self.total_votes,
+        }
+
+        return result
+
+    def __pkg_json__(self):
+        result = {
+            'tag': self.label,
+            'like': self.like,
+            'dislike': self.dislike,
+            'total': self.total,
+            'votes': self.total_votes,
+            'package': self.packages.name
         }
 
         return result
