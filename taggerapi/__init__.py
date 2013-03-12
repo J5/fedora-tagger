@@ -295,6 +295,7 @@ def pkg_random():
 
     package = model.Package.random(SESSION)
     if not package:
+        httpcode = 404
         output['output'] = 'notok'
         output['error'] = 'No package could be found'
     else:
