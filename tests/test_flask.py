@@ -232,25 +232,33 @@ class Flasktests(Modeltests):
         self.assertEqual(output['rating'], 75.0)
         self.assertEqual(output['name'], 'guake')
 
-    #def test_rating_get(self):
-        #""" Test the rating_get function.  """
+    def test_rating_get(self):
+        """ Test the rating_get function.  """
 
-        #output = self.app.get('/rating/guake')
-        #self.assertEqual(output.status_code, 301)
 
-        #output = self.app.get('/guake/rating/')
-        #self.assertEqual(output.status_code, 404)
-        #output = json.loads(output.data)
-        #self.assertEqual(output['output'], 'notok')
-        #self.assertEqual(output['error'], 'Package "guake" not found')
+        output = self.app.get('/rating/75')
+        self.assertEqual(output.status_code, 301)
 
-        #create_package(self.session)
+        output = self.app.get('/rating/76/')
+        self.assertEqual(output.status_code, 404)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'],
+                         'No packages found with rating "76.0"')
 
-        #output = self.app.get('/guake/rating/')
-        #self.assertEqual(output.status_code, 200)
-        #output = json.loads(output.data)
-        #self.assertEqual(output['rating'], -1.0)
-        #self.assertEqual(output['name'], 'guake')
+        output = self.app.get('/rating/as/')
+        self.assertEqual(output.status_code, 500)
+
+        create_package(self.session)
+        create_rating(self.session)
+
+
+        output = self.app.get('/rating/75/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output['rating'], 75)
+        self.assertEqual(len(output['packages']), 1)
+        self.assertEqual(output['packages'][0], 'guake')
 
 
     def test_rating_put(self):

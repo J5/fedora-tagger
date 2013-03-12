@@ -176,7 +176,30 @@ def rating_pkg_get(rating):
     """ Performs the GET request of rating pkg.
     Returns the list of packages having this rating.
     """
-    pass
+    httpcode = 200
+    output = {}
+    try:
+        rating = float(rating)
+        rates = model.Rating.by_rating(SESSION, rating)
+        if not rates:
+            raise SQLAlchemyError()
+        output = {'rating': rating}
+        output['packages'] = [rate.packages.name for rate in rates]
+    except ValueError, err:
+        SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = 'Invalid rating provided "%s"' % rating
+        httpcode = 500
+    except SQLAlchemyError, err:
+        print err
+        SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = 'No packages found with rating "%s"' % rating
+        httpcode = 404
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
 
 
 def rating_pkg_put(pkgname):
@@ -329,7 +352,7 @@ def rating_pkg_dump():
     """
     output = []
     for (ratingobj, rating) in model.Rating.all(SESSION):
-        output.append('%s\t%s' % (ratingobj.package.name,
+        output.append('%s\t%s' % (ratingobj.packages.name,
                       rating))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
