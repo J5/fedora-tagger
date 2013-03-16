@@ -198,8 +198,8 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(['raw', 'summary'], out.keys())
         self.assertEqual(0, out['summary']['with_tags'])
         self.assertEqual(0, out['summary']['no_tags'])
-        self.assertEqual('0.00', out['summary']['tags_per_package'])
-        self.assertEqual('0.00', out['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(0, out['summary']['tags_per_package'])
+        self.assertEqual(0, out['summary']['tags_per_package_no_zeroes'])
         self.assertEqual(0, out['summary']['total_packages'])
         self.assertEqual(0, out['summary']['total_unique_tags'])
 
@@ -208,8 +208,8 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(['raw', 'summary'], out.keys())
         self.assertEqual(0, out['summary']['with_tags'])
         self.assertEqual(3, out['summary']['no_tags'])
-        self.assertEqual('0.00', out['summary']['tags_per_package'])
-        self.assertEqual('0.00', out['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(0, out['summary']['tags_per_package'])
+        self.assertEqual(0, out['summary']['tags_per_package_no_zeroes'])
         self.assertEqual(3, out['summary']['total_packages'])
         self.assertEqual(0, out['summary']['total_unique_tags'])
 
@@ -218,8 +218,8 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(['raw', 'summary'], out.keys())
         self.assertEqual(2, out['summary']['with_tags'])
         self.assertEqual(1, out['summary']['no_tags'])
-        self.assertEqual('1.33', out['summary']['tags_per_package'])
-        self.assertEqual('2.00', out['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(4/float(3), out['summary']['tags_per_package'])
+        self.assertEqual(2, out['summary']['tags_per_package_no_zeroes'])
         self.assertEqual(3, out['summary']['total_packages'])
         self.assertEqual(3, out['summary']['total_unique_tags'])
 

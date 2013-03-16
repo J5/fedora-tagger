@@ -142,8 +142,8 @@ def statistics(session):
             'total_unique_tags': n_tags,
             'no_tags': no_tags,
             'with_tags': with_tags,
-            'tags_per_package': "%.2f" % tags_per_package,
-            'tags_per_package_no_zeroes': "%.2f" % tags_per_package_no_zeroes,
+            'tags_per_package': tags_per_package,
+            'tags_per_package_no_zeroes': tags_per_package_no_zeroes,
         },
     }
 
