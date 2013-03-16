@@ -111,6 +111,43 @@ def add_vote(session, pkgname, tag, vote, ipaddress):
     return 'Vote %s on the tag "%s" of the package "%s"' % (verb, tag, pkgname)
 
 
+def statistics(session):
+    """ Handles the /statistics path.
+
+    Returns an HTML table of statistics on tagged packages.
+    """
+
+    packages = model.Package.all(session)
+    n_tags = model.Tag.count_unique_label(session)
+    raw_data = dict([(p.name, len(p.tags)) for p in packages])
+
+    n_packs = len(raw_data)
+    no_tags = len([v for v in raw_data.values() if not v])
+    with_tags = n_packs - no_tags
+
+    tags_per_package = 0
+    if n_packs:
+        tags_per_package = sum([len(p.tags) for p in packages]) \
+            / float(n_packs)
+    
+    tags_per_package_no_zeroes = 0
+    if with_tags:
+        tags_per_package_no_zeroes = sum([len(p.tags) for p in packages]) \
+            / float(with_tags)
+
+    return {
+        'raw': raw_data,
+        'summary': {
+            'total_packages': n_packs,
+            'total_unique_tags': n_tags,
+            'no_tags': no_tags,
+            'with_tags': with_tags,
+            'tags_per_package': "%.2f" % tags_per_package,
+            'tags_per_package_no_zeroes': "%.2f" % tags_per_package_no_zeroes,
+        },
+    }
+
+
 class TaggerapiException(Exception):
     """ Generic exception class used to manage exception from taggerapi. """
     pass

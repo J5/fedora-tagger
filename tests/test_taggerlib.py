@@ -37,7 +37,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 
 import taggerapi.taggerlib
 from taggerapi.taggerlib import model
-from tests import Modeltests, create_package
+from tests import Modeltests, create_package, create_tag
 
 
 class TaggerLibtests(Modeltests):
@@ -191,6 +191,37 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, pkg.tags[1].dislike)
         self.assertEqual(2, pkg.tags[1].total)
         self.assertEqual(4, pkg.tags[1].total_votes)
+
+    def test_statistics(self):
+        """ Test the statistics method. """
+        out = taggerapi.taggerlib.statistics(self.session)
+        self.assertEqual(['raw', 'summary'], out.keys())
+        self.assertEqual(0, out['summary']['with_tags'])
+        self.assertEqual(0, out['summary']['no_tags'])
+        self.assertEqual('0.00', out['summary']['tags_per_package'])
+        self.assertEqual('0.00', out['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(0, out['summary']['total_packages'])
+        self.assertEqual(0, out['summary']['total_unique_tags'])
+
+        create_package(self.session)
+        out = taggerapi.taggerlib.statistics(self.session)
+        self.assertEqual(['raw', 'summary'], out.keys())
+        self.assertEqual(0, out['summary']['with_tags'])
+        self.assertEqual(3, out['summary']['no_tags'])
+        self.assertEqual('0.00', out['summary']['tags_per_package'])
+        self.assertEqual('0.00', out['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(3, out['summary']['total_packages'])
+        self.assertEqual(0, out['summary']['total_unique_tags'])
+
+        create_tag(self.session)
+        out = taggerapi.taggerlib.statistics(self.session)
+        self.assertEqual(['raw', 'summary'], out.keys())
+        self.assertEqual(2, out['summary']['with_tags'])
+        self.assertEqual(1, out['summary']['no_tags'])
+        self.assertEqual('1.33', out['summary']['tags_per_package'])
+        self.assertEqual('2.00', out['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(3, out['summary']['total_packages'])
+        self.assertEqual(3, out['summary']['total_unique_tags'])
 
 
 if __name__ == '__main__':
