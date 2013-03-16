@@ -51,11 +51,14 @@ def add_tag(session, pkgname, tag, ipaddress):
     try:
         tagobj = model.Tag.get(session, package.id, tag)
         tagobj.like += 1
+        user.score += 1
     except NoResultFound:
         tagobj = model.Tag(package_id=package.id, label=tag)
         session.add(tagobj)
         session.flush()
+        user.score += 2
     voteobj = model.Vote(user_id=user.id, tag_id=tagobj.id, like=True)
+    session.add(user)
     session.add(voteobj)
     session.flush()
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
@@ -68,6 +71,8 @@ def add_rating(session, pkgname, rating, ipaddress):
     ratingobj = model.Rating(package_id=package.id, user_id=user.id,
                              rating=rating)
     session.add(ratingobj)
+    user.score += 1
+    session.add(user)
     session.flush()
     return 'Rating "%s" added to the package "%s"' % (rating, pkgname)
 
@@ -105,6 +110,8 @@ def add_vote(session, pkgname, tag, vote, ipaddress):
             tagobj.like += 1
         else:
             tagobj.dislike += 1
+        user.score += 0.5
+    session.add(user)
     session.add(tagobj)
     session.add(voteobj)
     session.flush()
