@@ -195,7 +195,7 @@ class TaggerLibtests(Modeltests):
     def test_statistics(self):
         """ Test the statistics method. """
         out = taggerapi.taggerlib.statistics(self.session)
-        self.assertEqual(['raw', 'summary'], out.keys())
+        self.assertEqual(['summary'], out.keys())
         self.assertEqual(0, out['summary']['with_tags'])
         self.assertEqual(0, out['summary']['no_tags'])
         self.assertEqual(0, out['summary']['tags_per_package'])
@@ -205,7 +205,7 @@ class TaggerLibtests(Modeltests):
 
         create_package(self.session)
         out = taggerapi.taggerlib.statistics(self.session)
-        self.assertEqual(['raw', 'summary'], out.keys())
+        self.assertEqual(['summary'], out.keys())
         self.assertEqual(0, out['summary']['with_tags'])
         self.assertEqual(3, out['summary']['no_tags'])
         self.assertEqual(0, out['summary']['tags_per_package'])
@@ -215,7 +215,7 @@ class TaggerLibtests(Modeltests):
 
         create_tag(self.session)
         out = taggerapi.taggerlib.statistics(self.session)
-        self.assertEqual(['raw', 'summary'], out.keys())
+        self.assertEqual(['summary'], out.keys())
         self.assertEqual(2, out['summary']['with_tags'])
         self.assertEqual(1, out['summary']['no_tags'])
         self.assertEqual(4/float(3), out['summary']['tags_per_package'])

@@ -136,7 +136,6 @@ def statistics(session):
             / float(with_tags)
 
     return {
-        'raw': raw_data,
         'summary': {
             'total_packages': n_packs,
             'total_unique_tags': n_tags,
