@@ -390,6 +390,15 @@ def vote_tag_pkg(pkgname):
     return vote_pkg_put(pkgname)
 
 
+@APP.route('/statistics/')
+def statistics():
+    """ Return the statistics of the package/tags in the database
+    """
+    output = taggerlib.statistics(SESSION)
+    jsonout = flask.jsonify(output)
+    return jsonout
+
+
 if __name__ == '__main__':  # pragma: no cover
     import sys
     sys.path.insert(0, '..')

@@ -495,6 +495,45 @@ class Flasktests(Modeltests):
         self.assertEqual(output.keys(), ['rating', 'summary', 'name',
                          'tags', 'icon'])
 
+    def test_statistics(self):
+        """ Test statistics """
+        output = self.app.get('/statistics/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output.keys(), ['raw', 'summary'])
+        self.assertEqual(0, output['summary']['with_tags'])
+        self.assertEqual(0, output['summary']['no_tags'])
+        self.assertEqual(0, output['summary']['tags_per_package'])
+        self.assertEqual(0, output['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(0, output['summary']['total_packages'])
+        self.assertEqual(0, output['summary']['total_unique_tags'])
+
+        create_package(self.session)
+
+        output = self.app.get('/statistics/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(['raw', 'summary'], output.keys())
+        self.assertEqual(0, output['summary']['with_tags'])
+        self.assertEqual(3, output['summary']['no_tags'])
+        self.assertEqual(0, output['summary']['tags_per_package'])
+        self.assertEqual(0, output['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(3, output['summary']['total_packages'])
+        self.assertEqual(0, output['summary']['total_unique_tags'])
+
+        create_tag(self.session)
+
+        output = self.app.get('/statistics/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(['raw', 'summary'], output.keys())
+        self.assertEqual(2, output['summary']['with_tags'])
+        self.assertEqual(1, output['summary']['no_tags'])
+        self.assertEqual(4/float(3), output['summary']['tags_per_package'])
+        self.assertEqual(2, output['summary']['tags_per_package_no_zeroes'])
+        self.assertEqual(3, output['summary']['total_packages'])
+        self.assertEqual(3, output['summary']['total_unique_tags'])
+
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(Flasktests)
