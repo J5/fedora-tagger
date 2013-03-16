@@ -288,6 +288,10 @@ class Tag(DeclarativeBase):
     def by_label(cls, session, label):
         return session.query(cls).filter_by(label=label).all()
 
+    @classmethod
+    def count_unique_label(cls, session):
+        return session.query(func.count(distinct(cls.label))).first()[0]
+
     def __unicode__(self):
         return self.label + " on " + self.package.name
 
