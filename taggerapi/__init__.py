@@ -279,12 +279,19 @@ def vote_pkg_put(pkgname):
 
 ## Flask application
 
+# pylint: disable=W0613
+@APP.teardown_request
+def shutdown_session(exception=None):
+    """ Remove the DB session at the end of each request. """
+    SESSION.remove()
+
 
 @APP.route('/')
 def index():
     """ Displays the information page on how to use the API.
     """
     return flask.render_template('api.html')
+
 
 @APP.route('/random/')
 def pkg_random():
@@ -304,6 +311,7 @@ def pkg_random():
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
+
 
 @APP.route('/<pkgname>/')
 def pkg(pkgname):
