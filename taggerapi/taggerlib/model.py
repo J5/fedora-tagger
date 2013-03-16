@@ -438,6 +438,7 @@ class FASUser(DeclarativeBase):
     email = Column(Unicode(255), default=None)
     notifications_on = Column(Boolean, default=True)
     _rank = Column(Integer, default=-1)
+    score = Column(Integer, nullable=False, default=0)
 
     @property
     def anonymous(self):
