@@ -524,6 +524,29 @@ class FASUser(DeclarativeBase):
             session.flush()
         return user
 
+    @classmethod
+    def top(cls, session, limit=10):
+        """ Return the top contributors ordered by their scores.
+
+        :arg session: the session used to query the database.
+        :kwarg limit: the max number of user to return.
+        """
+        return  session.query(cls
+                             ).order_by(FASUser.score.desc()
+                             ).limit(limit
+                             ).all()
+
+    @classmethod
+    def by_name(cls, session, username):
+        """ Return the user based on the provided username.
+
+        :arg session: the session used to query the database.
+        :arg username: the username of the desired user.
+        """
+        return  session.query(cls
+                             ).filter(FASUser.username == username
+                             ).one()
+
     def __json__(self, visited=None):
         obj = {
             'username': self.username,
