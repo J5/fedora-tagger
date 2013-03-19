@@ -19,6 +19,11 @@
 # -*- coding: utf-8 -*-
 """Backend library"""
 
+import base64
+import random
+import string
+from datetime import datetime
+
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
@@ -181,6 +186,34 @@ def score(session, username):
               }
     return output
 
+
+def generate_api_token(size=30):
+    """ Generate a random string used as token to access the API
+    remotely.
+
+    :kwarg: size, the size of the token to generate, defaults to 30
+        chars.
+    :return: a string, the API token for the user.
+    """
+    token = '%s##' % base64.b64encode('taggerapi')
+    return '%s%s' % (token,
+                     ''.join(random.choice(
+                             string.ascii_lowercase)
+                             for x in range(size - len(token))))
+
+
+def get_api_token(session, user):
+    """ Generate an API token for the specified user.
+    """
+    contributor = model.FASUser.get_or_create(session,
+                                              username=user.username,
+                                              email=user.email)
+    contributor.api_token = generate_api_token(40)
+    contributor.api_date = datetime.today()
+    session.add(contributor)
+    session.flush()
+    return {'name': contributor.username,
+            'token': contributor.api_token}
 
 
 class TaggerapiException(Exception):

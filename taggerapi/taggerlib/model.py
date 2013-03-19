@@ -439,6 +439,8 @@ class FASUser(DeclarativeBase):
     notifications_on = Column(Boolean, default=True)
     _rank = Column(Integer, default=-1)
     score = Column(Integer, nullable=False, default=0)
+    api_token = Column(String(45), default=None)
+    api_date = Column(Date, default=datetime.today())
 
     @property
     def anonymous(self):

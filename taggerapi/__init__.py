@@ -32,6 +32,8 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 import flask
+from flask_fas_openid import FAS
+from functools import wraps
 
 import taggerlib
 import forms as forms
@@ -43,6 +45,9 @@ APP = flask.Flask(__name__)
 APP.config.from_object('taggerapi.default_config')
 if 'TAGGERAPI_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('TAGGERAPI_CONFIG')
+APP.config['SECRET_KEY'] = 'asljdlkhkfhakdg'
+APP.config['FAS_OPENID_CHECK_CERT'] = False
+FAS = FAS(APP)
 SESSION = taggerlib.create_session(APP.config['DB_URL'])
 
 
@@ -278,6 +283,19 @@ def vote_pkg_put(pkgname):
 
 
 ## Flask application
+def fas_login_required(function):
+    """ Flask decorator to ensure that the user is logged in against FAS.
+    To use this decorator you need to have a function named 'auth_login'.
+    Without that function the redirect if the user is not logged in will not
+    work.
+    """
+    @wraps(function)
+    def decorated_function(*args, **kwargs):
+        if flask.g.fas_user is None:
+            return flask.redirect(flask.url_for('auth_login',
+                                                next=flask.request.url))
+        return function(*args, **kwargs)
+    return decorated_function
 
 # pylint: disable=W0613
 @APP.teardown_request
@@ -291,6 +309,32 @@ def index():
     """ Displays the information page on how to use the API.
     """
     return flask.render_template('api.html')
+
+
+@APP.route('/login/', methods=('GET', 'POST'))
+def auth_login():
+    """ Method to log into the application. """
+    if 'next' in flask.request.args:
+        next_url = flask.request.args['next']
+    else:
+        next_url = flask.url_for('index')
+    # If user is already logged in, return them to where they were last
+    if flask.g.fas_user:
+        return flask.redirect(next_url)
+    return FAS.login(return_url=next_url)
+
+
+@APP.route('/token/')
+@fas_login_required
+def generate_token():
+    """ Return the score of the specified user.
+    """
+    user = flask.g.fas_user
+    output = taggerlib.get_api_token(SESSION, user)
+
+    SESSION.commit()
+    jsonout = flask.jsonify(output)
+    return jsonout
 
 
 @APP.route('/random/')
