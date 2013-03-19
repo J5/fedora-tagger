@@ -48,7 +48,8 @@ DROP TABLE tg_user;
 -- Add the score entry to the user table
 
 ALTER TABLE "user" ADD COLUMN score INTEGER NOT NULL DEFAULT 0;
-
+ALTER TABLE "user" ADD COLUMN api_token VARCHAR(50) DEFAULT NULL;
+ALTER TABLE "user" ADD COLUMN api_date DATE DEFAULT CURRENT_DATE;
 
 ---- Add Unique Constraints
 
