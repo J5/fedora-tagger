@@ -399,6 +399,34 @@ def statistics():
     return jsonout
 
 
+@APP.route('/leaderboard/')
+def leaderboard():
+    """ Return the top 10 user, aka the leaderboard
+    """
+    output = taggerlib.leaderboard(SESSION)
+    jsonout = flask.jsonify(output)
+    return jsonout
+
+
+@APP.route('/score/<username>/')
+def score(username):
+    """ Return the score of the specified user.
+    """
+    httpcode = 200
+    output = {}
+
+    try:
+        output = taggerlib.score(SESSION, username)
+    except NoResultFound, err:
+        httpcode = 404
+        output['output'] = 'notok'
+        output['error'] = 'User not found'
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
+
 if __name__ == '__main__':  # pragma: no cover
     import sys
     sys.path.insert(0, '..')
