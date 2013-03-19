@@ -31,6 +31,7 @@ import os
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm.exc import NoResultFound
 
 sys.path.insert(0, os.path.join(os.path.dirname(
     os.path.abspath(__file__)), '..'))
@@ -222,6 +223,44 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(2, out['summary']['tags_per_package_no_zeroes'])
         self.assertEqual(3, out['summary']['total_packages'])
         self.assertEqual(3, out['summary']['total_unique_tags'])
+
+    def test_leaderboard(self):
+        """ Test the leaderboard method. """
+        out = taggerapi.taggerlib.leaderboard(self.session)
+        self.assertEqual([], out.keys())
+
+        create_package(self.session)
+        create_tag(self.session)
+
+        out = taggerapi.taggerlib.leaderboard(self.session)
+        self.assertEqual(out.keys(), [1, 2, 3, 4])
+        self.assertEqual(out[1].keys(), ['score', 'gravatar', 'name'])
+        self.assertEqual(out[1]['name'], 'pingou')
+        self.assertEqual(out[1]['score'], 8)
+        self.assertEqual(out[2]['name'], 'toshio')
+        self.assertEqual(out[2]['score'], 2)
+
+    def test_score(self):
+        """ Test the score method. """
+        self.assertRaises(NoResultFound,
+                          taggerapi.taggerlib.score,
+                          self.session,
+                          'asd'
+                          )
+
+        create_package(self.session)
+        create_tag(self.session)
+
+        out = taggerapi.taggerlib.score(self.session, 'pingou')
+        self.assertEqual(out.keys(), ['score', 'gravatar', 'name'])
+        self.assertEqual(out['name'], 'pingou')
+        self.assertEqual(out['score'], 8)
+
+        out = taggerapi.taggerlib.score(self.session, 'toshio')
+        self.assertEqual(out.keys(), ['score', 'gravatar', 'name'])
+        self.assertEqual(out['name'], 'toshio')
+        self.assertEqual(out['score'], 2)
+
 
 
 if __name__ == '__main__':

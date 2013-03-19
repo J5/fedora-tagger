@@ -119,9 +119,9 @@ def add_vote(session, pkgname, tag, vote, ipaddress):
 
 
 def statistics(session):
-    """ Handles the /statistics path.
+    """ Handles the /statistics/ path.
 
-    Returns an HTML table of statistics on tagged packages.
+    Returns a dictionnary of statistics on tagged packages.
     """
 
     packages = model.Package.all(session)
@@ -136,7 +136,7 @@ def statistics(session):
     if n_packs:
         tags_per_package = sum([len(p.tags) for p in packages]) \
             / float(n_packs)
-    
+
     tags_per_package_no_zeroes = 0
     if with_tags:
         tags_per_package_no_zeroes = sum([len(p.tags) for p in packages]) \
@@ -152,6 +152,35 @@ def statistics(session):
             'tags_per_package_no_zeroes': tags_per_package_no_zeroes,
         },
     }
+
+
+def leaderboard(session):
+    """ Handles the /leaderboard/ path.
+
+    Returns a dictionnary of the top 10 contributors.
+    """
+
+    contributors = model.FASUser.top(session)
+    cnt = 1
+    output = {}
+    for contributor in contributors:
+        output[cnt] = {'name': contributor.username,
+                       'gravatar': contributor.gravatar_sm,
+                       'score': contributor.score
+                       }
+        cnt += 1
+    return output
+
+def score(session, username):
+    """ Return the score of a specific user.
+    """
+    contributor = model.FASUser.by_name(session, username)
+    output = {'name': contributor.username,
+              'gravatar': contributor.gravatar_sm,
+              'score': contributor.score
+              }
+    return output
+
 
 
 class TaggerapiException(Exception):
