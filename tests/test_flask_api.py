@@ -574,8 +574,8 @@ class Flasktests(Modeltests):
         self.assertEqual(output['1']['score'], 8)
         self.assertEqual(output['2']['name'], 'toshio')
         self.assertEqual(output['2']['score'], 2)
-        self.assertEqual(output['5']['name'], 'ralph')
-        self.assertEqual(output['6']['name'], '1.2.3')
+        self.assertEqual(output['5']['name'], '1.2.3')
+        self.assertEqual(output['6']['name'], 'ralph')
 
     def test_score(self):
         """ Test the scores """
