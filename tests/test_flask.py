@@ -44,7 +44,6 @@ from tests import Modeltests, create_package, create_tag, \
                   create_vote, create_rating
 
 
-
 # pylint: disable=E1103
 class Flasktests(Modeltests):
     """ Flask application tests. """
@@ -56,6 +55,7 @@ class Flasktests(Modeltests):
         taggerapi.APP.config['TESTING'] = True
         taggerapi.SESSION = self.session
         self.app = taggerapi.APP.test_client()
+        wrappers.BaseRequest.remote_addr = '1.2.3'
 
     def test_pkg_get(self):
         """ Test the pkg_get function.  """
@@ -163,8 +163,6 @@ class Flasktests(Modeltests):
         self.assertEqual(output['error'], 'Package "guake" not found')
 
         create_package(self.session)
-
-        wrappers.BaseRequest.remote_addr = 'test'
 
         output = self.app.put('/tag/guake/', data=data)
         self.assertEqual(output.status_code, 200)
@@ -415,8 +413,9 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'ok')
-        self.assertEqual(output['messages'], ['Your vote on the tag "terminal" for '
-        'the package "guake" did not changed'])
+        self.assertEqual(output['messages'], ['Your vote on the tag '
+                                              '"terminal" for the package'
+                                              ' "guake" did not changed'])
 
         data = {'pkgname': 'guake', 'tag': 'terminal', 'vote': '1'}
 
@@ -424,8 +423,9 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'ok')
-        self.assertEqual(output['messages'], ['Vote changed on the tag "terminal" of '
-        'the package "guake"'])
+        self.assertEqual(output['messages'], ['Vote changed on the tag '
+                                              '"terminal" of the package'
+                                              ' "guake"'])
 
         output = self.app.get('/guake/tag/')
         self.assertEqual(output.status_code, 200)
@@ -539,7 +539,7 @@ class Flasktests(Modeltests):
         output = self.app.get('/leaderboard/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output.keys(), [])
+        self.assertEqual(output.keys(), ['1'])
 
         create_package(self.session)
         create_tag(self.session)
@@ -547,12 +547,14 @@ class Flasktests(Modeltests):
         output = self.app.get('/leaderboard/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output.keys(), ['1', '3', '2', '4'])
+        self.assertEqual(output.keys(), ['1', '3', '2', '5', '4', '6'])
         self.assertEqual(output['1'].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(output['1']['name'], 'pingou')
         self.assertEqual(output['1']['score'], 8)
         self.assertEqual(output['2']['name'], 'toshio')
         self.assertEqual(output['2']['score'], 2)
+        self.assertEqual(output['5']['name'], 'ralph')
+        self.assertEqual(output['6']['name'], '1.2.3')
 
     def test_score(self):
         """ Test the scores """

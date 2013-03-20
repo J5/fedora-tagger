@@ -49,10 +49,9 @@ def create_session(db_url, debug=False, pool_recycle=3600):
     return scopedsession
 
 
-def add_tag(session, pkgname, tag, ipaddress):
+def add_tag(session, pkgname, tag, user):
     """ Add a provided tag to the specified package. """
     package = model.Package.by_name(session, pkgname)
-    user = model.FASUser.get_or_create(session, ipaddress)
     try:
         tagobj = model.Tag.get(session, package.id, tag)
         tagobj.like += 1
@@ -69,10 +68,9 @@ def add_tag(session, pkgname, tag, ipaddress):
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
 
 
-def add_rating(session, pkgname, rating, ipaddress):
+def add_rating(session, pkgname, rating, user):
     """ Add the provided rating to the specified package. """
     package = model.Package.by_name(session, pkgname)
-    user = model.FASUser.get_or_create(session, ipaddress)
     ratingobj = model.Rating(package_id=package.id, user_id=user.id,
                              rating=rating)
     session.add(ratingobj)
@@ -82,9 +80,8 @@ def add_rating(session, pkgname, rating, ipaddress):
     return 'Rating "%s" added to the package "%s"' % (rating, pkgname)
 
 
-def add_vote(session, pkgname, tag, vote, ipaddress):
+def add_vote(session, pkgname, tag, vote, user):
     """ Cast a vote for a tag of a specified package. """
-    user = model.FASUser.get_or_create(session, ipaddress)
     try:
         package = model.Package.by_name(session, pkgname)
         tagobj = model.Tag.get(session, package.id, tag)

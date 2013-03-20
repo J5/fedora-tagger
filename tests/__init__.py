@@ -39,6 +39,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import taggerapi.taggerlib
 from taggerapi.taggerlib import model
 
+
 DB_URL = 'sqlite:///:memory:'
 
 
@@ -62,6 +63,49 @@ class Modeltests(unittest.TestCase):
             os.unlink(DB_URL)
 
         self.session.rollback()
+
+
+class FakeUser(object):
+    """ Fake user used for the tests. """
+    id = 0
+    username = 'fake_username'
+    email = 'fake_usename@example.org'
+    score = 0
+
+
+def create_user(session):
+    """ Create some users for testing. """
+    user = model.FASUser(
+                                  username = 'pingou',
+                                  email = 'pingou@fp.o',
+                                  )
+    session.add(user)
+
+    user = model.FASUser(
+                                  username = 'toshio',
+                                  email = 'toshio@fp.o',
+                                  )
+    session.add(user)
+
+    user = model.FASUser(
+                                  username = 'kevin',
+                                  email = 'kevin@fp.o',
+                                  )
+    session.add(user)
+
+    user = model.FASUser(
+                                  username = 'skvidal',
+                                  email = 'skvidal@fp.o',
+                                  )
+    session.add(user)
+
+    user = model.FASUser(
+                                  username = 'ralph',
+                                  email = 'ralph@fp.o',
+                                  )
+    session.add(user)
+
+    session.commit()
 
 
 def create_package(session):
@@ -91,15 +135,21 @@ def create_package(session):
 def create_tag(session):
     """ Add Tags on packages. """
 
-    taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', 'pingou')
-    taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', 'pingou')
-    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', 'pingou')
-    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', 'pingou')
+    create_user(session)
+    user_pingou = model.FASUser.by_name(session, 'pingou')
+    user_toshio = model.FASUser.by_name(session, 'toshio')
+    user_kevin = model.FASUser.by_name(session, 'kevin')
+    user_skvidal = model.FASUser.by_name(session, 'skvidal')
 
-    taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', 'toshio')
-    taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', 'kevin')
-    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', 'skvidal')
-    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', 'toshio')
+    taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', user_pingou)
+    taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', user_pingou)
+    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', user_pingou)
+    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', user_pingou)
+
+    taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', user_toshio)
+    taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', user_kevin)
+    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', user_skvidal)
+    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', user_toshio)
 
     session.commit()
 
@@ -107,9 +157,14 @@ def create_tag(session):
 def create_rating(session):
     """ Add Vote on tags of packages. """
 
-    taggerapi.taggerlib.add_rating(session, 'guake', 100, 'pingou')
-    taggerapi.taggerlib.add_rating(session, 'guake', 50, 'toshio')
-    taggerapi.taggerlib.add_rating(session, 'geany', 100, 'ralph')
+    create_user(session)
+    user_pingou = model.FASUser.by_name(session, 'pingou')
+    user_toshio = model.FASUser.by_name(session, 'toshio')
+    user_ralph = model.FASUser.by_name(session, 'ralph')
+
+    taggerapi.taggerlib.add_rating(session, 'guake', 100, user_pingou)
+    taggerapi.taggerlib.add_rating(session, 'guake', 50, user_toshio)
+    taggerapi.taggerlib.add_rating(session, 'geany', 100, user_ralph)
 
     session.commit()
 
@@ -117,9 +172,16 @@ def create_rating(session):
 def create_vote(session):
     """ Add Vote on tags of packages. """
 
-    taggerapi.taggerlib.add_vote(session, 'guake', 'gnome', True, 'toshio')
-    taggerapi.taggerlib.add_vote(session, 'guake', 'terminal', False, 'toshio')
-    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', True, 'kevin')
+    create_user(session)
+    user_toshio = model.FASUser.by_name(session, 'toshio')
+    user_kevin = model.FASUser.by_name(session, 'kevin')
+
+    taggerapi.taggerlib.add_vote(session, 'guake', 'gnome', True,
+                                 user_toshio)
+    taggerapi.taggerlib.add_vote(session, 'guake', 'terminal', False,
+                                 user_toshio)
+    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', True,
+                                user_kevin)
 
     session.commit()
 

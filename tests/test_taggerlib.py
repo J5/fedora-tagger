@@ -38,7 +38,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 
 import taggerapi.taggerlib
 from taggerapi.taggerlib import model
-from tests import Modeltests, create_package, create_tag
+from tests import Modeltests, FakeUser, create_package, create_tag, \
+                  create_user
 
 
 class TaggerLibtests(Modeltests):
@@ -51,9 +52,13 @@ class TaggerLibtests(Modeltests):
 
     def test_add_rating(self):
         """ Test the add_rating function of taggerlib. """
+        create_user(self.session)
+        user_pingou = model.FASUser.by_name(self.session, 'pingou')
+        user_ralph = model.FASUser.by_name(self.session, 'ralph')
+
         create_package(self.session)
         out = taggerapi.taggerlib.add_rating(self.session, 'guake', 100,
-                                             'pingou')
+                                             user_pingou)
         self.assertEqual(out, 'Rating "100" added to the package "guake"')
         self.session.commit()
 
@@ -63,11 +68,11 @@ class TaggerLibtests(Modeltests):
 
         self.assertRaises(SQLAlchemyError,
                           taggerapi.taggerlib.add_rating,
-                          self.session, 'guake', 50, 'pingou')
+                          self.session, 'guake', 50, user_pingou)
         self.session.rollback()
 
         out = taggerapi.taggerlib.add_rating(self.session, 'guake', 50,
-                                             'ralph')
+                                             user_ralph)
         self.assertEqual(out, 'Rating "50" added to the package "guake"')
         self.session.commit()
 
@@ -76,9 +81,14 @@ class TaggerLibtests(Modeltests):
 
     def test_add_tag(self):
         """ Test the add_tag function of taggerlib. """
+        create_user(self.session)
+        user_pingou = model.FASUser.by_name(self.session, 'pingou')
+        user_ralph = model.FASUser.by_name(self.session, 'ralph')
+
         create_package(self.session)
+
         out = taggerapi.taggerlib.add_tag(self.session, 'guake', 'gnome',
-                                             'pingou')
+                                          user_pingou)
         self.assertEqual(out, 'Tag "gnome" added to the package "guake"')
         self.session.commit()
 
@@ -88,11 +98,11 @@ class TaggerLibtests(Modeltests):
 
         self.assertRaises(SQLAlchemyError,
                           taggerapi.taggerlib.add_tag,
-                          self.session, 'guake', 'gnome', 'pingou')
+                          self.session, 'guake', 'gnome', user_pingou)
         self.session.rollback()
 
         out = taggerapi.taggerlib.add_tag(self.session, 'guake', 'terminal',
-                                             'pingou')
+                                          user_pingou)
         self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
         self.session.commit()
 
@@ -104,7 +114,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, pkg.tags[1].like)
 
         out = taggerapi.taggerlib.add_tag(self.session, 'guake', 'terminal',
-                                          'ralph')
+                                          user_ralph)
         self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
         self.session.commit()
 
@@ -119,18 +129,22 @@ class TaggerLibtests(Modeltests):
         """ Test the add_vote function of taggerlib. """
         self.test_add_tag()
 
+        user_pingou = model.FASUser.by_name(self.session, 'pingou')
+        user_toshio = model.FASUser.by_name(self.session, 'toshio')
+        user_kevin = model.FASUser.by_name(self.session, 'kevin')
+
         self.assertRaises(taggerapi.taggerlib.TaggerapiException,
                           taggerapi.taggerlib.add_vote,
                           self.session, 'test', 'terminal', True ,
-                          'pingou')
+                          user_pingou)
 
         self.assertRaises(taggerapi.taggerlib.TaggerapiException,
                           taggerapi.taggerlib.add_vote,
                           self.session, 'guake', 'test', True ,
-                          'pingou')
+                          user_pingou)
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
-                                           'terminal', True , 'pingou')
+                                           'terminal', True , user_pingou)
         self.assertEqual(out, 'Your vote on the tag "terminal" for the '
                          'package "guake" did not changed')
 
@@ -142,7 +156,8 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(2, pkg.tags[1].like)
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
-                                           'terminal', False , 'pingou')
+                                           'terminal', False ,
+                                           user_pingou)
         self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
 
@@ -155,7 +170,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(2, pkg.tags[1].total_votes)
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
-                                           'terminal', True , 'toshio')
+                                           'terminal', True , user_toshio)
         self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
 
@@ -168,7 +183,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, pkg.tags[1].total_votes)
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
-                                           'terminal', True , 'pingou')
+                                           'terminal', True , user_pingou)
         self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
 
@@ -181,7 +196,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, pkg.tags[1].total_votes)
 
         out = taggerapi.taggerlib.add_vote(self.session, 'guake',
-                                           'terminal', False , 'kevin')
+                                           'terminal', False , user_kevin)
         self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
 
@@ -233,7 +248,7 @@ class TaggerLibtests(Modeltests):
         create_tag(self.session)
 
         out = taggerapi.taggerlib.leaderboard(self.session)
-        self.assertEqual(out.keys(), [1, 2, 3, 4])
+        self.assertEqual(out.keys(), [1, 2, 3, 4, 5])
         self.assertEqual(out[1].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(out[1]['name'], 'pingou')
         self.assertEqual(out[1]['score'], 8)
@@ -261,6 +276,22 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(out['name'], 'toshio')
         self.assertEqual(out['score'], 2)
 
+    def test_generate_api_token(self):
+        """ Test the generate_api_token method. """
+        token = taggerapi.taggerlib.generate_api_token()
+        self.assertTrue(token.startswith('dGFnZ2VyYXBp##'))
+        self.assertEqual(len(token), 30)
+
+    def test_get_api_token(self):
+        """ Test the get_api_token method. """
+        user = FakeUser()
+
+        infos = taggerapi.taggerlib.get_api_token(self.session, user)
+        self.assertEqual(infos['name'], 'fake_username')
+        self.assertTrue(infos['token'].startswith('dGFnZ2VyYXBp##'))
+
+        dbuser = model.FASUser.by_name(self.session, infos['name'])
+        self.assertTrue(infos['token'], dbuser.api_token)
 
 
 if __name__ == '__main__':
