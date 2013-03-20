@@ -296,6 +296,7 @@ def before_request(*args, **kw):
     elif flask.request.remote_addr:
         user = model.FASUser.get_or_create(SESSION,
                                            flask.request.remote_addr)
+        SESSION.commit()
         flask.g.fas_user = user
         authenticated = True
     # if we don't check that we're requesting /loging/ we can't (log in)
