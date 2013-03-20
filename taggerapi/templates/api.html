@@ -12,7 +12,7 @@
 
     <h2>Get package information</h2>
     <p>
-      This happens at the url <code>{{ url_for('pkg', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.pkg', pkgname='pkgname') }}</code>
       It needs one argument and will just return a json containing
       the information about this package.
     </p>
@@ -50,7 +50,7 @@
 
     <h2>Retriete tags of a package</h2>
     <p>
-      This happens at the url <code>{{ url_for('pkg_tag', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.pkg_tag', pkgname='pkgname') }}</code>
       It needs one argument relies on GET requests and will just return
       a json containing the tags associated to this package.
     </p>
@@ -84,7 +84,7 @@
 
     <h2>Retriete rating of a package</h2>
     <p>
-      This happens at the url <code>{{ url_for('pkg_rating', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.pkg_rating', pkgname='pkgname') }}</code>
       It needs one argument, relies on GET requests and will just return
       a json containing the rating associated to this package.
     </p>
@@ -103,7 +103,7 @@
 
     <h2>Set tags</h2>
     <p>
-      This happens at the url <code>{{ url_for('tag_pkg', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.tag_pkg', pkgname='pkgname') }}</code>
       It needs two arguments, relies on PUT requests and will just
       return a json with information on how the request performed.
     </p>
@@ -135,7 +135,7 @@
 
     <h2>Retrieve packages with tag</h2>
     <p>
-      This happens at the url <code>{{ url_for('tag_pkg', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.tag_pkg', pkgname='pkgname') }}</code>
       It needs one arguments, relies on GET requests and will just
       return a json with information on how the request performed.
     </p>
@@ -164,7 +164,7 @@
 
     <h2>Set rating</h2>
     <p>
-      This happens at the url <code>{{ url_for('rating_pkg', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.rating_pkg', pkgname='pkgname') }}</code>
       It needs two arguments, relies on PUT requests and will just return a json containing
       the rating associated to this package.
     </p>
@@ -197,7 +197,7 @@
 
     <h2>Retrieve packages with a specific rating</h2>
     <p>
-      This happens at the url <code>{{ url_for('tag_pkg', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.tag_pkg', pkgname='pkgname') }}</code>
       It needs one arguments, relies on GET requests and will just
       return a json with information on how the request performed.
     </p>
@@ -226,7 +226,7 @@
 
     <h2>Vote on the tag of a package</h2>
     <p>
-      This happens at the url <code>{{ url_for('vote_tag_pkg', pkgname='pkgname') }}</code>
+      This happens at the url <code>{{ url_for('api.vote_tag_pkg', pkgname='pkgname') }}</code>
       It needs three arguments, relies on PUT requests and will just return a json containing
       the rating associated to this package.
     </p>

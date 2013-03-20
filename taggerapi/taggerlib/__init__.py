@@ -22,7 +22,7 @@
 import base64
 import random
 import string
-from datetime import datetime
+from datetime import date
 
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
@@ -206,7 +206,7 @@ def get_api_token(session, user):
                                               username=user.username,
                                               email=user.email)
     contributor.api_token = generate_api_token(40)
-    contributor.api_date = datetime.today()
+    contributor.api_date = date.today()
     session.add(contributor)
     session.flush()
     return {'name': contributor.username,
