@@ -26,7 +26,7 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 import flask
-from flask_fas_openid import FAS, fas_login_required
+from flask_fas_openid import FAS
 from functools import wraps
 
 from taggerapi import APP, SESSION, FAS
@@ -269,6 +269,21 @@ def vote_pkg_put(pkgname):
     return jsonout
 
 
+def fas_login_required(function):
+    """ Flask decorator to ensure that the user is logged in against FAS.
+    To use this decorator you need to have a function named 'auth_login'.
+    Without that function the redirect if the user is not logged in will not
+    work.
+    """
+    @wraps(function)
+    def decorated_function(*args, **kwargs):
+        if flask.g.fas_user is None:
+            return flask.redirect(flask.url_for('api.auth_login',
+                                                next=flask.request.url))
+        return function(*args, **kwargs)
+    return decorated_function
+
+
 ## Flask application
 
 
@@ -279,6 +294,10 @@ def before_request(*args, **kw):
     provided in the 'Authorization' header if provided, otherwise it
     uses the IP of the user.
     """
+    # We only care about PUT request actually...
+    if flask.request.method != 'PUT':
+        return
+
     token = None
     username = None
     authenticated = False
@@ -295,7 +314,8 @@ def before_request(*args, **kw):
             flask.g.fas_user = user
     elif flask.request.remote_addr:
         user = model.FASUser.get_or_create(SESSION,
-                                           flask.request.remote_addr)
+                                           flask.request.remote_addr,
+                                           anonymous=True)
         SESSION.commit()
         flask.g.fas_user = user
         authenticated = True
