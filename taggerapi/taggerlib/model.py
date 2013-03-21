@@ -504,7 +504,8 @@ class FASUser(DeclarativeBase):
         return "<img src='%s'></img>" % url
 
     @classmethod
-    def get_or_create(cls, session, username, email=None):
+    def get_or_create(cls, session, username, email=None,
+                      anonymous=False):
         """ Get or Add a user to the database using its username.
         This function simply tries to find the specified username in the
         database and if that person is not known, add a new user with
@@ -514,11 +515,17 @@ class FASUser(DeclarativeBase):
         :arg username: the username of the user to search for or to
             create. In some cases it will be his IP address.
         :kwarg email: the email address to associate with this user.
+        :kwarg anonymous: a boolean specifying if the user is anonymous
+            or not.
         """
         try:
             user = session.query(cls).filter_by(username=username).one()
+            if email:
+                user.email = email
         except NoResultFound:
-            user = FASUser(username=username, email=email)
+            user = FASUser(username=username,
+                           email=email,
+                           anonymous=anonymous)
             session.add(user)
             session.flush()
         return user
