@@ -441,10 +441,7 @@ class FASUser(DeclarativeBase):
     score = Column(Integer, nullable=False, default=0)
     api_token = Column(String(45), default=None)
     api_date = Column(Date, default=datetime.today())
-
-    @property
-    def anonymous(self):
-        return self.username == 'anonymous'
+    anonymous = Column(Boolean, nullable=False, default=False)
 
     @property
     def total_votes(self):
@@ -454,7 +451,7 @@ class FASUser(DeclarativeBase):
     def rank(self):
         _rank = self._rank
 
-        if self.username == 'anonymous':
+        if self.anonymous:
             return -1
 
         users = FASUser.query.filter(FASUser.username != 'anonymous').all()
@@ -547,6 +544,7 @@ class FASUser(DeclarativeBase):
         """
         return  session.query(cls
                              ).filter(FASUser.username == username
+                             ).filter(FASUser.anonymous == False
                              ).one()
 
     def __json__(self, visited=None):
