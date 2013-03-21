@@ -560,7 +560,7 @@ class Flasktests(Modeltests):
         output = self.app.get('/api/leaderboard/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output.keys(), ['1'])
+        self.assertEqual(output.keys(), [])
 
         create_package(self.session)
         create_tag(self.session)
@@ -568,14 +568,13 @@ class Flasktests(Modeltests):
         output = self.app.get('/api/leaderboard/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output.keys(), ['1', '3', '2', '5', '4', '6'])
+        self.assertEqual(output.keys(), ['1', '3', '2', '5', '4'])
         self.assertEqual(output['1'].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(output['1']['name'], 'pingou')
         self.assertEqual(output['1']['score'], 8)
         self.assertEqual(output['2']['name'], 'toshio')
         self.assertEqual(output['2']['score'], 2)
-        self.assertEqual(output['5']['name'], '1.2.3')
-        self.assertEqual(output['6']['name'], 'ralph')
+        self.assertEqual(output['5']['name'], 'ralph')
 
     def test_score(self):
         """ Test the scores """
@@ -606,11 +605,6 @@ class Flasktests(Modeltests):
     def test_login(self):
         """ Test the login page """
         output = self.app.get('/api/login/')
-        self.assertEqual(output.status_code, 302)
-
-        wrappers.BaseRequest.remote_addr = None
-
-        output = self.app.get('/api/login/')
         self.assertEqual(output.status_code, 200)
         self.assertTrue('<title>OpenID transaction in progress</title>'
                         in output.data)
@@ -623,11 +617,14 @@ class Flasktests(Modeltests):
     def test_token(self):
         """ Test the token page """
         output = self.app.get('/api/token/')
-        self.assertEqual(output.status_code, 200)
-        output = json.loads(output.data)
-        self.assertEqual(output.keys(), ['token', 'name'])
-        self.assertEqual(output['name'], '1.2.3')
-        self.assertTrue(output['token'].startswith('dGFnZ2VyYXBp#'))
+        self.assertEqual(output.status_code, 302)
+
+        ## We need to figure out a way to shortcut the @login_required
+        ## so that we can actually test the rest
+        #output = json.loads(output.data)
+        #self.assertEqual(output.keys(), ['token', 'name'])
+        #self.assertEqual(output['name'], '1.2.3')
+        #self.assertTrue(output['token'].startswith('dGFnZ2VyYXBp#'))
 
 
 if __name__ == '__main__':
