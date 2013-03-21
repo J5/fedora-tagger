@@ -50,6 +50,9 @@ DROP TABLE tg_user;
 ALTER TABLE "user" ADD COLUMN score INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE "user" ADD COLUMN api_token VARCHAR(50) DEFAULT NULL;
 ALTER TABLE "user" ADD COLUMN api_date DATE DEFAULT CURRENT_DATE;
+ALTER TABLE "user" ADD COLUMN anonymous BOOLEAN DEFAULT FALSE;
+
+UPDATE TABLE "user" SET anonymous = TRUE where name = "anonymous";
 
 ---- Add Unique Constraints
 
