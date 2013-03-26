@@ -13,3 +13,7 @@ build
 alembic.ini
 _build/
 pylint.out
+*.egg
+icons*
+*.db
+data
