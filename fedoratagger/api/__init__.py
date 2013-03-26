@@ -19,6 +19,6 @@
 # -*- coding: utf-8 -*-
 """The flask application"""
 
-from fedoratagger.blueprints.api.api import API
+from fedoratagger.api.api import API
 
 __all__ = ['API']

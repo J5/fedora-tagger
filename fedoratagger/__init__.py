@@ -50,7 +50,7 @@ FAS = FAS(APP)
 SESSION = fedoratagger.lib.create_session(APP.config['DB_URL'])
 
 
-from fedoratagger.blueprints.api import API
+from fedoratagger.api import API
 
 
 APP.register_blueprint(API)
