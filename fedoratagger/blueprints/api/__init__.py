@@ -19,46 +19,6 @@
 # -*- coding: utf-8 -*-
 """The flask application"""
 
-## These two lines are needed to run on EL6
-__requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']
-import pkg_resources
+from fedoratagger.blueprints.api.api import API
 
-
-import ConfigParser
-import os
-import datetime
-from urlparse import urljoin, urlparse
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from sqlalchemy.orm.exc import NoResultFound
-
-import flask
-from flask_fas_openid import FAS
-from functools import wraps
-
-import taggerlib
-import forms as forms
-import taggerlib.model as model
-
-# Create the application.
-APP = flask.Flask(__name__)
-# set up FAS
-APP.config.from_object('taggerapi.default_config')
-if 'TAGGERAPI_CONFIG' in os.environ:  # pragma: no cover
-    APP.config.from_envvar('TAGGERAPI_CONFIG')
-APP.config['SECRET_KEY'] = 'asljdlkhkfhakdg'
-APP.config['FAS_OPENID_CHECK_CERT'] = False
-FAS = FAS(APP)
-SESSION = taggerlib.create_session(APP.config['DB_URL'])
-
-
-from taggerapi.api import API
-
-
-APP.register_blueprint(API)
-
-
-# pylint: disable=W0613
-@APP.teardown_request
-def shutdown_session(exception=None):
-    """ Remove the DB session at the end of each request. """
-    SESSION.remove()
+__all__ = ['API']

@@ -27,8 +27,7 @@ from datetime import datetime
 
 from wtforms import ValidationError
 
-#from taggerapi import SESSION
-import taggerlib.model as model
+import fedoratagger.lib.model as model
 
 
 def validate_package(form, field):

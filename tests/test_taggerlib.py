@@ -19,7 +19,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-taggerapi tests lib.
+fedoratagger tests lib.
 '''
 
 __requires__ = ['SQLAlchemy >= 0.7']
@@ -36,8 +36,8 @@ from sqlalchemy.orm.exc import NoResultFound
 sys.path.insert(0, os.path.join(os.path.dirname(
     os.path.abspath(__file__)), '..'))
 
-import taggerapi.taggerlib
-from taggerapi.taggerlib import model
+import fedoratagger.lib
+from fedoratagger.lib import model
 from tests import Modeltests, FakeUser, create_package, create_tag, \
                   create_user
 
@@ -57,7 +57,7 @@ class TaggerLibtests(Modeltests):
         user_ralph = model.FASUser.by_name(self.session, 'ralph')
 
         create_package(self.session)
-        out = taggerapi.taggerlib.add_rating(self.session, 'guake', 100,
+        out = fedoratagger.lib.add_rating(self.session, 'guake', 100,
                                              user_pingou)
         self.assertEqual(out, 'Rating "100" added to the package "guake"')
         self.session.commit()
@@ -67,11 +67,11 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(100, rating)
 
         self.assertRaises(SQLAlchemyError,
-                          taggerapi.taggerlib.add_rating,
+                          fedoratagger.lib.add_rating,
                           self.session, 'guake', 50, user_pingou)
         self.session.rollback()
 
-        out = taggerapi.taggerlib.add_rating(self.session, 'guake', 50,
+        out = fedoratagger.lib.add_rating(self.session, 'guake', 50,
                                              user_ralph)
         self.assertEqual(out, 'Rating "50" added to the package "guake"')
         self.session.commit()
@@ -87,7 +87,7 @@ class TaggerLibtests(Modeltests):
 
         create_package(self.session)
 
-        out = taggerapi.taggerlib.add_tag(self.session, 'guake', 'gnome',
+        out = fedoratagger.lib.add_tag(self.session, 'guake', 'gnome',
                                           user_pingou)
         self.assertEqual(out, 'Tag "gnome" added to the package "guake"')
         self.session.commit()
@@ -97,11 +97,11 @@ class TaggerLibtests(Modeltests):
         self.assertEqual('gnome', pkg.tags[0].label)
 
         self.assertRaises(SQLAlchemyError,
-                          taggerapi.taggerlib.add_tag,
+                          fedoratagger.lib.add_tag,
                           self.session, 'guake', 'gnome', user_pingou)
         self.session.rollback()
 
-        out = taggerapi.taggerlib.add_tag(self.session, 'guake', 'terminal',
+        out = fedoratagger.lib.add_tag(self.session, 'guake', 'terminal',
                                           user_pingou)
         self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
         self.session.commit()
@@ -113,7 +113,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(1, pkg.tags[1].like)
 
-        out = taggerapi.taggerlib.add_tag(self.session, 'guake', 'terminal',
+        out = fedoratagger.lib.add_tag(self.session, 'guake', 'terminal',
                                           user_ralph)
         self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
         self.session.commit()
@@ -133,17 +133,17 @@ class TaggerLibtests(Modeltests):
         user_toshio = model.FASUser.by_name(self.session, 'toshio')
         user_kevin = model.FASUser.by_name(self.session, 'kevin')
 
-        self.assertRaises(taggerapi.taggerlib.TaggerapiException,
-                          taggerapi.taggerlib.add_vote,
+        self.assertRaises(fedoratagger.lib.TaggerapiException,
+                          fedoratagger.lib.add_vote,
                           self.session, 'test', 'terminal', True ,
                           user_pingou)
 
-        self.assertRaises(taggerapi.taggerlib.TaggerapiException,
-                          taggerapi.taggerlib.add_vote,
+        self.assertRaises(fedoratagger.lib.TaggerapiException,
+                          fedoratagger.lib.add_vote,
                           self.session, 'guake', 'test', True ,
                           user_pingou)
 
-        out = taggerapi.taggerlib.add_vote(self.session, 'guake',
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
                                            'terminal', True , user_pingou)
         self.assertEqual(out, 'Your vote on the tag "terminal" for the '
                          'package "guake" did not changed')
@@ -155,7 +155,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
 
-        out = taggerapi.taggerlib.add_vote(self.session, 'guake',
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
                                            'terminal', False ,
                                            user_pingou)
         self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
@@ -169,7 +169,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(0, pkg.tags[1].total)
         self.assertEqual(2, pkg.tags[1].total_votes)
 
-        out = taggerapi.taggerlib.add_vote(self.session, 'guake',
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
                                            'terminal', True , user_toshio)
         self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
@@ -182,7 +182,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, pkg.tags[1].total)
         self.assertEqual(3, pkg.tags[1].total_votes)
 
-        out = taggerapi.taggerlib.add_vote(self.session, 'guake',
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
                                            'terminal', True , user_pingou)
         self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
@@ -195,7 +195,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, pkg.tags[1].total)
         self.assertEqual(3, pkg.tags[1].total_votes)
 
-        out = taggerapi.taggerlib.add_vote(self.session, 'guake',
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
                                            'terminal', False , user_kevin)
         self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
@@ -210,7 +210,7 @@ class TaggerLibtests(Modeltests):
 
     def test_statistics(self):
         """ Test the statistics method. """
-        out = taggerapi.taggerlib.statistics(self.session)
+        out = fedoratagger.lib.statistics(self.session)
         self.assertEqual(['summary'], out.keys())
         self.assertEqual(0, out['summary']['with_tags'])
         self.assertEqual(0, out['summary']['no_tags'])
@@ -220,7 +220,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(0, out['summary']['total_unique_tags'])
 
         create_package(self.session)
-        out = taggerapi.taggerlib.statistics(self.session)
+        out = fedoratagger.lib.statistics(self.session)
         self.assertEqual(['summary'], out.keys())
         self.assertEqual(0, out['summary']['with_tags'])
         self.assertEqual(3, out['summary']['no_tags'])
@@ -230,7 +230,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(0, out['summary']['total_unique_tags'])
 
         create_tag(self.session)
-        out = taggerapi.taggerlib.statistics(self.session)
+        out = fedoratagger.lib.statistics(self.session)
         self.assertEqual(['summary'], out.keys())
         self.assertEqual(2, out['summary']['with_tags'])
         self.assertEqual(1, out['summary']['no_tags'])
@@ -241,13 +241,13 @@ class TaggerLibtests(Modeltests):
 
     def test_leaderboard(self):
         """ Test the leaderboard method. """
-        out = taggerapi.taggerlib.leaderboard(self.session)
+        out = fedoratagger.lib.leaderboard(self.session)
         self.assertEqual([], out.keys())
 
         create_package(self.session)
         create_tag(self.session)
 
-        out = taggerapi.taggerlib.leaderboard(self.session)
+        out = fedoratagger.lib.leaderboard(self.session)
         self.assertEqual(out.keys(), [1, 2, 3, 4, 5])
         self.assertEqual(out[1].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(out[1]['name'], 'pingou')
@@ -258,7 +258,7 @@ class TaggerLibtests(Modeltests):
     def test_score(self):
         """ Test the score method. """
         self.assertRaises(NoResultFound,
-                          taggerapi.taggerlib.score,
+                          fedoratagger.lib.score,
                           self.session,
                           'asd'
                           )
@@ -266,19 +266,19 @@ class TaggerLibtests(Modeltests):
         create_package(self.session)
         create_tag(self.session)
 
-        out = taggerapi.taggerlib.score(self.session, 'pingou')
+        out = fedoratagger.lib.score(self.session, 'pingou')
         self.assertEqual(out.keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(out['name'], 'pingou')
         self.assertEqual(out['score'], 8)
 
-        out = taggerapi.taggerlib.score(self.session, 'toshio')
+        out = fedoratagger.lib.score(self.session, 'toshio')
         self.assertEqual(out.keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(out['name'], 'toshio')
         self.assertEqual(out['score'], 2)
 
     def test_generate_api_token(self):
         """ Test the generate_api_token method. """
-        token = taggerapi.taggerlib.generate_api_token()
+        token = fedoratagger.lib.generate_api_token()
         self.assertTrue(token.startswith('dGFnZ2VyYXBp##'))
         self.assertEqual(len(token), 30)
 
@@ -286,7 +286,7 @@ class TaggerLibtests(Modeltests):
         """ Test the get_api_token method. """
         user = FakeUser()
 
-        infos = taggerapi.taggerlib.get_api_token(self.session, user)
+        infos = fedoratagger.lib.get_api_token(self.session, user)
         self.assertEqual(infos['name'], 'fake_username')
         self.assertTrue(infos['token'].startswith('dGFnZ2VyYXBp##'))
 

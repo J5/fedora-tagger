@@ -19,7 +19,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-taggerapi tests lib.
+fedoratagger tests lib.
 '''
 
 __requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']
@@ -38,9 +38,9 @@ from sqlalchemy.exc import SQLAlchemyError
 sys.path.insert(0, os.path.join(os.path.dirname(
     os.path.abspath(__file__)), '..'))
 
-import taggerapi
-import taggerapi.taggerlib
-from taggerapi.taggerlib import model
+import fedoratagger
+import fedoratagger.lib
+from fedoratagger.lib import model
 from tests import Modeltests, FakeUser, create_package, create_tag, \
                   create_vote, create_rating, create_user
 
@@ -53,10 +53,12 @@ class Flasktests(Modeltests):
         """ Set up the environnment, ran before every tests. """
         super(Flasktests, self).setUp()
 
-        taggerapi.APP.config['TESTING'] = True
-        taggerapi.SESSION = self.session
-        taggerapi.api.SESSION = self.session
-        self.app = taggerapi.APP.test_client()
+        fedoratagger.APP.config['TESTING'] = True
+        fedoratagger.SESSION = self.session
+        print fedoratagger.SESSION
+        fedoratagger.blueprints.api.SESSION = self.session
+        print fedoratagger.blueprints.api.SESSION
+        self.app = fedoratagger.APP.test_client()
         wrappers.BaseRequest.remote_addr = '1.2.3'
         user = FakeUser()
         self.infos = None
@@ -196,7 +198,7 @@ class Flasktests(Modeltests):
 
         create_user(self.session)
         user = model.FASUser.by_name(self.session, 'pingou')
-        self.infos = taggerapi.taggerlib.get_api_token(self.session, user)
+        self.infos = fedoratagger.lib.get_api_token(self.session, user)
         self.infos['token'] = 'fake'
 
         output = self.request_with_auth('/api/tag/guake/', 'PUT',
@@ -206,7 +208,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['output'], 'notok')
         self.assertEqual(output['error'], 'Login invalid/expired')
 
-        self.infos = taggerapi.taggerlib.get_api_token(self.session, user)
+        self.infos = fedoratagger.lib.get_api_token(self.session, user)
 
         output = self.request_with_auth('/api/tag/guake/', 'PUT',
                                         data=data)
@@ -357,7 +359,7 @@ class Flasktests(Modeltests):
         data = {'pkgname': 'guake', 'rating': 50}
         create_user(self.session)
         user = model.FASUser.by_name(self.session, 'pingou')
-        self.infos = taggerapi.taggerlib.get_api_token(self.session, user)
+        self.infos = fedoratagger.lib.get_api_token(self.session, user)
 
         output = self.request_with_auth('/api/rating/guake/', 'PUT', data=data)
         self.assertEqual(output.status_code, 200)

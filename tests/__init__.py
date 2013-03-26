@@ -19,7 +19,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-taggerapi tests.
+fedoratagger tests.
 '''
 
 __requires__ = ['SQLAlchemy >= 0.7']
@@ -36,8 +36,8 @@ from sqlalchemy.orm import scoped_session
 sys.path.insert(0, os.path.join(os.path.dirname(
     os.path.abspath(__file__)), '..'))
 
-import taggerapi.taggerlib
-from taggerapi.taggerlib import model
+import fedoratagger.lib
+from fedoratagger.lib import model
 
 
 DB_URL = 'sqlite:///:memory:'
@@ -141,15 +141,15 @@ def create_tag(session):
     user_kevin = model.FASUser.by_name(session, 'kevin')
     user_skvidal = model.FASUser.by_name(session, 'skvidal')
 
-    taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', user_pingou)
-    taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', user_pingou)
-    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', user_pingou)
-    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', user_pingou)
+    fedoratagger.lib.add_tag(session, 'guake', 'gnome', user_pingou)
+    fedoratagger.lib.add_tag(session, 'guake', 'terminal', user_pingou)
+    fedoratagger.lib.add_tag(session, 'geany', 'ide', user_pingou)
+    fedoratagger.lib.add_tag(session, 'geany', 'gnome', user_pingou)
 
-    taggerapi.taggerlib.add_tag(session, 'guake', 'gnome', user_toshio)
-    taggerapi.taggerlib.add_tag(session, 'guake', 'terminal', user_kevin)
-    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', user_skvidal)
-    taggerapi.taggerlib.add_tag(session, 'geany', 'gnome', user_toshio)
+    fedoratagger.lib.add_tag(session, 'guake', 'gnome', user_toshio)
+    fedoratagger.lib.add_tag(session, 'guake', 'terminal', user_kevin)
+    fedoratagger.lib.add_tag(session, 'geany', 'ide', user_skvidal)
+    fedoratagger.lib.add_tag(session, 'geany', 'gnome', user_toshio)
 
     session.commit()
 
@@ -162,9 +162,9 @@ def create_rating(session):
     user_toshio = model.FASUser.by_name(session, 'toshio')
     user_ralph = model.FASUser.by_name(session, 'ralph')
 
-    taggerapi.taggerlib.add_rating(session, 'guake', 100, user_pingou)
-    taggerapi.taggerlib.add_rating(session, 'guake', 50, user_toshio)
-    taggerapi.taggerlib.add_rating(session, 'geany', 100, user_ralph)
+    fedoratagger.lib.add_rating(session, 'guake', 100, user_pingou)
+    fedoratagger.lib.add_rating(session, 'guake', 50, user_toshio)
+    fedoratagger.lib.add_rating(session, 'geany', 100, user_ralph)
 
     session.commit()
 
@@ -176,11 +176,11 @@ def create_vote(session):
     user_toshio = model.FASUser.by_name(session, 'toshio')
     user_kevin = model.FASUser.by_name(session, 'kevin')
 
-    taggerapi.taggerlib.add_vote(session, 'guake', 'gnome', True,
+    fedoratagger.lib.add_vote(session, 'guake', 'gnome', True,
                                  user_toshio)
-    taggerapi.taggerlib.add_vote(session, 'guake', 'terminal', False,
+    fedoratagger.lib.add_vote(session, 'guake', 'terminal', False,
                                  user_toshio)
-    taggerapi.taggerlib.add_tag(session, 'geany', 'ide', True,
+    fedoratagger.lib.add_tag(session, 'geany', 'ide', True,
                                 user_kevin)
 
     session.commit()

@@ -29,14 +29,21 @@ import flask
 from flask_fas_openid import FAS
 from functools import wraps
 
-from taggerapi import APP, SESSION, FAS
+import fedoratagger as ft
 
-import taggerlib
+import fedoratagger.lib
+import fedoratagger.lib.model as model
+
+# Relative import
 import forms as forms
-import taggerlib.model as model
 
 
-API = flask.Blueprint('api', __name__, url_prefix = '/api')
+API = flask.Blueprint(
+    'api', __name__,
+    url_prefix='/api',
+    template_folder='templates',
+    static_folder='static',
+)
 
 
 def pkg_get(pkgname):
@@ -44,10 +51,10 @@ def pkg_get(pkgname):
     httpcode = 200
     output = {}
     try:
-        package = model.Package.by_name(SESSION, pkgname)
-        output = package.__json__(SESSION)
+        package = model.Package.by_name(ft.SESSION, pkgname)
+        output = package.__json__(ft.SESSION)
     except SQLAlchemyError, err:
-        SESSION.rollback()
+        ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Package "%s" not found' % pkgname
         httpcode = 404
@@ -62,10 +69,10 @@ def pkg_get_tag(pkgname):
     httpcode = 200
     output = {}
     try:
-        package = model.Package.by_name(SESSION, pkgname)
+        package = model.Package.by_name(ft.SESSION, pkgname)
         output = package.__tag_json__()
     except SQLAlchemyError, err:
-        SESSION.rollback()
+        ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Package "%s" not found' % pkgname
         httpcode = 404
@@ -80,10 +87,10 @@ def pkg_get_rating(pkgname):
     httpcode = 200
     output = {}
     try:
-        package = model.Package.by_name(SESSION, pkgname)
-        output = package.__rating_json__(SESSION)
+        package = model.Package.by_name(ft.SESSION, pkgname)
+        output = package.__rating_json__(ft.SESSION)
     except SQLAlchemyError, err:
-        SESSION.rollback()
+        ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Package "%s" not found' % pkgname
         httpcode = 404
@@ -100,13 +107,13 @@ def tag_pkg_get(tag):
     httpcode = 200
     output = {}
     try:
-        package = model.Tag.by_label(SESSION, tag)
+        package = model.Tag.by_label(ft.SESSION, tag)
         if not package:
             raise SQLAlchemyError()
         output = {'tag': tag}
         output['packages'] = [pkg.__pkg_json__() for pkg in package]
     except SQLAlchemyError, err:
-        SESSION.rollback()
+        ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Tag "%s" not found' % tag
         httpcode = 404
@@ -133,18 +140,18 @@ def tag_pkg_put(pkgname):
             for item in tag:
                 item = item.strip()
                 if item:
-                    messages.append(taggerlib.add_tag(SESSION, pkgname,
+                    messages.append(fedoratagger.lib.add_tag(ft.SESSION, pkgname,
                                     item, flask.g.fas_user))
-            SESSION.commit()
+            ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = messages
         except NoResultFound, err:
-            SESSION.rollback()
+            ft.SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = 'Package "%s" not found' % pkgname
             httpcode = 404
         except SQLAlchemyError, err:
-            SESSION.rollback()
+            ft.SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = 'This tag is already associated to this package'
             httpcode = 500
@@ -172,19 +179,19 @@ def rating_pkg_get(rating):
     output = {}
     try:
         rating = float(rating)
-        rates = model.Rating.by_rating(SESSION, rating)
+        rates = model.Rating.by_rating(ft.SESSION, rating)
         if not rates:
             raise SQLAlchemyError()
         output = {'rating': rating}
         output['packages'] = [rate.packages.name for rate in rates]
     except ValueError, err:
-        SESSION.rollback()
+        ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Invalid rating provided "%s"' % rating
         httpcode = 500
     except SQLAlchemyError, err:
         print err
-        SESSION.rollback()
+        ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'No packages found with rating "%s"' % rating
         httpcode = 404
@@ -203,18 +210,18 @@ def rating_pkg_put(pkgname):
         pkgname = form.pkgname.data
         rating = form.rating.data
         try:
-            message = taggerlib.add_rating(SESSION, pkgname, rating,
-                                          flask.g.fas_user)
-            SESSION.commit()
+            message = fedoratagger.lib.add_rating(ft.SESSION, pkgname, rating,
+                                                  flask.g.fas_user)
+            ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
         except NoResultFound, err:
-            SESSION.rollback()
+            ft.SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = 'Package "%s" not found' % pkgname
             httpcode = 404
         except SQLAlchemyError, err:
-            SESSION.rollback()
+            ft.SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = 'You have already rated this package'
             httpcode = 500
@@ -244,12 +251,12 @@ def vote_pkg_put(pkgname):
         tag = form.tag.data
         vote = int(form.vote.data) == 1
         try:
-            message = taggerlib.add_vote(SESSION, pkgname, tag, vote,
-                                        flask.g.fas_user)
-            SESSION.commit()
+            message = fedoratagger.lib.add_vote(ft.SESSION, pkgname, tag, vote,
+                                                flask.g.fas_user)
+            ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
-        except taggerlib.TaggerapiException, err:
+        except fedoratagger.lib.TaggerapiException, err:
             output['output'] = 'notok'
             output['error'] = err.message
             httpcode = 500
@@ -306,17 +313,17 @@ def before_request(*args, **kw):
         base64string = base64string.split()[1].strip()
         userstring = base64.b64decode(base64string)
         (username, token) = userstring.split(':')
-        user = model.FASUser.by_name(SESSION, username)
+        user = model.FASUser.by_name(ft.SESSION, username)
         if user \
-            and user.api_token == token \
-            and user.api_date >= datetime.date.today():
+                and user.api_token == token \
+                and user.api_date >= datetime.date.today():
             authenticated = True
             flask.g.fas_user = user
     elif flask.request.remote_addr:
-        user = model.FASUser.get_or_create(SESSION,
+        user = model.FASUser.get_or_create(ft.SESSION,
                                            flask.request.remote_addr,
                                            anonymous=True)
-        SESSION.commit()
+        ft.SESSION.commit()
         flask.g.fas_user = user
         authenticated = True
     # if we don't check that we're requesting /loging/ we can't (log in)
@@ -341,7 +348,7 @@ def auth_login():
     # If user is already logged in, return them to where they were last
     if flask.g.fas_user:
         return flask.redirect(next_url)
-    return FAS.login(return_url=next_url)
+    return FAS(ft.APP).login(return_url=next_url)
 
 
 @API.route('/token/')
@@ -350,9 +357,9 @@ def generate_token():
     """ Return the score of the specified user.
     """
     user = flask.g.fas_user
-    output = taggerlib.get_api_token(SESSION, user)
+    output = fedoratagger.lib.get_api_token(ft.SESSION, user)
 
-    SESSION.commit()
+    ft.SESSION.commit()
     jsonout = flask.jsonify(output)
     return jsonout
 
@@ -364,13 +371,13 @@ def pkg_random():
     httpcode = 200
     output = {}
 
-    package = model.Package.random(SESSION)
+    package = model.Package.random(ft.SESSION)
     if not package:
         httpcode = 404
         output['output'] = 'notok'
         output['error'] = 'No package could be found'
     else:
-        output = package.__json__(SESSION)
+        output = package.__json__(ft.SESSION)
 
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
@@ -416,7 +423,7 @@ def tag_pkg_dump():
     """ Returns a tab separated list of all tags for all packages
     """
     output = []
-    for package in model.Package.all(SESSION):
+    for package in model.Package.all(ft.SESSION):
         tmp = []
         for tag in package.tags:
             if tag.label.strip():
@@ -441,7 +448,7 @@ def rating_pkg_dump():
     """ Returns a tab separated list of the rating of each packages
     """
     output = []
-    for (ratingobj, rating) in model.Rating.all(SESSION):
+    for (ratingobj, rating) in model.Rating.all(ft.SESSION):
         output.append('%s\t%s' % (ratingobj.packages.name,
                       rating))
     return flask.Response('\n'.join(output), mimetype='text/plain')
@@ -458,7 +465,7 @@ def vote_tag_pkg(pkgname):
 def statistics():
     """ Return the statistics of the package/tags in the database
     """
-    output = taggerlib.statistics(SESSION)
+    output = fedoratagger.lib.statistics(ft.SESSION)
     jsonout = flask.jsonify(output)
     return jsonout
 
@@ -467,7 +474,7 @@ def statistics():
 def leaderboard():
     """ Return the top 10 user, aka the leaderboard
     """
-    output = taggerlib.leaderboard(SESSION)
+    output = fedoratagger.lib.leaderboard(ft.SESSION)
     jsonout = flask.jsonify(output)
     return jsonout
 
@@ -480,7 +487,7 @@ def score(username):
     output = {}
 
     try:
-        output = taggerlib.score(SESSION, username)
+        output = fedoratagger.lib.score(ft.SESSION, username)
     except NoResultFound, err:
         httpcode = 404
         output['output'] = 'notok'
