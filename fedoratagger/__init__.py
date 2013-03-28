@@ -51,9 +51,11 @@ SESSION = fedoratagger.lib.create_session(APP.config['DB_URL'])
 
 
 from fedoratagger.api import API
+from fedoratagger.frontend import FRONTEND
 
 
 APP.register_blueprint(API)
+APP.register_blueprint(FRONTEND)
 
 
 # pylint: disable=W0613
