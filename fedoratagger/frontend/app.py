@@ -21,6 +21,8 @@
 
 import flask
 
+from flask.ext.mako import render_template
+
 import fedoratagger as ft
 import fedoratagger.lib
 from fedoratagger.lib import model as m
@@ -135,8 +137,6 @@ def leaderboard(N):
 
     # TODO -- 'N' is unused here.  need to dig a tunnel through the .lib api
     users = fedoratagger.lib.leaderboard(ft.SESSION)
-    import pprint
-    pprint.pprint(users)
 
     keys = ['gravatar', 'name', 'score']
     row = "<tr>" + ''.join(["<td>{%s}</td>" % k for k in keys]) + "</tr>"
@@ -152,3 +152,28 @@ def leaderboard(N):
     {rows}
     </table>"""
     return template.format(rows="".join(rows))
+
+@FRONTEND.route('/', defaults=dict(name=None))
+@FRONTEND.route('/<name>')
+def home(name=None):
+    """ Really, the main index.
+
+    Returns a list of (the first three) card widgets for the
+    template to render.  The rest are acquired as needed via ajax calls to
+    the /card path.
+
+    """
+
+    if not name:
+        name = m.Package.random(ft.SESSION).name
+        flask.redirect(name)
+
+    packages = [None] * 3
+
+    if name:
+        packages[1] = m.Package.by_name(ft.SESSION, name)
+
+    cards = [CardWidget(package=packages[i]) for i in range(3)]
+    cards[1].css_class = 'card center'
+
+    return render_template('tagger.mak', cards=cards)

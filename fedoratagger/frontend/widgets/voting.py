@@ -31,6 +31,7 @@ class TagWidget(tw2.forms.LabelField):
 
     @property
     def upcls(self):
+        return "" # TODO -- fix this
         user = m.get_user()
         query = m.Vote.query.filter_by(user=user, tag=self.tag)
         if query.count() == 0:
@@ -43,6 +44,7 @@ class TagWidget(tw2.forms.LabelField):
 
     @property
     def downcls(self):
+        return "" # TODO -- fix this
         user = m.get_user()
         query = m.Vote.query.filter_by(user=user, tag=self.tag)
         if query.count() == 0:
@@ -55,6 +57,7 @@ class TagWidget(tw2.forms.LabelField):
 
     @property
     def textcls(self):
+        return "" # TODO -- fix this
         user = m.get_user()
         query = m.Vote.query.filter_by(user=user, tag=self.tag)
         if query.count() == 0:

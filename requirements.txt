@@ -4,5 +4,6 @@ flask
 sqlalchemy
 wtforms
 Flask-wtf
+Flask-Mako
 #psycopg2 ## Not needed for testing only when working with postgresql
 kitchen

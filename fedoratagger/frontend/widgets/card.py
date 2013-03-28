@@ -15,11 +15,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
+
 import tw2.core
 import tw2.forms
 import tw2.jqplugins.gritter
 import random
 
+import fedoratagger as ft
 import fedoratagger.lib.model as m
 from fedoratagger.frontend.widgets.voting import TagWidget, voting_js
 
@@ -45,7 +47,7 @@ class CardWidget(tw2.forms.LabelField):
         super(CardWidget, self).prepare()
 
         if not self.package:
-            self.package = m.Package.random()
+            self.package = m.Package.random(ft.SESSION)
 
         allowed_tags = filter(lambda t: not t.banned, self.package.tags)
 

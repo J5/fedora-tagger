@@ -35,6 +35,7 @@ from tw2.core.middleware import make_middleware as make_tw2_middleware
 
 import flask
 from flask_fas_openid import FAS
+from flask.ext.mako import MakoTemplates
 from functools import wraps
 
 import fedoratagger.lib
@@ -48,6 +49,7 @@ if 'FEDORATAGGER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('FEDORATAGGER_CONFIG')
 APP.config['SECRET_KEY'] = 'asljdlkhkfhakdg'
 APP.config['FAS_OPENID_CHECK_CERT'] = False
+mako = MakoTemplates(APP)
 FAS = FAS(APP)
 SESSION = fedoratagger.lib.create_session(APP.config['DB_URL'])
 
