@@ -52,7 +52,7 @@ ALTER TABLE "user" ADD COLUMN api_token VARCHAR(50) DEFAULT NULL;
 ALTER TABLE "user" ADD COLUMN api_date DATE DEFAULT CURRENT_DATE;
 ALTER TABLE "user" ADD COLUMN anonymous BOOLEAN DEFAULT FALSE;
 
-UPDATE TABLE "user" SET anonymous = TRUE where name = "anonymous";
+UPDATE "user" SET anonymous = TRUE where username = 'anonymous';
 
 ---- Add Unique Constraints
 
