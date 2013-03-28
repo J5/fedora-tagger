@@ -31,6 +31,8 @@ from urlparse import urljoin, urlparse
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
+from tw2.core.middleware import make_middleware as make_tw2_middleware
+
 import flask
 from flask_fas_openid import FAS
 from functools import wraps
@@ -56,6 +58,7 @@ from fedoratagger.frontend import FRONTEND
 
 APP.register_blueprint(API)
 APP.register_blueprint(FRONTEND)
+APP.wsgi_app = make_tw2_middleware(APP.wsgi_app)
 
 
 # pylint: disable=W0613
