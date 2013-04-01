@@ -17,10 +17,14 @@
 # Refer to the README.rst and LICENSE files for full details of the license
 import tw2.core
 import tw2.forms
+import tw2.jquery
 
 import fedoratagger.lib.model as m
 
-voting_js = tw2.core.JSLink(link="javascript/voting.js")
+voting_js = tw2.core.JSLink(
+    link="javascript/voting.js",
+    resources=[tw2.jquery.jquery_js],
+)
 
 class TagWidget(tw2.forms.LabelField):
     """ Tiny Voting Widget """

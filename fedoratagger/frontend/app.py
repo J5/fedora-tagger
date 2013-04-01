@@ -23,10 +23,21 @@ import flask
 
 from flask.ext.mako import render_template
 
+import tw2.core
+import tw2.jquery
+import tw2.jqplugins.ui
+
 import fedoratagger as ft
 import fedoratagger.lib
 from fedoratagger.lib import model as m
 from fedoratagger.frontend.widgets.card import CardWidget
+from fedoratagger.frontend.widgets.user import UserWidget
+from fedoratagger.frontend.widgets.dialog import (
+    HotkeysDialog,
+    SearchDialog,
+    LeaderboardDialog,
+    StatisticsDialog,
+)
 
 
 FRONTEND = flask.Blueprint(
@@ -34,6 +45,7 @@ FRONTEND = flask.Blueprint(
     url_prefix='/app',
     template_folder='templates',
     static_folder='static',
+    static_url_path='',
 )
 
 # TODO - yumdb
@@ -55,6 +67,30 @@ services = [
     ('sources', 'Source', "http://pkgs.fedoraproject.org/gitweb/" +
         "?p={name}.git"),
 ]
+
+
+@FRONTEND.before_request
+def before_request(*args, **kw):
+    """ Function called for each request performed.
+    It configures and injects globally required resources.
+    """
+
+    # Include jquery on every page.
+    tw2.jquery.jquery_js.req().prepare()
+
+    # Set the theme to 'hot-sneaks'
+    tw2.jqplugins.ui.set_ui_theme_name('hot-sneaks')
+
+    for link in ["query.js", "cards.js", "navigation.js"]:
+        tw2.core.JSLink(link="javascript/%s" % link).req().prepare()
+
+    flask.g.hotkeys_dialog = HotkeysDialog
+    flask.g.search_dialog = SearchDialog
+    flask.g.leaderboard_dialog = LeaderboardDialog
+    flask.g.statistics_dialog = StatisticsDialog
+    flask.g.user_widget = UserWidget
+    #if request.identity:
+    #    tmpl_context.add_dialog = AddTagDialog
 
 
 @FRONTEND.route('/_heartbeat')
@@ -152,6 +188,7 @@ def leaderboard(N):
     {rows}
     </table>"""
     return template.format(rows="".join(rows))
+
 
 @FRONTEND.route('/', defaults=dict(name=None))
 @FRONTEND.route('/<name>')

@@ -25,7 +25,7 @@ import docutils.examples
 def hotkeys_readme():
     """ Pick the README.rst off of disk and render the hotkeys section """
 
-    root = '/'.join(__file__.split('/')[:-2])
+    root = '/'.join(__file__.split('/')[:-4])
     fname = root + '/README.rst'
     with codecs.open(fname, 'r', 'utf-8') as f:
         rst = f.read()

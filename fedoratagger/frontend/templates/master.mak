@@ -7,25 +7,25 @@
         <title>Fedora Tagger</title>
     </head>
     <body>
-% if hasattr(tmpl_context, 'hotkeys_dialog') and tmpl_context.hotkeys_dialog:
-		${tmpl_context.hotkeys_dialog.display() | n}
+% if hasattr(g, 'hotkeys_dialog') and g.hotkeys_dialog:
+		${g.hotkeys_dialog.display() | n}
 % endif
-% if hasattr(tmpl_context, 'search_dialog') and tmpl_context.search_dialog:
-		${tmpl_context.search_dialog.display() | n}
+% if hasattr(g, 'search_dialog') and g.search_dialog:
+		${g.search_dialog.display() | n}
 % endif
-% if hasattr(tmpl_context, 'add_dialog') and tmpl_context.add_dialog:
-		${tmpl_context.add_dialog.display() | n}
+% if hasattr(g, 'add_dialog') and g.add_dialog:
+		${g.add_dialog.display() | n}
 % endif
-% if hasattr(tmpl_context, 'statistics_dialog') and tmpl_context.statistics_dialog:
-		${tmpl_context.statistics_dialog.display() | n}
+% if hasattr(g, 'statistics_dialog') and g.statistics_dialog:
+		${g.statistics_dialog.display() | n}
 % endif
-% if hasattr(tmpl_context, 'leaderboard_dialog') and tmpl_context.leaderboard_dialog:
-		${tmpl_context.leaderboard_dialog.display() | n}
+% if hasattr(g, 'leaderboard_dialog') and g.leaderboard_dialog:
+		${g.leaderboard_dialog.display() | n}
 % endif
         <div id="header">
             <div><H1><span id="logo">Fedora</span> tagger</H1></div>
-% if hasattr(tmpl_context, 'user_widget') and tmpl_context.user_widget:
-			${tmpl_context.user_widget.display() | n}
+% if hasattr(g, 'user_widget') and g.user_widget:
+			${g.user_widget.display() | n}
 % endif
         </div>
         <div class="clear"></div>

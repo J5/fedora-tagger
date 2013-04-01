@@ -18,10 +18,9 @@
 
 import tw2.core
 import tw2.jquery
-import tg
 import hashlib
 
-import fedoratagger.model as m
+import fedoratagger.lib.model as m
 
 photo_css = tw2.core.CSSLink(link='css/photo.css')
 thumbnail_js = tw2.core.JSLink(
@@ -37,14 +36,16 @@ class UserWidget(tw2.core.Widget):
 
     @property
     def gravatar_tag(self):
-        return m.get_user().gravatar_md
+        return "TODO -- auth and gravatar"
+        #return m.get_user().gravatar_md
 
     @property
     def formatted_name(self):
-        return tg.request.identity.get(
-            'ircnick',
-            self.username
-        )
+        return "TODO -- auth and irc nick"
+        #return tg.request.identity.get(
+        #    'ircnick',
+        #    self.username
+        #)
 
     @property
     def logged_in(self):
@@ -52,24 +53,31 @@ class UserWidget(tw2.core.Widget):
 
     @property
     def username(self):
-        return m.get_user().username
+        return "TODO -- auth and username"
+        #return m.get_user().username
 
     @property
     def total_votes(self):
-        user = m.get_user(self.username)
-        return user.total_votes
+        return "TODO -- auth and votes"
+        #user = m.get_user(self.username)
+        #return user.total_votes
 
     @property
     def rank(self):
-        user = m.get_user(self.username)
-        return user.rank
+        return "TODO -- auth and rank"
+        #user = m.get_user(self.username)
+        #return user.rank
 
     @property
     def notifications_on(self):
-        user = m.get_user(self.username)
-        return user.notifications_on and "checked='checked'" or ""
+        # TODO - auth and notifications.
+        return True
+        #user = m.get_user(self.username)
+        #return user.notifications_on and "checked='checked'" or ""
 
     @property
     def _notifications_on(self):
-        user = m.get_user(self.username)
-        return user.notifications_on and "true" or "false"
+        # TODO - auth and notifications.
+        return "true"
+        #user = m.get_user(self.username)
+        #return user.notifications_on and "true" or "false"
