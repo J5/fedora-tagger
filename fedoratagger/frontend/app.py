@@ -81,7 +81,7 @@ def before_request(*args, **kw):
     # Set the theme to 'hot-sneaks'
     tw2.jqplugins.ui.set_ui_theme_name('hot-sneaks')
 
-    for link in ["query.js", "cards.js", "navigation.js"]:
+    for link in ["utilities.js", "cards.js", "navigation.js"]:
         tw2.core.JSLink(link="javascript/%s" % link).req().prepare()
 
     flask.g.hotkeys_dialog = HotkeysDialog

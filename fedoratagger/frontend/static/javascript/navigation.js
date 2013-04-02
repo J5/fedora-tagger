@@ -95,11 +95,27 @@ function search() { $("#search_dialog").dialog('open'); }
 
 function add() { $("#add_dialog").dialog('open'); }
 
+// Multiline strings in javascript are wonderful.
+var statistics_template = "                                     \
+<div id='statistics-dialog'>                                    \
+    <table class='statistics'>                                  \
+        <tr><td>Total Packages</td><td>{0}</td></tr>            \
+        <tr><td>Total Unique Tags</td><td>{1}</td></tr>         \
+        <tr><td>Packages Without Tags</td><td>{2}</td></tr>     \
+        <tr><td>Packages With Tags</td><td>{3}</td></tr>        \
+        <tr><td>Average Tags / Package</td><td>{4}</td></tr>    \
+        <tr>                                                    \
+            <td>Tags / Package (that have at least one tag)</td>\
+            <td>{5}</td>                                        \
+        </tr>                                                   \
+    </table>                                                    \
+</div>";
+
 function statistics() {
     request_in_progress = true;
     $.ajax({
         type: "GET",
-        url: "statistics",
+        url: "../api/statistics/",
         cache: false,
         data: $.param({
             _csrf_token: $.getUrlVar("_csrf_token"),
@@ -114,10 +130,17 @@ function statistics() {
                 image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
             });
         },
-        success: function(html) {
+        success: function(json) {
             $("body").append("<div id='statistics-dialog'></div>");
             $("#statistics-dialog").attr('title', "Statistics");
-            $("#statistics-dialog").html(html);
+            $("#statistics-dialog").html(statistics_template.format(
+                json.summary.total_packages,
+                json.summary.total_unique_tags,
+                json.summary.no_tags,
+                json.summary.with_tags,
+                json.summary.tags_per_package.toFixed(3),
+                json.summary.tags_per_package_no_zeroes.toFixed(3)
+            ));
             $("#statistics-dialog").dialog({
                 autoOpen: true,
                 modal: true,
