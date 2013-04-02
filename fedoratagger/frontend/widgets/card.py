@@ -16,6 +16,8 @@
 #
 # Refer to the README.rst and LICENSE files for full details of the license
 
+import flask
+
 import tw2.core
 import tw2.forms
 import tw2.jqplugins.gritter
@@ -39,8 +41,6 @@ class CardWidget(tw2.forms.LabelField):
 
     @property
     def not_anonymous(self):
-        import flask
-        # TODO -- flask.g.fas_user doesn't actually get populated here
         return flask.g.fas_user and not flask.g.fas_user.anonymous
 
     def prepare(self):

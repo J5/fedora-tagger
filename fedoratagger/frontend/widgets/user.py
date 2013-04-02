@@ -16,9 +16,12 @@
 #
 # Refer to the README.rst and LICENSE files for full details of the license
 
+import flask
 import tw2.core
 import tw2.jquery
 import hashlib
+
+import fedora.client
 
 import fedoratagger.lib.model as m
 
@@ -35,49 +38,44 @@ class UserWidget(tw2.core.Widget):
     template = 'fedoratagger.frontend.widgets.templates.user'
 
     @property
+    def user(self):
+        return flask.g.fas_user
+
+    @property
     def gravatar_tag(self):
-        return "TODO -- auth and gravatar"
-        #return m.get_user().gravatar_md
+        if self.logged_in:
+            return self.user.gravatar
+        else:
+            system = fedora.client.AccountSystem()
+            url = system.gravatar_url('anonymous-tagger', lookup_email=False)
+            return "<img src='{url}' />".format(url=url)
 
     @property
     def formatted_name(self):
-        return "TODO -- auth and irc nick"
-        #return tg.request.identity.get(
-        #    'ircnick',
-        #    self.username
-        #)
+        return self.user.name
 
     @property
     def logged_in(self):
-        return self.username != 'anonymous'
+        return self.user and not self.user.anonymous
 
     @property
     def username(self):
-        return "TODO -- auth and username"
-        #return m.get_user().username
+        return self.user.name
 
     @property
     def total_votes(self):
-        return "TODO -- auth and votes"
-        #user = m.get_user(self.username)
-        #return user.total_votes
+        return self.user.score
 
     @property
     def rank(self):
-        return "TODO -- auth and rank"
-        #user = m.get_user(self.username)
-        #return user.rank
+        return self.user.rank
 
     @property
     def notifications_on(self):
-        # TODO - auth and notifications.
-        return True
-        #user = m.get_user(self.username)
-        #return user.notifications_on and "checked='checked'" or ""
+        return getattr(self.user, 'notifications_on', False) \
+                and "checked='checked'" or ""
 
     @property
     def _notifications_on(self):
-        # TODO - auth and notifications.
-        return "true"
-        #user = m.get_user(self.username)
-        #return user.notifications_on and "true" or "false"
+        return getattr(self.user, 'notifications_on', False) \
+                and "true" or "false"

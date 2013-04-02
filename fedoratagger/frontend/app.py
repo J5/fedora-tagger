@@ -89,8 +89,11 @@ def before_request(*args, **kw):
     flask.g.leaderboard_dialog = LeaderboardDialog
     flask.g.statistics_dialog = StatisticsDialog
     flask.g.user_widget = UserWidget
-    #if request.identity:
-    #    tmpl_context.add_dialog = AddTagDialog
+
+    flask.g.fas_user = fedoratagger.flask_utils.current_user(flask.request)
+
+    if flask.g.fas_user and not flask.g.fas_user.anonymous:
+        flask.g.add_dialog = AddTagDialog
 
 
 @FRONTEND.route('/_heartbeat')

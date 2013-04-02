@@ -15,10 +15,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
+
+import flask
+import sqlalchemy.exc
+
 import tw2.core
 import tw2.forms
 import tw2.jquery
 
+import fedoratagger as ft
 import fedoratagger.lib.model as m
 
 escape_js = tw2.core.JSLink(
@@ -40,40 +45,40 @@ class TagWidget(tw2.forms.LabelField):
     template = 'fedoratagger.frontend.widgets.templates.tag'
 
     @property
+    def _like(self):
+        user = flask.g.fas_user
+        if not user:
+            return 0
+
+        try:
+            voteobj = m.Vote.get(ft.SESSION, user_id=user.id, tag_id=self.tag.id)
+        except sqlalchemy.exc.SQLAlchemyError:
+            return 0
+
+        if voteobj.like:
+            return 1
+        else:
+            return -1
+
+    @property
     def upcls(self):
-        return "" # TODO -- fix this
-        user = m.get_user()
-        query = m.Vote.query.filter_by(user=user, tag=self.tag)
-        if query.count() == 0:
+        if self._like > 0:
+            return "mod"
+        else:
             return ""
-
-        if not query.one().like:
-            return ""
-
-        return "mod"
 
     @property
     def downcls(self):
-        return "" # TODO -- fix this
-        user = m.get_user()
-        query = m.Vote.query.filter_by(user=user, tag=self.tag)
-        if query.count() == 0:
+        if self._like < 0:
+            return "mod"
+        else:
             return ""
-
-        if query.one().like:
-            return ""
-
-        return "mod"
 
     @property
     def textcls(self):
-        return "" # TODO -- fix this
-        user = m.get_user()
-        query = m.Vote.query.filter_by(user=user, tag=self.tag)
-        if query.count() == 0:
+        if self._like == 0:
             return ""
-
-        if query.one().like:
+        elif self._like == 1:
             return "up_text"
-
-        return "down_text"
+        else:
+            return "down_text"
