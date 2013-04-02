@@ -254,8 +254,14 @@ def vote_pkg_put(pkgname):
             message = fedoratagger.lib.add_vote(ft.SESSION, pkgname, tag, vote,
                                                 flask.g.fas_user)
             ft.SESSION.commit()
+
+            package = model.Package.by_name(ft.SESSION, pkgname)
+            tagobj = model.Tag.get(ft.SESSION, package.id, tag)
+
             output['output'] = 'ok'
             output['messages'] = [message]
+            output['user'] = flask.g.fas_user.__json__()
+            output['tag'] = tagobj.__json__()
         except fedoratagger.lib.TaggerapiException, err:
             output['output'] = 'notok'
             output['error'] = err.message
