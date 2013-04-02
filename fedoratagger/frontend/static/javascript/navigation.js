@@ -54,12 +54,16 @@ function change_card() {
     center.removeClass('center');
     center.next().addClass('center');
 
+    var pkgname = $(".center h2").text();
+
     // Add the vote callbacks to the tags on the new center card.
     $('.center .voter .up').click(function() {
-        upvote($(this).parent().attr('id'));
+        var tagname = $(this).parent().parent().children('a').text();
+        upvote(pkgname, tagname);
     });
     $('.center .voter .down').click(function() {
-        downvote($(this).parent().attr('id'));
+        var tagname = $(this).parent().parent().children('a').text();
+        downvote(pkgname, tagname);
     });
 
     // Change the window location for deep-linkage
@@ -199,12 +203,16 @@ function init_navigation() {
         }
     });
 
+    var pkgname = $(".center h2").text();
+
     // Add the vote callbacks to the tags on the new center card.
     $('.center .voter .up').click(function() {
-        upvote($(this).parent().attr('id'));
+        var tagname = $(this).parent().parent().children('a').text();
+        upvote(pkgname, tagname);
     });
     $('.center .voter .down').click(function() {
-        downvote($(this).parent().attr('id'));
+        var tagname = $(this).parent().parent().children('a').text();
+        downvote(pkgname, tagname);
     });
 }
 
