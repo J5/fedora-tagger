@@ -21,9 +21,15 @@ import tw2.jquery
 
 import fedoratagger.lib.model as m
 
+escape_js = tw2.core.JSLink(
+    link="javascript/escape.js",
+)
 voting_js = tw2.core.JSLink(
     link="javascript/voting.js",
-    resources=[tw2.jquery.jquery_js],
+    resources=[
+        escape_js,
+        tw2.jquery.jquery_js,
+    ],
 )
 
 class TagWidget(tw2.forms.LabelField):
