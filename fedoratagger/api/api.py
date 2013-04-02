@@ -33,6 +33,7 @@ import fedoratagger as ft
 
 import fedoratagger.lib
 import fedoratagger.lib.model as model
+import fedoratagger.flask_utils
 
 # Relative import
 import forms as forms
@@ -311,27 +312,10 @@ def before_request(*args, **kw):
     if flask.request.method != 'PUT':
         return
 
-    token = None
-    username = None
-    authenticated = False
-    if 'Authorization' in flask.request.headers:
-        base64string = flask.request.headers['Authorization']
-        base64string = base64string.split()[1].strip()
-        userstring = base64.b64decode(base64string)
-        (username, token) = userstring.split(':')
-        user = model.FASUser.by_name(ft.SESSION, username)
-        if user \
-                and user.api_token == token \
-                and user.api_date >= datetime.date.today():
-            authenticated = True
-            flask.g.fas_user = user
-    elif flask.request.remote_addr:
-        user = model.FASUser.get_or_create(ft.SESSION,
-                                           flask.request.remote_addr,
-                                           anonymous=True)
-        ft.SESSION.commit()
-        flask.g.fas_user = user
-        authenticated = True
+    flask.g.fas_user = fedoratagger.flask_utils.current_user(flask.request)
+    # XXX - the user can be 'authenticated' but still be 'anonymous'.  Odd.
+    authenticated = bool(flask.g.fas_user)
+
     # if we don't check that we're requesting /loging/ we can't (log in)
     if not authenticated and flask.request.path != '/api/login/':
         output = {'output': 'notok', 'error': 'Login invalid/expired'}
