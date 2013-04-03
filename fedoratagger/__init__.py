@@ -31,7 +31,7 @@ import flask
 from flask_fas_openid import FAS
 from flask.ext.mako import MakoTemplates
 
-import fedoratagger.lib
+from fedoratagger.lib import create_session
 
 # Create the application.
 APP = flask.Flask(__name__)
@@ -43,7 +43,7 @@ APP.config['SECRET_KEY'] = 'asljdlkhkfhakdg'
 APP.config['FAS_OPENID_CHECK_CERT'] = False
 FAS = FAS(APP)
 mako = MakoTemplates(APP)
-SESSION = fedoratagger.lib.create_session(APP.config['DB_URL'])
+SESSION = create_session(APP.config['DB_URL'])
 
 
 from fedoratagger.api import API

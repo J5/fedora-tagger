@@ -17,7 +17,7 @@
 # Refer to the README.rst and LICENSE files for full details of the license
 
 import flask
-import sqlalchemy.exc
+from sqlalchemy.orm.exc import NoResultFound
 
 import tw2.core
 import tw2.forms
@@ -52,7 +52,7 @@ class TagWidget(tw2.forms.LabelField):
 
         try:
             voteobj = m.Vote.get(ft.SESSION, user_id=user.id, tag_id=self.tag.id)
-        except sqlalchemy.exc.SQLAlchemyError:
+        except NoResultFound:
             return 0
 
         if voteobj.like:

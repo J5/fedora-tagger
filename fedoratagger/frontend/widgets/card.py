@@ -24,7 +24,7 @@ import tw2.jqplugins.gritter
 import random
 
 import fedoratagger as ft
-import fedoratagger.lib.model as m
+from fedoratagger.lib import model as m
 from fedoratagger.frontend.widgets.voting import TagWidget, voting_js
 
 
