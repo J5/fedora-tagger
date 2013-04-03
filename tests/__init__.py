@@ -56,9 +56,15 @@ class Modeltests(unittest.TestCase):
         """ Set up the environnment, ran before every tests. """
         self.session = model.create_tables(DB_URL)
 
-    # pylint: disable=C0103
     def tearDown(self):
-        """ Remove the test.db database if there is one. """
+        self.session.close()
+        # drop tables if we can
+        try:
+            engine = create_engine(DB_URL)
+            model.DeclarativeBase.metadata.drop_all(engine)
+        except Exception as e:
+            print "Failed dropping tables %r" % e
+
         if os.path.exists(DB_URL):
             os.unlink(DB_URL)
 
