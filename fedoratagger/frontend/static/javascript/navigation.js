@@ -57,11 +57,11 @@ function change_card() {
     var pkgname = $(".center h2").text();
 
     // Add the vote callbacks to the tags on the new center card.
-    $('.center .voter .up').click(function() {
+    $('.center .voter [class*=up]').click(function() {
         var tagname = $(this).parent().parent().children('a').text();
         upvote(pkgname, tagname);
     });
-    $('.center .voter .down').click(function() {
+    $('.center .voter [class*=down]').click(function() {
         var tagname = $(this).parent().parent().children('a').text();
         downvote(pkgname, tagname);
     });
@@ -229,11 +229,11 @@ function init_navigation() {
     var pkgname = $(".center h2").text();
 
     // Add the vote callbacks to the tags on the new center card.
-    $('.center .voter .up').click(function() {
+    $('.center .voter [class*=up]').click(function() {
         var tagname = $(this).parent().parent().children('a').text();
         upvote(pkgname, tagname);
     });
-    $('.center .voter .down').click(function() {
+    $('.center .voter [class*=down]').click(function() {
         var tagname = $(this).parent().parent().children('a').text();
         downvote(pkgname, tagname);
     });
