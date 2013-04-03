@@ -25,7 +25,6 @@ import string
 from datetime import date
 
 from sqlalchemy import create_engine
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.exc import NoResultFound
@@ -85,7 +84,7 @@ def add_vote(session, pkgname, tag, vote, user):
     try:
         package = model.Package.by_name(session, pkgname)
         tagobj = model.Tag.get(session, package.id, tag)
-    except SQLAlchemyError, err:
+    except NoResultFound, err:
         raise TaggerapiException('This tag could not be found associated'
                                  ' to this package')
     verb = 'changed'
@@ -104,7 +103,7 @@ def add_vote(session, pkgname, tag, vote, user):
                 tagobj.dislike -= 1
                 tagobj.like += 1
             voteobj.like = vote
-    except SQLAlchemyError:
+    except NoResultFound:
         # otherwise, create it
         verb = 'added'
         voteobj = model.Vote(user_id=user.id, tag_id=tagobj.id, like=vote)

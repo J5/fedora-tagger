@@ -22,7 +22,7 @@
 import base64
 import datetime
 from urlparse import urljoin, urlparse
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 import flask
@@ -54,7 +54,7 @@ def pkg_get(pkgname):
     try:
         package = model.Package.by_name(ft.SESSION, pkgname)
         output = package.__json__(ft.SESSION)
-    except SQLAlchemyError, err:
+    except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Package "%s" not found' % pkgname
@@ -72,7 +72,7 @@ def pkg_get_tag(pkgname):
     try:
         package = model.Package.by_name(ft.SESSION, pkgname)
         output = package.__tag_json__()
-    except SQLAlchemyError, err:
+    except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Package "%s" not found' % pkgname
@@ -90,7 +90,7 @@ def pkg_get_rating(pkgname):
     try:
         package = model.Package.by_name(ft.SESSION, pkgname)
         output = package.__rating_json__(ft.SESSION)
-    except SQLAlchemyError, err:
+    except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Package "%s" not found' % pkgname
@@ -110,10 +110,10 @@ def tag_pkg_get(tag):
     try:
         package = model.Tag.by_label(ft.SESSION, tag)
         if not package:
-            raise SQLAlchemyError()
+            raise NoResultFound()
         output = {'tag': tag}
         output['packages'] = [pkg.__pkg_json__() for pkg in package]
-    except SQLAlchemyError, err:
+    except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'Tag "%s" not found' % tag
@@ -151,7 +151,7 @@ def tag_pkg_put(pkgname):
             output['output'] = 'notok'
             output['error'] = 'Package "%s" not found' % pkgname
             httpcode = 404
-        except SQLAlchemyError, err:
+        except IntegrityError, err:
             ft.SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = 'This tag is already associated to this package'
@@ -182,7 +182,7 @@ def rating_pkg_get(rating):
         rating = float(rating)
         rates = model.Rating.by_rating(ft.SESSION, rating)
         if not rates:
-            raise SQLAlchemyError()
+            raise NoResultFound()
         output = {'rating': rating}
         output['packages'] = [rate.packages.name for rate in rates]
     except ValueError, err:
@@ -190,7 +190,7 @@ def rating_pkg_get(rating):
         output['output'] = 'notok'
         output['error'] = 'Invalid rating provided "%s"' % rating
         httpcode = 500
-    except SQLAlchemyError, err:
+    except NoResultFound, err:
         print err
         ft.SESSION.rollback()
         output['output'] = 'notok'
@@ -221,7 +221,7 @@ def rating_pkg_put(pkgname):
             output['output'] = 'notok'
             output['error'] = 'Package "%s" not found' % pkgname
             httpcode = 404
-        except SQLAlchemyError, err:
+        except IntegrityError, err:
             ft.SESSION.rollback()
             output['output'] = 'notok'
             output['error'] = 'You have already rated this package'

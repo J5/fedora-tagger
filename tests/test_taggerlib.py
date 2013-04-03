@@ -30,7 +30,6 @@ import sys
 import os
 
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm.exc import NoResultFound
 
 sys.path.insert(0, os.path.join(os.path.dirname(
@@ -66,7 +65,7 @@ class TaggerLibtests(Modeltests):
         rating = model.Rating.rating_of_package(self.session, pkg.id)
         self.assertEqual(100, rating)
 
-        self.assertRaises(SQLAlchemyError,
+        self.assertRaises(IntegrityError,
                           fedoratagger.lib.add_rating,
                           self.session, 'guake', 50, user_pingou)
         self.session.rollback()
@@ -96,7 +95,8 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, len(pkg.tags))
         self.assertEqual('gnome', pkg.tags[0].label)
 
-        self.assertRaises(SQLAlchemyError,
+
+        self.assertRaises(IntegrityError,
                           fedoratagger.lib.add_tag,
                           self.session, 'guake', 'gnome', user_pingou)
         self.session.rollback()
