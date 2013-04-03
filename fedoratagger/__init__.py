@@ -23,23 +23,15 @@
 __requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']
 import pkg_resources
 
-
-import ConfigParser
 import os
-import datetime
-from urlparse import urljoin, urlparse
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from sqlalchemy.orm.exc import NoResultFound
 
 from tw2.core.middleware import make_middleware as make_tw2_middleware
 
 import flask
 from flask_fas_openid import FAS
 from flask.ext.mako import MakoTemplates
-from functools import wraps
 
 import fedoratagger.lib
-import fedoratagger.lib.model as model
 
 # Create the application.
 APP = flask.Flask(__name__)
