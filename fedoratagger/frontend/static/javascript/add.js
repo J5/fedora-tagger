@@ -1,12 +1,14 @@
 $(document).ready(function () {
     var error = function(xhr) {
+        $("#add_dialog input").val('');
+        $('#add_dialog').dialog('close');
         request_in_progress = false;
         if (! notifications_on) { return; }
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
         var json = JSON.parse(xhr.responseText);
         gritter_id = $.gritter.add({
-            title: 'There was a problem with the server.',
-            text: json.error + "\n<br/>\n" + json.error_detail.join('.  '),
+            title: 'There was a problem adding that tag.',
+            text: json.error,
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
     };
