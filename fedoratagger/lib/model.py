@@ -447,14 +447,14 @@ class FASUser(DeclarativeBase):
     def total_votes(self):
         return len(self.votes)
 
-    @property
-    def rank(self):
+    def rank(self, session):
         _rank = self._rank
 
         if self.anonymous:
             return -1
 
-        users = FASUser.query.filter(FASUser.username != 'anonymous').all()
+        users = session.query(FASUser)\
+                .filter(FASUser.username != 'anonymous').all()
         lookup = list(reversed(sorted(set([u.total_votes for u in users]))))
         rank = lookup.index(self.total_votes) + 1
 

@@ -23,6 +23,8 @@ import hashlib
 
 import fedora.client
 
+import fedoratagger as ft
+
 photo_css = tw2.core.CSSLink(link='css/photo.css')
 thumbnail_js = tw2.core.JSLink(
     link='javascript/thumbnail.js',
@@ -42,7 +44,7 @@ class UserWidget(tw2.core.Widget):
     @property
     def gravatar_tag(self):
         if self.logged_in:
-            return self.user.gravatar
+            return self.user.gravatar_md
         else:
             system = fedora.client.AccountSystem()
             url = system.gravatar_url('anonymous-tagger', lookup_email=False)
@@ -50,7 +52,8 @@ class UserWidget(tw2.core.Widget):
 
     @property
     def formatted_name(self):
-        return self.user.name
+        # TODO -- real name?
+        return self.user.username
 
     @property
     def logged_in(self):
@@ -58,7 +61,7 @@ class UserWidget(tw2.core.Widget):
 
     @property
     def username(self):
-        return self.user.name
+        return self.user.username
 
     @property
     def total_votes(self):
@@ -66,7 +69,7 @@ class UserWidget(tw2.core.Widget):
 
     @property
     def rank(self):
-        return self.user.rank
+        return self.user.rank(ft.SESSION)
 
     @property
     def notifications_on(self):
