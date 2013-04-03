@@ -52,9 +52,7 @@ class Flasktests(Modeltests):
 
         fedoratagger.APP.config['TESTING'] = True
         fedoratagger.SESSION = self.session
-        print fedoratagger.SESSION
         fedoratagger.api.SESSION = self.session
-        print fedoratagger.api.SESSION
         self.app = fedoratagger.APP.test_client()
         wrappers.BaseRequest.remote_addr = '1.2.3'
         user = FakeUser()
