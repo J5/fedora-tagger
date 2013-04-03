@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    var error = function() {
+    var error = function(xhr) {
         request_in_progress = false;
         if (! notifications_on) { return; }
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+        var json = JSON.parse(xhr.responseText);
         gritter_id = $.gritter.add({
             title: 'There was a problem with the server.',
-            text: 'Sorry.',
+            text: json.error + "\n<br/>\n" + json.error_detail.join('.  '),
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
     };
@@ -24,23 +25,24 @@ $(document).ready(function () {
         if (! notifications_on) { return; }
         if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
         gritter_id = $.gritter.add({
-            title: 'Tagging ' + json.package + ' with ' + json.tag,
-            text: json.msg,
+            title: 'OK',
+            text: json.messages.join('\n<br/>\n'),
             image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
         });
     };
 
     $("#add_box").keydown(function(e){
         if( e.keyCode == 13 ){
+            var pkgname = $('.center * h2').html();
             request_in_progress = true;
             $.ajax({
-                type: "POST",
-                url: "add",
-                data: $.param({
-                    labels: $(this).val(),
-                    package: $('.center * h2').html(),
+                type: "PUT",
+                url: "../api/tag/" + pkgname + "/",
+                data: {
+                    tag: $(this).val(),
+                    pkgname: pkgname,
                     _csrf_token: $.getUrlVar("_csrf_token"),
-                }),
+                },
                 cache: false,
                 error: error,
                 success: success,
