@@ -338,7 +338,7 @@ def auth_login():
     # If user is already logged in, return them to where they were last
     if flask.g.fas_user:
         return flask.redirect(next_url)
-    return FAS(ft.APP).login(return_url=next_url)
+    return ft.FAS.login(return_url=next_url)
 
 
 @API.route('/token/')
