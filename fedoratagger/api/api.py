@@ -180,11 +180,11 @@ def rating_pkg_get(rating):
     output = {}
     try:
         rating = float(rating)
-        rates = model.Rating.by_rating(ft.SESSION, rating)
-        if not rates:
+        packages = model.Rating.by_rating(ft.SESSION, rating)
+        if not packages:
             raise NoResultFound()
         output = {'rating': rating}
-        output['packages'] = [rate.packages.name for rate in rates]
+        output['packages'] = [package.name for package in packages]
     except ValueError, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'

@@ -412,7 +412,7 @@ class Rating(DeclarativeBase):
 
         return session.query(Package, subquery.c.avg_rating).filter(
             Package.id == subquery.c.package_id
-        )
+        ).all()
 
     @classmethod
     def by_rating(cls, session, ratingscore):
@@ -421,13 +421,15 @@ class Rating(DeclarativeBase):
 
         :arg session: the session used to query the database
         """
-        stmt = session.query(Rating.id,
-                            func.avg(Rating.rating).label('avg')
-                             ).group_by(Rating.package_id).subquery()
-        rating = session.query(Rating).filter(Rating.id == stmt.c.id
-                                     ).filter(stmt.c.avg==ratingscore
-                                     ).all()
-        return rating
+        subquery = session.query(
+            cls.package_id.label('package_id'),
+            func.avg(cls.rating).label('avg'),
+        ).group_by(cls.package_id).subquery()
+
+        return session.query(Package).filter(and_(
+            Package.id == subquery.c.package_id,
+            subquery.c.avg == ratingscore,
+        )).all()
 
     def __json__(self):
 
