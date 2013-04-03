@@ -395,10 +395,24 @@ class Rating(DeclarativeBase):
     def all(cls, session):
         """ Return the average rating of all the packages in the database.
 
+        Returns a list of tuples of the form::
+
+            [
+                (Package1, average_rating),
+                (Package2, average_rating),
+                ...
+            ]
+
         :arg session: the session used to query the database
         """
-        return session.query(cls, func.avg(cls.rating)
-                            ).group_by(cls.package_id).all()
+        subquery = session.query(
+            cls.package_id.label('package_id'),
+            func.avg(cls.rating).label('avg_rating')
+        ).group_by(cls.package_id).subquery()
+
+        return session.query(Package, subquery.c.avg_rating).filter(
+            Package.id == subquery.c.package_id
+        )
 
     @classmethod
     def by_rating(cls, session, ratingscore):

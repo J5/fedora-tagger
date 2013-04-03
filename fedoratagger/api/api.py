@@ -438,9 +438,9 @@ def rating_pkg_dump():
     """ Returns a tab separated list of the rating of each packages
     """
     output = []
-    for (ratingobj, rating) in model.Rating.all(ft.SESSION):
-        output.append('%s\t%s' % (ratingobj.packages.name,
-                      rating))
+    for (package, rating) in model.Rating.all(ft.SESSION):
+        print package.name, rating
+        output.append('%s\t%0.1f' % (package.name, rating))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
 
