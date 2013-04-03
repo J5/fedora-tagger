@@ -19,6 +19,8 @@
 # -*- coding: utf-8 -*-
 """ Various flask utilities used by both the API and the app. """
 
+import flask
+
 import base64
 import datetime
 
@@ -31,12 +33,20 @@ def current_user(request):
     returns None if the provided Authorization header is invalid.
     """
 
-    token = None
-    username = None
-    authenticated = False
-
     # TODO - should this raise an exception instead of returning None?
-    if 'Authorization' in request.headers:
+    if flask.g.fas_user:
+        # The flask_fas_openid extension has already added
+        # our user as a Bunch object.  We need to convert that
+        # into a m.FASUser object.
+        user = m.FASUser.get_or_create(
+            ft.SESSION,
+            username=flask.g.fas_user.username,
+            email=flask.g.fas_user.email,
+            anonymous=False,
+        )
+        ft.SESSION.commit()
+        return user
+    elif 'Authorization' in request.headers:
         base64string = request.headers['Authorization']
         base64string = base64string.split()[1].strip()
         userstring = base64.b64decode(base64string)
