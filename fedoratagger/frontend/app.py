@@ -218,3 +218,25 @@ def home(name=None):
     cards[1].css_class = 'card center'
 
     return render_template('tagger.mak', cards=cards)
+
+
+@FRONTEND.route('/login/', methods=('GET', 'POST'))
+def auth_login():
+    """ Method to log into the application. """
+    next_url = flask.request.args.get('next', flask.url_for('frontend.home'))
+    # If user is already logged in, return them to where they were last
+    if flask.g.fas_user and not flask.g.fas_user.anonymous:
+        return flask.redirect(next_url)
+    return ft.FAS.login(return_url=next_url)
+
+
+@FRONTEND.route('/logout/', methods=('GET', 'POST'))
+def auth_logout():
+    """ Method to log out of the application. """
+    next_url = flask.request.args.get('next', flask.url_for('frontend.home'))
+    # If user is already logged out, return them to where they were last
+    if not flask.g.fas_user or flask.g.fas_user.anonymous:
+        return flask.redirect(next_url)
+
+    ft.FAS.logout()
+    return flask.redirect(next_url)

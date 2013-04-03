@@ -170,3 +170,7 @@ margin-bottom:20px
 	font-weight: normal;
 	font-style: normal;
 }
+
+#login_form {
+    margin-top: 32px;
+}
