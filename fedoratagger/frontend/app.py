@@ -37,6 +37,7 @@ from fedoratagger.frontend.widgets.dialog import (
     SearchDialog,
     LeaderboardDialog,
     StatisticsDialog,
+    AddTagDialog,
 )
 
 
