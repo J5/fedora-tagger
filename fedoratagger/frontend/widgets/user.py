@@ -23,8 +23,6 @@ import hashlib
 
 import fedora.client
 
-import fedoratagger.lib.model as m
-
 photo_css = tw2.core.CSSLink(link='css/photo.css')
 thumbnail_js = tw2.core.JSLink(
     link='javascript/thumbnail.js',
