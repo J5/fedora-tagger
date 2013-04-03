@@ -176,7 +176,10 @@ class Package(DeclarativeBase):
         :arg session: the session used to query the database
         :arg pkgname: the name of the package (string)
         """
-        return session.query(cls).order_by(func.random()).first()
+        result = session.query(cls).order_by(func.random()).first()
+        if not result:
+            raise NoResultFound()
+        return result
 
     @classmethod
     def all(cls, session):
