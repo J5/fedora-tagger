@@ -6,6 +6,8 @@ import pkg_resources
 import sys
 
 PORT, DB_URL = int(sys.argv[-2]), sys.argv[-1]
-from fedoratagger import APP
-APP.config['DB_URL'] = DB_URL
-APP.run(port=PORT)
+import fedoratagger
+from fedoratagger.lib import create_session
+fedoratagger.SESSION = create_session(DB_URL)
+fedoratagger.APP.debug = True
+fedoratagger.APP.run(port=PORT)

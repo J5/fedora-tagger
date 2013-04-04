@@ -5,14 +5,17 @@ import os
 import signal
 import subprocess
 import sys
+import random
 
+from nose.tools import eq_
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 from fedoratagger.lib import model
 
 db_filename = "/var/tmp/tagger-tests.db"
 db_url = "sqlite:///" + db_filename
-port = 33412
+port = random.randint(5000, 50000)
 _server = None
 
 
@@ -34,7 +37,7 @@ def setUp():
     )
     _server = subprocess.Popen(cmd, shell=True)
     # Let it get setup
-    time.sleep(2)
+    time.sleep(1)
 
 
 def tearDown():
@@ -52,11 +55,23 @@ class TestFrontend(_Base):
     logout_url = base + "/logout"
     title = "lol Fedora Tagger lolol"
 
+    def setUp(self):
+        # Logout out of tagger
+        super(TestFrontend, self).setUp()
+        # ALSO try logging out of openid, just for laughs.
+        try:
+            self.driver.get("https://id.fedoraproject.org/logout")
+        except Exception:
+            pass
+
     def tearDown(self):
         # Logout out of tagger
         super(TestFrontend, self).tearDown()
         # ALSO log out of openid
-        self.driver.get("https://id.fedoraproject.org/logout")
+        try:
+            self.driver.get("https://id.fedoraproject.org/logout")
+        except Exception:
+            pass
 
     # Not tolerant
     def test_login(self):
@@ -84,3 +99,32 @@ class TestFrontend(_Base):
 
         # You can only see this text if you have successfully authenticated
         self.wait_for("Add a new tag")
+
+    def assert_gritter(self, value):
+        elem = self.driver.find_element_by_css_selector(".gritter-item p")
+        eq_(elem.text, value)
+        elem = self.driver.find_element_by_css_selector('.gritter-item')
+        hover = ActionChains(self.driver).move_to_element(elem)
+        hover.perform()
+        elem = self.driver.find_element_by_css_selector('.gritter-close')
+        elem.click()
+
+    def test_add_tag_and_change_vote(self):
+        self.test_login()
+        elem = self.driver.find_element_by_css_selector(".center div.plus")
+        elem.click()
+        elem = self.driver.find_element_by_css_selector("#add_box")
+        elem.send_keys("q")
+        elem.send_keys(Keys.RETURN)
+        self.assert_gritter('Tag "q" added to the package "mattd"')
+
+        self.driver.get(self.base + "/mattd")
+
+        elem = self.driver.find_element_by_css_selector(".center .down")
+        elem.click()
+        self.assert_gritter('Vote changed on the tag "q" of the package "mattd"')
+        time.sleep(1)  # Sorry, @lmacken
+        elem.click()
+        self.assert_gritter(
+            'Your vote on the tag "q" for the package "mattd" did not changed'
+        )
