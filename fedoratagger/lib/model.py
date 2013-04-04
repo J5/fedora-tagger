@@ -23,11 +23,13 @@ import json
 import os
 from datetime import datetime
 
-WITH_FEDMSG = True
-try:
-    import fedmsg
-except ImportError:  # pragma: no cover
-    WITH_FEDMSG = False
+WITH_FEDMSG = False
+# Passing on this for now until we can determine if we should
+# enable it from config or not.
+#try:
+#    import fedmsg
+#except ImportError:  # pragma: no cover
+#    WITH_FEDMSG = False
 
 from sqlalchemy import *
 from sqlalchemy import Table, ForeignKey, Column
