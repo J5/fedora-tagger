@@ -361,13 +361,13 @@ def pkg_random():
     httpcode = 200
     output = {}
 
-    package = model.Package.random(ft.SESSION)
-    if not package:
+    try:
+        package = model.Package.random(ft.SESSION)
+        output = package.__json__(ft.SESSION)
+    except NoResultFound:
         httpcode = 404
         output['output'] = 'notok'
         output['error'] = 'No package could be found'
-    else:
-        output = package.__json__(ft.SESSION)
 
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
