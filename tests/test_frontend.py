@@ -49,7 +49,14 @@ class _Base(rube.core.RubeTest):
 
 class TestFrontend(_Base):
     base = "http://localhost:%i/app" % port
+    logout_url = base + "/logout"
     title = "lol Fedora Tagger lolol"
+
+    def tearDown(self):
+        # Logout out of tagger
+        super(TestFrontend, self).tearDown()
+        # ALSO log out of openid
+        self.driver.get("https://id.fedoraproject.org/logout")
 
     # Not tolerant
     def test_login(self):
