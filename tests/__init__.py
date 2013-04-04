@@ -41,7 +41,8 @@ from fedoratagger.lib import model
 
 
 DB_URL = 'sqlite:///:memory:'
-
+#import requests
+#DB_URL = requests.get('http://api.postgression.com').text
 
 class Modeltests(unittest.TestCase):
     """ Model tests. """
