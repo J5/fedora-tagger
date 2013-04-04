@@ -12,3 +12,4 @@ tw2.forms
 tw2.jquery
 tw2.jqplugins.ui
 tw2.jqplugins.gritter
+python-fedora
