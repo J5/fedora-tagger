@@ -5,6 +5,7 @@ sqlalchemy
 wtforms
 Flask-wtf
 Flask-Mako
+mako>=0.4.2
 #psycopg2 ## Not needed for testing only when working with postgresql
 kitchen
 tw2.core
@@ -13,3 +14,4 @@ tw2.jquery
 tw2.jqplugins.ui
 tw2.jqplugins.gritter
 python-fedora
+docutils
