@@ -34,7 +34,7 @@ def current_user(request):
     """
 
     # TODO - should this raise an exception instead of returning None?
-    if flask.g.fas_user:
+    if getattr(flask.g, 'fas_user', None):
         # The flask_fas_openid extension has already added
         # our user as a Bunch object.  We need to convert that
         # into a m.FASUser object.
