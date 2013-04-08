@@ -112,6 +112,7 @@ class Package(DeclarativeBase):
     summary = Column(Unicode(1023), nullable=False)
 
     tags = relation('Tag', backref=('package'))
+    ratings = relation('Rating', backref=('package'))
 
     def _get_xapian_data(self):
         xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
@@ -254,8 +255,6 @@ class Tag(DeclarativeBase):
     like = Column(Integer, default=1)
     dislike = Column(Integer, default=0)
 
-    packages = relation('Package')
-
     @property
     def banned(self):
         """ We want to exclude some tags permanently.
@@ -313,7 +312,7 @@ class Tag(DeclarativeBase):
             'dislike': self.dislike,
             'total': self.total,
             'votes': self.total_votes,
-            'package': self.packages.name
+            'package': self.package.name
         }
 
         return result
@@ -375,8 +374,6 @@ class Rating(DeclarativeBase):
     user_id = Column(Integer, ForeignKey('user.id'))
     package_id = Column(Integer, ForeignKey('package.id'))
     rating = Column(Integer, nullable=False)
-
-    packages = relation('Package')
 
     @classmethod
     def rating_of_package(cls, session, pkgid):
@@ -449,7 +446,10 @@ class FASUser(DeclarativeBase):
 
     id = Column(Integer, primary_key=True)
     username = Column(Unicode(255), nullable=False)
+
     votes = relation('Vote', backref=('user'))
+    ratings = relation('Rating', backref=('user'))
+
     email = Column(Unicode(255), default=None)
     notifications_on = Column(Boolean, default=True)
     _rank = Column(Integer, default=-1)
