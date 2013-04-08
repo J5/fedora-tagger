@@ -3,7 +3,6 @@
 *.pyo
 *.swp
 *.mo 
-*.cfg
 dist
 *.egg-info
 build
