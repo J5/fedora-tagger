@@ -23,8 +23,8 @@ $(document).ready(function () {
     }
     $('#notifs_toggle').change(function () {
         $.ajax({
-            type: "POST",
-            url: "notifs_toggle",
+            type: "PATCH",
+            url: "notifs_toggle/",
             data: $.param({
                 _csrf_token: $.getUrlVar("_csrf_token"),
             }),

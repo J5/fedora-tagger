@@ -236,3 +236,16 @@ def auth_logout():
 
     ft.FAS.logout()
     return flask.redirect(next_url)
+
+
+@FRONTEND.route('/notifs_toggle/', methods=('GET', 'PATCH'))
+def notifs_toggle():
+    flask.g.fas_user.notifications_on = not flask.g.fas_user.notifications_on
+    ft.SESSION.commit()
+
+    jsonout = flask.jsonify(dict(
+        notifications_on=flask.g.fas_user.notifications_on
+    ))
+    jsonout.status_code = 200
+
+    return jsonout
