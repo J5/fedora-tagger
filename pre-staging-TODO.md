@@ -19,7 +19,8 @@ moving from a dev box to a staging box.  Please add items as you see fit.
       blueprint all together).
 
       Nope -- I didn't have to ditch it, just change the mount path.
-- [ ] yumdb - so bodhi can slurp down the tags for mashing
+- [x] yumdb - so bodhi can slurp down the tags for mashing
+      For this, hit /api/tag/dump
 - [ ] notification toggling
 - [ ] force _update from pkgdb and koji.  Tagger needs to be made aware of
       new packages that get introduced.
