@@ -23,13 +23,7 @@ import json
 import os
 from datetime import datetime
 
-WITH_FEDMSG = False
-# Passing on this for now until we can determine if we should
-# enable it from config or not.
-#try:
-#    import fedmsg
-#except ImportError:  # pragma: no cover
-#    WITH_FEDMSG = False
+import fedmsg
 
 from sqlalchemy import *
 from sqlalchemy import Table, ForeignKey, Column
@@ -493,7 +487,7 @@ class FASUser(DeclarativeBase):
         if changed:
             self._rank = rank
 
-        if WITH_FEDMSG and changed and not is_last:
+        if changed and not is_last:
             fedmsg.send_message(topic='user.rank.update', msg={
                 'user': self,
             })

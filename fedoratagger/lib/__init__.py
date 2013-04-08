@@ -24,6 +24,8 @@ import random
 import string
 from datetime import date
 
+import fedmsg
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
@@ -64,6 +66,13 @@ def add_tag(session, pkgname, tag, user):
     session.add(user)
     session.add(voteobj)
     session.flush()
+
+    fedmsg.publish('tag.create', msg=dict(
+        tag=tagobj,
+        vote=voteobj,
+        user=user,
+    ))
+
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
 
 
@@ -112,10 +121,18 @@ def add_vote(session, pkgname, tag, vote, user):
         else:
             tagobj.dislike += 1
         user.score += 0.5
+
     session.add(user)
     session.add(tagobj)
     session.add(voteobj)
     session.flush()
+
+    fedmsg.publish('tag.update', msg=dict(
+        tag=tagobj,
+        vote=voteobj,
+        user=user,
+    ))
+
     return 'Vote %s on the tag "%s" of the package "%s"' % (verb, tag, pkgname)
 
 

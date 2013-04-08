@@ -16,3 +16,4 @@ tw2.jqplugins.gritter
 python-fedora
 docutils
 WebOb
+fedmsg
