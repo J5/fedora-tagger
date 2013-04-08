@@ -84,9 +84,14 @@ def get_yum_query(require=True):
     return YumQuery()
 
 
-def get_icons(root = None):
+def get_icons():
+    """ Ridiculous.  get icons from J5's personal space.
+
+    Deprecated (to say the least).
+    """
+
     log.info("Getting icons.")
-    root = root or os.path.sep.join(
+    root = os.path.sep.join(
         os.path.abspath(__file__).split(os.path.sep)[:-3]
     )
     cwd = os.getcwd()
@@ -102,7 +107,7 @@ def get_icons(root = None):
     if status != 0:
         raise Exception("Failed to decompress icons.")
 
-    shutil.rmtree(root + "/fedoratagger/public/images/icons", True)
+    shutil.rmtree(root + "/fedoratagger/frontend/static/images/icons", True)
     shutil.move(cwd + '/icons', root + '/fedoratagger/public/images')
 
 
