@@ -293,18 +293,6 @@ class Tag(DeclarativeBase):
     def __unicode__(self):
         return self.label + " on " + self.package.name
 
-    def __json__(self):
-
-        result = {
-            'tag': self.label,
-            'like': self.like,
-            'dislike': self.dislike,
-            'total': self.total,
-            'votes': self.total_votes,
-        }
-
-        return result
-
     def __pkg_json__(self):
         result = {
             'tag': self.label,
@@ -316,6 +304,8 @@ class Tag(DeclarativeBase):
         }
 
         return result
+
+    __json__ = __pkg_json__
 
     def __jit_data__(self):
         return {
