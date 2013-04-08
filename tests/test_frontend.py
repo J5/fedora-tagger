@@ -51,7 +51,7 @@ class _Base(rube.core.RubeTest):
 
 
 class TestFrontend(_Base):
-    base = "http://localhost:%i/app" % port
+    base = "http://localhost:%i" % port
     logout_url = base + "/logout"
     title = "lol Fedora Tagger lolol"
 
