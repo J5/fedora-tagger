@@ -22,9 +22,10 @@ moving from a dev box to a staging box.  Please add items as you see fit.
 - [x] yumdb - so bodhi can slurp down the tags for mashing
       For this, hit /api/tag/dump
 - [x] notification toggling
-- [ ] force _update from pkgdb and koji.  Tagger needs to be made aware of
+- [x] force _update from pkgdb and koji.  Tagger needs to be made aware of
       new packages that get introduced.
       There is now a fedoratagger-update-db script which can be run as a
       cron job.
 - [ ] add support for blacklisted tags.
 - [ ] remove anonymous user from the leaderboard
+- [ ] make sure jenkins tests are passing for completeness' sake.
