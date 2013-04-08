@@ -17,3 +17,4 @@ python-fedora
 docutils
 WebOb
 fedmsg
+pkgwat.api

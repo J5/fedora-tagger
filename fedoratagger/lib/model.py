@@ -23,6 +23,7 @@ import json
 import os
 from datetime import datetime
 
+import pkgwat.api
 import fedmsg
 
 from sqlalchemy import *
@@ -114,43 +115,25 @@ class Package(DeclarativeBase):
     tags = relation('Tag', backref=('package'))
     ratings = relation('Rating', backref=('package'))
 
-    def _get_xapian_data(self):
-        xapian_dir = '/var/cache/fedoracommunity/packages/xapian/search'
-        if not os.path.exists(xapian_dir):
-            NO_XAP = 'package_128x128'
-            keys = ['icon', 'summary']
-            dumb_data = dict([(key, NO_XAP) for key in keys])
-            return dumb_data
+    @property
+    def meta(self):
+        if not getattr(self, '_meta', None):
+            try:
+                self._meta = pkgwat.api.get(self.name)
+            except KeyError:
+                self._meta = {}
 
-        import xapian
-        from fedoracommunity.search.utils import filter_search_string
-        package_name = filter_search_string(self.name)
-        search_db = xapian.Database(xapian_dir)
-        enquire = xapian.Enquire(search_db)
-        qp = xapian.QueryParser()
-        qp.set_database(search_db)
-        search_string = "Ex__%s__EX" % package_name
-        query = qp.parse_query(search_string)
-        enquire.set_query(query)
-        matches = enquire.get_mset(0, 1)
-
-        if len(matches) == 0:
-            return None
-
-        result = json.loads(matches[0].document.get_data())
-        return result
+        return self._meta
 
     @property
     def icon(self):
-        result = self._get_xapian_data()
-        if result:
-            return "https://apps.fedoraproject.org/packages/images/icons/%s.png" % result['icon']
+        # TODO - cache this in the db so we don't have to hit pkgwat.
+        tmpl = "https://apps.fedoraproject.org/packages/images/icons/%s.png"
+        return tmpl % (self.meta.get('icon', None) or 'package_128x128')
 
     @property
     def xapian_summary(self):
-        result = self._get_xapian_data()
-        if result:
-            return result['summary']
+        return self.meta.get('summary', None) or ''
 
     @classmethod
     def by_name(cls, session, pkgname):
