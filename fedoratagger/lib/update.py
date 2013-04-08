@@ -26,6 +26,7 @@ needs to find out about them from the authoritative sources.
 
 from paste.deploy.converters import asbool
 
+import argparse
 import commands
 import tempfile
 import urllib
@@ -221,13 +222,23 @@ def update_summaries(N=100):
 
     log.info("Done updating summaries from yum.  %i of %i." % (count, total))
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-n', '--summaries-to-process',
+        dest='summaries_to_process',
+        default=10,
+        help="Number of summaries to process from yum.  Time intensive."
+    )
+    return parser.parse_args()
 
 def main():
+    args = parse_args()
     log.info("Starting up fedoratagger-update-db")
-    get_icons()
+    #get_icons()
     import_pkgdb_tags()
     import_koji_pkgs()
-    update_summaries(N=10)
+    update_summaries(int(args.summaries_to_process))
 
     ft.SESSION.commit()
 

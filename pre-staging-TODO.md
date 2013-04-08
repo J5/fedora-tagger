@@ -24,5 +24,7 @@ moving from a dev box to a staging box.  Please add items as you see fit.
 - [x] notification toggling
 - [ ] force _update from pkgdb and koji.  Tagger needs to be made aware of
       new packages that get introduced.
+      There is now a fedoratagger-update-db script which can be run as a
+      cron job.
 - [ ] add support for blacklisted tags.
 - [ ] remove anonymous user from the leaderboard
