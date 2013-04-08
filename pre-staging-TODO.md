@@ -25,3 +25,4 @@ moving from a dev box to a staging box.  Please add items as you see fit.
 - [ ] force _update from pkgdb and koji.  Tagger needs to be made aware of
       new packages that get introduced.
 - [ ] add support for blacklisted tags.
+- [ ] remove anonymous user from the leaderboard
