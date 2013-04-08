@@ -34,5 +34,8 @@ setup(
     entry_points='''
     [tw2.widgets]
     widgets = fedoratagger.frontend.widgets
+
+    [console_scripts]
+    fedoratagger-update-db = fedoratagger.lib.update:main
     '''
 )
