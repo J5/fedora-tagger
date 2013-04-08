@@ -85,33 +85,6 @@ def get_yum_query(require=True):
     return YumQuery()
 
 
-def get_icons():
-    """ Ridiculous.  get icons from J5's personal space.
-
-    Deprecated (to say the least).
-    """
-
-    log.info("Getting icons.")
-    root = os.path.sep.join(
-        os.path.abspath(__file__).split(os.path.sep)[:-3]
-    )
-    cwd = os.getcwd()
-
-    if os.path.exists(cwd + "/icons.tar.xz"):
-        log.info("Icons have already been downloaded.")
-    else:
-        url = "http://johnp.fedorapeople.org/downloads/xapian/icons.tar.xz"
-        log.info("Getting " + url)
-        urllib.urlretrieve(url, cwd + "/icons.tar.xz")
-
-    status, output = commands.getstatusoutput('tar xvf %s/icons.tar.xz' % cwd)
-    if status != 0:
-        raise Exception("Failed to decompress icons.")
-
-    shutil.rmtree(root + "/fedoratagger/frontend/static/images/icons", True)
-    shutil.move(cwd + '/icons', root + '/fedoratagger/public/images')
-
-
 def import_pkgdb_tags():
     log.info("Importing pkgdb tags.")
     yumq = get_yum_query()
@@ -235,7 +208,6 @@ def parse_args():
 def main():
     args = parse_args()
     log.info("Starting up fedoratagger-update-db")
-    #get_icons()
     import_pkgdb_tags()
     import_koji_pkgs()
     update_summaries(int(args.summaries_to_process))
