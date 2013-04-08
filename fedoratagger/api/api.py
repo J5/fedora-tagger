@@ -26,7 +26,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 import flask
-from flask_fas_openid import FAS
 from functools import wraps
 
 import fedoratagger as ft
