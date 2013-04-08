@@ -18,3 +18,5 @@ docutils
 WebOb
 fedmsg
 pkgwat.api
+# This is temporary until other upstream deps become more flexible.
+pyzmq<=2.2.0.1
