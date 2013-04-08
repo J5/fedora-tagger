@@ -49,10 +49,6 @@ FRONTEND = flask.Blueprint(
     static_url_path='',
 )
 
-# TODO - yumdb
-# TODO - notification toggling
-# TODO - force _update from pkgdb and koji
-
 # Some template strings for the 'details' view.
 icon_template = "images/favicons/16_{serv}.png"
 item_template = "<li><img src='{icon}'/>" + \
