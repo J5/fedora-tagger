@@ -81,6 +81,6 @@ class CardWidget(tw2.forms.LabelField):
             if self.rating:
                 self.rating = self.rating - 1
 
-        target = int(self.rating / 100.0 * N % (N))
+        target = int(float(self.rating) / 100.0 * N % (N))
         result = i == target and " selected" or ""
         return result
