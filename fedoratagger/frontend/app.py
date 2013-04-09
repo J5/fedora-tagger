@@ -174,6 +174,9 @@ def leaderboard(N):
     # TODO -- 'N' is unused here.  need to dig a tunnel through the .lib api
     users = fedoratagger.lib.leaderboard(ft.SESSION)
 
+    if N > len(users):
+        N = len(users)
+
     keys = ['gravatar', 'name', 'score']
     row = "<tr>" + ''.join(["<td>{%s}</td>" % k for k in keys]) + "</tr>"
     rows = [
