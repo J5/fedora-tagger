@@ -91,7 +91,7 @@ def add_rating(session, pkgname, rating, user):
                                      user_id=user.id)
 
         if ratingobj.rating == rating:
-            message = 'Rating on package "%s" did not change.' % (
+            message = 'Rating on package "%s" did not change' % (
                 pkgname)
         else:
             ratingobj.rating = rating
