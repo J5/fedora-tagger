@@ -12,13 +12,30 @@ except ImportError:
     pass
 
 
+def strip_comments(lines):
+    for line in lines:
+        line = line.strip()
+
+        if line.startswith('#'):
+            continue
+
+        if not line:
+            continue
+
+        if not '#' in line:
+            yield line
+        else:
+            yield line[:line.index('#')]
+
+
 def get_requires(filename="requirements.txt"):
     with open(filename, 'r') as f:
-        return f.readlines()
+        return list(strip_comments(f.readlines()))
+
 
 def get_tests_require(filename="test-requirements.txt"):
     with open(filename, 'r') as f:
-        return f.readlines()
+        return list(strip_comments(f.readlines()))
 
 setup(
     name='fedoratagger',
