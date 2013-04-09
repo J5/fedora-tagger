@@ -155,6 +155,11 @@ def tag_pkg_put(pkgname):
             output['output'] = 'notok'
             output['error'] = 'This tag is already associated to this package'
             httpcode = 500
+        except ValueError, err:
+            ft.SESSION.rollback()
+            output['output'] = 'notok'
+            output['error'] = str(err)
+            httpcode = 406
     else:
         output['output'] = 'notok'
         output['error'] = 'Invalid input submitted'

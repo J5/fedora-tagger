@@ -58,6 +58,11 @@ def add_tag(session, pkgname, tag, user):
         tagobj.like += 1
         user.score += 1
     except NoResultFound:
+
+        # If no such tag exists, create a new one.  But first..
+        if blacklisted(tag):
+            raise ValueError("'%s' is not allowed." % tag)
+
         tagobj = model.Tag(package_id=package.id, label=tag)
         session.add(tagobj)
         session.flush()
@@ -189,6 +194,7 @@ def leaderboard(session):
         cnt += 1
     return output
 
+
 def score(session, username):
     """ Return the score of a specific user.
     """
@@ -232,3 +238,18 @@ def get_api_token(session, user):
 class TaggerapiException(Exception):
     """ Generic exception class used to manage exception from taggerapi. """
     pass
+
+
+def blacklisted(tag):
+    """ Return true if the given string is blacklisted (not allowed) """
+    return tag in _dirty_words
+
+
+def _load_dirty_words():
+    import os
+    sep = os.path.sep
+    dirname = sep.join(os.path.abspath(__file__).split(sep)[:-2])
+    with open(dirname + "/dirtywords.txt") as f:
+        return [line.strip() for line in f.readlines()]
+
+_dirty_words = _load_dirty_words()
