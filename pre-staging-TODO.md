@@ -30,4 +30,4 @@ moving from a dev box to a staging box.  Please add items as you see fit.
 - [x] remove anonymous user from the leaderboard
 - [x] add fedmsg support for ratings, other things?
 - [x] frontend for rating (stars?)
-- [ ] make sure jenkins tests are passing for completeness' sake.
+- [x] make sure jenkins tests are passing for completeness' sake.
