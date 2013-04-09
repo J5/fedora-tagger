@@ -349,6 +349,13 @@ class Rating(DeclarativeBase):
     rating = Column(Integer, nullable=False)
 
     @classmethod
+    def get(cls, session, package_id, user_id):
+        """ Return a specific user's rating on a specific package. """
+        return session.query(cls)\
+                .filter_by(package_id=package_id)\
+                .filter_by(user_id=user_id).one()
+
+    @classmethod
     def rating_of_package(cls, session, pkgid):
         """ Return the average rating of the package specified by his
         package.id.

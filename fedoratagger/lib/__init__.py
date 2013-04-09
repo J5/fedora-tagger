@@ -84,13 +84,33 @@ def add_tag(session, pkgname, tag, user):
 def add_rating(session, pkgname, rating, user):
     """ Add the provided rating to the specified package. """
     package = model.Package.by_name(session, pkgname)
-    ratingobj = model.Rating(package_id=package.id, user_id=user.id,
-                             rating=rating)
+
+    try:
+        # Try to change an existing rating first.
+        ratingobj = model.Rating.get(session, package_id=package.id,
+                                     user_id=user.id)
+
+        if ratingobj.rating == rating:
+            message = 'Rating on package "%s" did not change.' % (
+                pkgname)
+        else:
+            ratingobj.rating = rating
+            message = 'Rating on package "%s" changed to "%s"' % (
+                pkgname, rating)
+
+    except NoResultFound:
+        # If no rating was found, we need to add a new one.
+        ratingobj = model.Rating(package_id=package.id, user_id=user.id,
+                                 rating=rating)
+        session.add(ratingobj)
+        user.score += 1
+        session.add(user)
+        message = 'Rating "%s" added to the package "%s"' % (rating, pkgname)
+
     session.add(ratingobj)
-    user.score += 1
-    session.add(user)
     session.flush()
-    return 'Rating "%s" added to the package "%s"' % (rating, pkgname)
+
+    return message
 
 
 def add_vote(session, pkgname, tag, vote, user):
