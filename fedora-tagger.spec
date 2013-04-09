@@ -37,6 +37,10 @@ BuildRequires:  python-tw2.jquery
 BuildRequires:  python-tw2.jqplugins.ui
 BuildRequires:  python-tw2.jqplugins.gritter
 
+BuildRequires:  fedmsg
+BuildRequires:  python-pkgwat-api
+
+
 ## Not needed for testing only when working with postgresql
 #BuildRequires:  python-psycopg2
 
@@ -61,6 +65,9 @@ Requires:  python-tw2.forms
 Requires:  python-tw2.jquery
 Requires:  python-tw2.jqplugins.ui
 Requires:  python-tw2.jqplugins.gritter
+
+Requires:  fedmsg
+Requires:  python-pkgwat-api
 
 Requires:  python-psycopg2
 
