@@ -110,6 +110,10 @@ def add_rating(session, pkgname, rating, user):
     session.add(ratingobj)
     session.flush()
 
+    fedmsg.publish('rating.update', msg=dict(
+        rating=ratingobj.__json__(session),
+    ))
+
     return message
 
 

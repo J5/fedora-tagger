@@ -28,5 +28,5 @@ moving from a dev box to a staging box.  Please add items as you see fit.
       cron job.
 - [x] add support for blacklisted tags.
 - [x] remove anonymous user from the leaderboard
-- [ ] add fedmsg support for ratings, other things?
+- [x] add fedmsg support for ratings, other things?
 - [ ] make sure jenkins tests are passing for completeness' sake.
