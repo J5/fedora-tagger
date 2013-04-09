@@ -526,6 +526,7 @@ class FASUser(DeclarativeBase):
         :kwarg limit: the max number of user to return.
         """
         return  session.query(cls
+                             ).filter(FASUser.anonymous == False
                              ).order_by(FASUser.score.desc()
                              ).limit(limit
                              ).all()
