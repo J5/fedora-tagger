@@ -26,6 +26,6 @@ moving from a dev box to a staging box.  Please add items as you see fit.
       new packages that get introduced.
       There is now a fedoratagger-update-db script which can be run as a
       cron job.
-- [ ] add support for blacklisted tags.
+- [x] add support for blacklisted tags.
 - [ ] remove anonymous user from the leaderboard
 - [ ] make sure jenkins tests are passing for completeness' sake.
