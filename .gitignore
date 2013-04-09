@@ -16,3 +16,4 @@ pylint.out
 icons*
 *.db
 data
+coverage.xml

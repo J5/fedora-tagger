@@ -1,4 +1,5 @@
 nose
 nose-testconfig
 coverage
+nosexcover
 rube.core
