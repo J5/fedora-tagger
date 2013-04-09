@@ -346,10 +346,11 @@ class Flasktests(Modeltests):
                          'Rating "100" added to the package "guake"'])
 
         output = self.app.put('/api/rating/guake/', data=data)
-        self.assertEqual(output.status_code, 500)
+        self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output['output'], 'notok')
-        self.assertEqual(output['error'], 'You have already rated this package')
+        self.assertEqual(output['output'], 'ok')
+        self.assertEqual(output['messages'], [
+                        'Rating on package "guake" did not change'])
 
         data = {'pkgname': 'guake', 'rating': 50}
         create_user(self.session)

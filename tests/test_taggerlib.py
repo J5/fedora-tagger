@@ -65,14 +65,18 @@ class TaggerLibtests(Modeltests):
         rating = model.Rating.rating_of_package(self.session, pkg.id)
         self.assertEqual(100, rating)
 
-        self.assertRaises(IntegrityError,
-                          fedoratagger.lib.add_rating,
-                          self.session, 'guake', 50, user_pingou)
-        self.session.rollback()
-
         out = fedoratagger.lib.add_rating(self.session, 'guake', 50,
-                                             user_ralph)
-        self.assertEqual(out, 'Rating "50" added to the package "guake"')
+                                          user_pingou)
+        self.assertEqual(out, 'Rating on package "guake" changed to "50"')
+        self.session.commit()
+        out = fedoratagger.lib.add_rating(self.session, 'guake', 50,
+                                          user_pingou)
+        self.assertEqual(out, 'Rating on package "guake" did not change')
+        self.session.commit()
+
+        out = fedoratagger.lib.add_rating(self.session, 'guake', 100,
+                                          user_ralph)
+        self.assertEqual(out, 'Rating "100" added to the package "guake"')
         self.session.commit()
 
         rating = model.Rating.rating_of_package(self.session, pkg.id)
