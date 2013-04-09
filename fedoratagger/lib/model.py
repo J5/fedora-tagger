@@ -551,9 +551,10 @@ class FASUser(DeclarativeBase):
 
     def __json__(self, visited=None):
         obj = {
-            'username': self.username,
+            'username': self.anonymous and 'anonymous' or self.username,
             'votes': self.total_votes,
             'rank': self._rank,
+            'anonymous': self.anonymous,
         }
 
         return obj
