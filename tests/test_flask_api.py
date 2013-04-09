@@ -89,7 +89,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['name'], 'guake')
         self.assertEqual(output['summary'], 'drop-down terminal for gnome')
         self.assertEqual(output['icon'],'https://apps.fedoraproject.org/'
-                         'packages/images/icons/package_128x128.png')
+                         'packages/images/icons/guake.png')
         self.assertEqual(output['rating'], -1)
         self.assertEqual(output['tags'], [])
 
