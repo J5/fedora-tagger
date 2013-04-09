@@ -1,3 +1,9 @@
+""" Selenium tests.
+
+Disabled for now.
+
+"""
+
 import rube.core
 
 import time
