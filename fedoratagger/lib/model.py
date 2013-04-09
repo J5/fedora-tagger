@@ -407,11 +407,12 @@ class Rating(DeclarativeBase):
             subquery.c.avg == ratingscore,
         )).all()
 
-    def __json__(self):
+    def __json__(self, session):
 
         result = {
             'rating': self.rating,
             'user': self.user.__json__(),
+            'package': self.package.__json__(session),
         }
 
         return result
