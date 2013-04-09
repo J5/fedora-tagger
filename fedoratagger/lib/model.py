@@ -405,7 +405,6 @@ class Rating(DeclarativeBase):
         result = {
             'rating': self.rating,
             'user': self.user.__json__(),
-            'tag': self.tag.__json__(),
         }
 
         return result
