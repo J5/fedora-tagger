@@ -20,6 +20,32 @@ function _vote(pkgname, tag, like) {
     });
 }
 
+function rate_package(pkgname, rating) {
+    $.ajax({
+        type: "PUT",
+        url: "api/rating/" + pkgname + "/",
+        data: {
+            pkgname: pkgname,
+            rating: rating,
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        },
+        cache: false,
+        error: function(xhr, status, err) { failed_vote(xhr, status, err); },
+        success: successful_rating,
+    });
+}
+
+function successful_rating(json) {
+    if (! notifications_on) { return; }
+    if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
+    gritter_id = $.gritter.add({
+        title: 'OK',
+        text: json.messages.join('.  '),
+        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+        sticky: true,
+    });
+}
+
 function failed_vote(xhr, status, err) {
     if (! notifications_on) { return; }
     if (gritter_id != undefined) { $.gritter.remove(gritter_id); }

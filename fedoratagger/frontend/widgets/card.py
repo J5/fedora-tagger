@@ -20,6 +20,7 @@ import flask
 
 import tw2.core
 import tw2.forms
+import tw2.jquery
 import tw2.jqplugins.gritter
 import random
 
@@ -27,6 +28,15 @@ import fedoratagger as ft
 from fedoratagger.lib import model as m
 from fedoratagger.frontend.widgets.voting import TagWidget, voting_js
 
+rating_js = tw2.core.JSLink(
+    link='rating/jquery.rating.js',
+    resources=[tw2.jquery.jquery_js],
+)
+rating_dir = tw2.core.DirLink(filename='static/rating')
+rating_css = tw2.core.CSSLink(
+    link='rating/jquery.rating.css',
+    resources=[rating_dir],
+)
 
 class CardWidget(tw2.forms.LabelField):
     """ Tiny Voting Widget """
@@ -35,7 +45,12 @@ class CardWidget(tw2.forms.LabelField):
     package = tw2.core.Param(default=None)
     tags = tw2.core.params.Variable()
     css_class = 'card'
-    resources = [voting_js] + tw2.jqplugins.gritter.gritter_resources
+    rating = None
+    resources = [
+        voting_js,
+        rating_js,
+        rating_css,
+    ] + tw2.jqplugins.gritter.gritter_resources
 
     template = 'fedoratagger.frontend.widgets.templates.card'
 
@@ -59,3 +74,13 @@ class CardWidget(tw2.forms.LabelField):
         self.tags = [TagWidget(tag=tag) for tag in picked_tags]
         if self.tags:
             self.tags[0].css_class += " selected"
+
+    def rating_selected(self, i, N):
+        if self.rating is None:
+            self.rating = self.package.rating(ft.SESSION) or 50
+            if self.rating:
+                self.rating = self.rating - 1
+
+        target = int(self.rating / 100.0 * N % (N))
+        result = i == target and " selected" or ""
+        return result

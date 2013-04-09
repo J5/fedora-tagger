@@ -262,6 +262,10 @@ div.icon {
 .package_header .summary {
   float: right;
 }
+.package_header .rating_wrapper {
+  float: right;
+}
+
 
 .package_header h2 {
   font-size: 18pt !important;

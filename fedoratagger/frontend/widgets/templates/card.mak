@@ -14,9 +14,16 @@
             ${w.package.xapian_summary}
           % endif
         </div>
+        <div class="rating_wrapper">
+            <select class="rating">
+                % for i in range(6):
+                <option value="${i}"${w.rating_selected(i, 6)}></option>
+                % endfor
+            </select>
+        </div>
       </div>
         <div class="details">
-		<a href="javascript:more_details('${w.package.name}');">More details...</a>
+            <a href="javascript:more_details('${w.package.name}');">More details...</a>
         </div>
         <div class="clear"></div>
     </div>
@@ -36,9 +43,9 @@
     </div>
     <div class="clear"></div>
 % if w.not_anonymous:
-	<div class="new">
-		<div class="plus" onclick="javascript:$('#add_dialog').dialog('open');"></div>Add a new tag.
-	</div>
+    <div class="new">
+        <div class="plus" onclick="javascript:$('#add_dialog').dialog('open');"></div>Add a new tag.
+    </div>
 % endif
   </div>
 </div>

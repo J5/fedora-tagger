@@ -115,6 +115,10 @@ class Package(DeclarativeBase):
     tags = relation('Tag', backref=('package'))
     ratings = relation('Rating', backref=('package'))
 
+    def rating(self, session):
+        return session.query(func.avg(Rating.rating))\
+            .filter_by(package_id=self.id).one()[0]
+
     @property
     def meta(self):
         if not getattr(self, '_meta', None):

@@ -46,6 +46,9 @@ function change_selected(from, to) {
 }
 
 function change_card() {
+    // Completely remove the rating widget from the center card.
+    $('.center .rating_control').remove()
+
     // Remove clickability from tags on the center card
     $('.center .voter').children().removeAttr('onclick')
 
@@ -65,6 +68,12 @@ function change_card() {
         var tagname = $(this).parent().parent().children('a').text();
         downvote(pkgname, tagname);
     });
+
+    // Enable the rating widget
+    $('.center .rating').rating({showCancel: false, callback: function(v) {
+        var pkgname = $('.center .title h2').text();
+        rate_package(pkgname, Math.floor((v / 5) * 100));
+    }});
 
     // Change the window location for deep-linkage
     // Thanks to J5 for pointing out HTML5 .pushState
@@ -237,6 +246,12 @@ function init_navigation() {
         var tagname = $(this).parent().parent().children('a').text();
         downvote(pkgname, tagname);
     });
+
+    // Enable the rating widget
+    $('.center .rating').rating({showCancel: false, callback: function(v) {
+        var pkgname = $('.center .title h2').text();
+        rate_package(pkgname, Math.floor((v / 5) * 99) + 1);
+    }});
 }
 
 $(document).ready(init_navigation);
