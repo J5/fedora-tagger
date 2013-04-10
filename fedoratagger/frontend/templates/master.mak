@@ -31,5 +31,10 @@
         <div class="clear"></div>
 		${self.body()}
         <div class="clear"></div>
+		<div id="footer">
+			You can report bugs and file issues with Fedora Tagger on
+			<a href="https://github.com/fedora-infra/fedora-tagger/issues">
+			the GitHub issues tracker</a>.
+		</div>
     </body>
 </html>
