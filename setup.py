@@ -38,7 +38,7 @@ def get_tests_require(filename="test-requirements.txt"):
         return list(strip_comments(f.readlines()))
 
 setup(
-    name='fedoratagger',
+    name='fedora-tagger',
     description='A web application for tagging and ranking packages',
     version='2.0.0a',
     author='Pierre-Yves Chibon and Ralph Bean',

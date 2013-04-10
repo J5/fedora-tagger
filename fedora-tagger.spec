@@ -26,7 +26,7 @@ BuildRequires:  python-sqlalchemy
 BuildRequires:  python-flask
 BuildRequires:  python-wtforms
 BuildRequires:  python-flask-wtf
-BuildRequires:  python-flask-Mako
+BuildRequires:  python-flask-mako
 
 BuildRequires:  python-kitchen
 BuildRequires:  python-fedora
@@ -55,7 +55,7 @@ Requires:  python-sqlalchemy
 Requires:  python-flask
 Requires:  python-wtforms
 Requires:  python-flask-wtf
-Requires:  python-flask-Mako
+Requires:  python-flask-mako
 
 Requires:  python-kitchen
 Requires:  python-fedora
