@@ -1,7 +1,7 @@
-Fedora-Tagger
+Fedora Tagger
 =============
 
-A Flask app for helping us tag fedora packages.
+A Flask app for helping us tag Fedora packages.
 
 Hotkeys
 -------
@@ -26,7 +26,7 @@ Hotkeys
 | ``esc``            | help           |
 +--------------------+----------------+
 
-Requires authentication.
+The following commands require authentication:
 
 +--------------------+----------------+
 | ``i`` *or* ``a``   | add new tag    |
@@ -37,7 +37,7 @@ Requires authentication.
 Hacking on Fedora Tagger
 ------------------------
 
-You can setup a development environment like this::
+You can set up a development environment like this::
 
     # Create a virtualenv
     $ sudo yum install -y python-virtualenvwrapper
@@ -61,7 +61,7 @@ You can setup a development environment like this::
     # Run the development server
     $ python runserver.py
 
-And lastly point your browser at http://localhost:5000
+And lastly point your browser at http://localhost:5000.
 
 The REST API
 ------------
@@ -72,7 +72,7 @@ command line::
 
     $ sudo yum -y install httpie
 
-You can GET tagger's data on a package::
+You can GET Tagger's data on a package::
 
     $ http get http://localhost:5000/api/nethack/
     HTTP/1.1 200 OK
