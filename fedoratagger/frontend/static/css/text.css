@@ -1,7 +1,24 @@
-body{
+body {
 	font-family: 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,sans-serif;
 	font-size: 13px;
 }
+
+#footer {
+    color: #EEE;
+    text-align: center;
+    font-size: 10px;
+}
+
+#footer a {
+    text-decoration: none;
+    font-size: 11px;
+    color: #76ABF5;
+}
+
+#footer a:visited {
+    color: #76ABF5;
+}
+    
 
 div.hotkeys-ribbon {
         -webkit-transform: rotate(-90deg);
