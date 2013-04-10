@@ -31,3 +31,7 @@ moving from a dev box to a staging box.  Please add items as you see fit.
 - [x] add fedmsg support for ratings, other things?
 - [x] frontend for rating (stars?)
 - [x] make sure jenkins tests are passing for completeness' sake.
+- [x] Package up python-flask-mako
+      https://bugzilla.redhat.com/show_bug.cgi?id=948626
+- [ ] Build an rpm in koji and get it into the infra-testing repo.
+      Lather, rinse, repeat.
