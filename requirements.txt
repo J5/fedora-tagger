@@ -17,6 +17,7 @@ docutils
 WebOb
 fedmsg
 pkgwat.api
+
 # This is temporary until other upstream deps become more flexible.
 pyzmq<=2.2.0.1
 
@@ -24,7 +25,8 @@ pyzmq<=2.2.0.1
 # flask_fas_openid stuff that hasn't yet been released.
 # Everything below here stuff that python-fedora *should*
 # pull in, but it doesn't when we install it this way.
-git+https://github.com/fedora-infra/python-fedora.git
+#git+https://github.com/fedora-infra/python-fedora.git
+
 python-openid
 requests
 urllib3
