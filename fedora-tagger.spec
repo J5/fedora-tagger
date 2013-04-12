@@ -30,12 +30,14 @@ BuildRequires:  python-flask-mako
 
 BuildRequires:  python-kitchen
 BuildRequires:  python-fedora
+BuildRequires;  python-fedora-flask
+BuildRequires:  python-openid
 
-BuildRequires:  python-tw2.core
-BuildRequires:  python-tw2.forms
-BuildRequires:  python-tw2.jquery
-BuildRequires:  python-tw2.jqplugins.ui
-BuildRequires:  python-tw2.jqplugins.gritter
+BuildRequires:  python-tw2-core
+BuildRequires:  python-tw2-forms
+BuildRequires:  python-tw2-jquery
+BuildRequires:  python-tw2-jqplugins-ui
+BuildRequires:  python-tw2-jqplugins-gritter
 
 BuildRequires:  fedmsg
 BuildRequires:  python-pkgwat-api
@@ -59,12 +61,14 @@ Requires:  python-flask-mako
 
 Requires:  python-kitchen
 Requires:  python-fedora
+Requires;  python-fedora-flask
+Requires:  python-openid
 
-Requires:  python-tw2.core
-Requires:  python-tw2.forms
-Requires:  python-tw2.jquery
-Requires:  python-tw2.jqplugins.ui
-Requires:  python-tw2.jqplugins.gritter
+Requires:  python-tw2-core
+Requires:  python-tw2-forms
+Requires:  python-tw2-jquery
+Requires:  python-tw2-jqplugins-ui
+Requires:  python-tw2-jqplugins-gritter
 
 Requires:  fedmsg
 Requires:  python-pkgwat-api
@@ -96,7 +100,7 @@ mv setup.py.tmp setup.py
 %install
 %{__python} setup.py install -O1 --skip-build \
     --install-data=%{_datadir} --root %{buildroot}
-%{__python} setup.py archive_tw2_resources -f -o %{buildroot}%{_datadir}/%{modname}/toscawidgets -d fedoratagger
+%{__python} setup.py archive_tw2_resources -f -o %{buildroot}%{_datadir}/%{modname}/toscawidgets -d fedora-tagger
 
 # This may not be necessary anymore
 rm -fr %{buildroot}%{python_sitelib}/migration
@@ -114,8 +118,9 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 
 %files
 %doc README.rst
-%config %{_sysconfdir}/%{name}/
-%{_datadir}/%{name}/
+%{_bindir}/fedoratagger-update-db
+%config %{_sysconfdir}/%{modname}/
+%{_datadir}/%{modname}/
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
