@@ -21,7 +21,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl http://.../api/guake/
+    curl http://.../api/v1/guake/
 
     {
       "rating": 83.333333333333329, 
@@ -59,7 +59,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl http://.../api/guake/tag/
+    curl http://.../api/v1/guake/tag/
 
     {
       "name": "guake",
@@ -93,7 +93,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl http://.../api/guake/rating/
+    curl http://.../api/v1/guake/rating/
 
     {
       "rating": 75.0,
@@ -113,7 +113,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X PUT --data "tag=terminal&pkgnme=guake" http://.../api/tag/guake/
+    curl -X PUT --data "tag=terminal&pkgnme=guake" http://.../api/v1/tag/guake/
 
     {
       "output": "notok",
@@ -123,7 +123,7 @@
       "error": "Invalid input submitted"
     }
 
-    curl -X PUT --data "tag=terminal&pkgname=guake" http://.../api/tag/guake/
+    curl -X PUT --data "tag=terminal&pkgname=guake" http://.../api/v1/tag/guake/
 
     {
       "output": "ok",
@@ -145,7 +145,7 @@
     <p>Example output:</p>
     <code>
 
-    curl http://.../api/tag/terminal/
+    curl http://.../api/v1/tag/terminal/
 
     {
       "tag": "terminal",
@@ -174,7 +174,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X PUT --data "pkgname=guake&ratin=100" http://.../api/rating/guake/
+    curl -X PUT --data "pkgname=guake&ratin=100" http://.../api/v1/rating/guake/
 
     {
       "output": "notok", 
@@ -184,7 +184,7 @@
       "error": "Invalid input submitted"
     }
 
-    curl -X PUT --data "pkgname=guake&rating=100" http://.../api/rating/guake/
+    curl -X PUT --data "pkgname=guake&rating=100" http://.../api/v1/rating/guake/
 
     {
       "output": "ok", 
@@ -207,7 +207,7 @@
     <p>Example output:</p>
     <code>
 
-    curl http://.../api/rating/75/
+    curl http://.../api/v1/rating/75/
 
     {
       "rating": 75.0,
@@ -216,7 +216,7 @@
       ]
     }
 
-    curl http://.../api/rating/76/
+    curl http://.../api/v1/rating/76/
 
     {
       "output": "notok",
@@ -237,7 +237,7 @@
     </ul>
     <p>Example output:</p>
     <code>
-    curl -X PUT --data "pkgname=guake&tag=terminal&vote=1" http://.../api/vote/guake/
+    curl -X PUT --data "pkgname=guake&tag=terminal&vote=1" http://.../api/v1/vote/guake/
 
     {
       "output": "ok", 
@@ -246,7 +246,7 @@
       ]
     }
 
-    curl http://.../api/tag/guake/
+    curl http://.../api/v1/tag/guake/
     {
       "name": "guake", 
       "tags": [
@@ -260,7 +260,7 @@
       ]
     }
 
-    curl -X PUT --data "pkgname=guake&tag=terminal&vote=-1" http://.../api/vote/guake/
+    curl -X PUT --data "pkgname=guake&tag=terminal&vote=-1" http://.../api/v1/vote/guake/
 
     {
       "output": "ok", 
@@ -269,7 +269,7 @@
       ]
     }
 
-    curl http://.../api/tag/guake/
+    curl http://.../api/v1/tag/guake/
     {
       "name": "guake", 
       "tags": [
@@ -294,7 +294,7 @@
 
     <p>Example output:</p>
     <code>
-    curl http://.../api/leaderboard/
+    curl http://.../api/v1/leaderboard/
     {
       "1": {
         "score": 0, 
@@ -332,7 +332,7 @@
 
     <p>Example output:</p>
     <code>
-    curl http://.../api/score/pingou/
+    curl http://.../api/v1/score/pingou/
     {
       "score": 0, 
       "gravatar": "&lt;img src='http://www.gravatar.com/avatar/072b4416fbfad867a44bc7a5be5eddb9?s=32&d=mm'&gt;&lt;/img&gt;", 
@@ -350,7 +350,7 @@
 
     <p>Example output:</p>
     <code>
-    curl http://.../api/statistics/
+    curl http://.../api/v1/statistics/
     {
       "summary": {
         "tags_per_package": 0.64386180527106374, 
