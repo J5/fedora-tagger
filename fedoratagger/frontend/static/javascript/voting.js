@@ -7,7 +7,7 @@ function downvote(pkgname, tag) {
 function _vote(pkgname, tag, like) {
     $.ajax({
         type: "PUT",
-        url: "api/vote/" + pkgname + "/",
+        url: "api/v1/vote/" + pkgname + "/",
         data: {
             pkgname: pkgname,
             tag: tag,
@@ -23,7 +23,7 @@ function _vote(pkgname, tag, like) {
 function rate_package(pkgname, rating) {
     $.ajax({
         type: "PUT",
-        url: "api/rating/" + pkgname + "/",
+        url: "api/v1/rating/" + pkgname + "/",
         data: {
             pkgname: pkgname,
             rating: rating,

@@ -39,7 +39,7 @@ $(document).ready(function () {
             request_in_progress = true;
             $.ajax({
                 type: "PUT",
-                url: "api/tag/" + pkgname + "/",
+                url: "api/v1/tag/" + pkgname + "/",
                 data: {
                     tag: $(this).val(),
                     pkgname: pkgname,
