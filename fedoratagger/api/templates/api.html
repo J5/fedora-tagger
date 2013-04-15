@@ -1,0 +1,367 @@
+{% extends "master.html" %}
+
+{% block title %} API documentation {% endblock %}
+
+
+{% block content %}
+
+  <h1 class="entry-title">Tagger API</h1>
+  <div class="entry-content">
+    <p>The API can be used to add a tag, a rating or retrieve the tags,
+    rating associated with a package.</p>
+
+    <h2>Get package information</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.pkg', pkgname='pkgname') }}</code>
+      It needs one argument and will just return a json containing
+      the information about this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl http://.../api/guake/
+
+    {
+      "rating": 83.333333333333329, 
+      "icon": "/packages/images/icons/__no_xapian_available__.png", 
+      "summary": "", 
+      "name": "guake", 
+      "tags": [
+        {
+          "total": 1, 
+          "dislike": 0, 
+          "tag": "terminal", 
+          "votes": 1, 
+          "like": 1
+        }, 
+        {
+          "total": 0, 
+          "dislike": 1, 
+          "tag": "gnome", 
+          "votes": 2, 
+          "like": 1
+        }
+      ]
+    }
+    </code>
+
+
+    <h2>Retriete tags of a package</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.pkg_tag', pkgname='pkgname') }}</code>
+      It needs one argument relies on GET requests and will just return
+      a json containing the tags associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl http://.../api/guake/tag/
+
+    {
+      "name": "guake",
+      "tags": [
+        {
+          "total": 1,
+          "dislike": 0,
+          "tag": "terminal",
+          "votes": 1,
+          "like": 1
+        },
+        {
+          "total": 1,
+          "dislike": 0,
+          "tag": "gnome",
+          "votes": 1,
+          "like": 1
+        }
+      ]
+    }
+    </code>
+
+    <h2>Retriete rating of a package</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.pkg_rating', pkgname='pkgname') }}</code>
+      It needs one argument, relies on GET requests and will just return
+      a json containing the rating associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl http://.../api/guake/rating/
+
+    {
+      "rating": 75.0,
+      "name": "guake"
+    }
+    </code>
+
+    <h2>Set tags</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.tag_pkg', pkgname='pkgname') }}</code>
+      It needs two arguments, relies on PUT requests and will just
+      return a json with information on how the request performed.
+    </p>
+    <ul>
+      <li>Package name</li>
+      <li>Tag</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl -X PUT --data "tag=terminal&pkgnme=guake" http://.../api/tag/guake/
+
+    {
+      "output": "notok",
+      "error_detail": [
+        "Pkgname: This field is required."
+      ],
+      "error": "Invalid input submitted"
+    }
+
+    curl -X PUT --data "tag=terminal&pkgname=guake" http://.../api/tag/guake/
+
+    {
+      "output": "ok",
+      "messages": [
+        "Tag \"terminal\" added to the package \"guake\""
+      ]
+    }
+    </code>
+
+    <h2>Retrieve packages with tag</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.tag_pkg', pkgname='pkgname') }}</code>
+      It needs one arguments, relies on GET requests and will just
+      return a json with information on how the request performed.
+    </p>
+    <ul>
+      <li>Tag</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+
+    curl http://.../api/tag/terminal/
+
+    {
+      "tag": "terminal",
+      "packages": [
+        {
+          "votes": 2,
+          "like": 2,
+          "package": "guake",
+          "tag": "terminal",
+          "dislike": 0,
+          "total": 2
+        }
+      ]
+    }
+    </code>
+
+    <h2>Set rating</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.rating_pkg', pkgname='pkgname') }}</code>
+      It needs two arguments, relies on PUT requests and will just return a json containing
+      the rating associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+      <li>Rating (percentage)</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl -X PUT --data "pkgname=guake&ratin=100" http://.../api/rating/guake/
+
+    {
+      "output": "notok", 
+      "error_detail": [
+        "rating: This field is required."
+      ], 
+      "error": "Invalid input submitted"
+    }
+
+    curl -X PUT --data "pkgname=guake&rating=100" http://.../api/rating/guake/
+
+    {
+      "output": "ok", 
+      "messages": [
+        "Rating \"100\" added to the package \"guake\""
+      ]
+    }
+
+    </code>
+
+    <h2>Retrieve packages with a specific rating</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.tag_pkg', pkgname='pkgname') }}</code>
+      It needs one arguments, relies on GET requests and will just
+      return a json with information on how the request performed.
+    </p>
+    <ul>
+      <li>Rating (valid float)</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+
+    curl http://.../api/rating/75/
+
+    {
+      "rating": 75.0,
+      "packages": [
+        "guake"
+      ]
+    }
+
+    curl http://.../api/rating/76/
+
+    {
+      "output": "notok",
+      "error": "No packages found with rating \"76.0\""
+    }
+    </code>
+
+    <h2>Vote on the tag of a package</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.vote_tag_pkg', pkgname='pkgname') }}</code>
+      It needs three arguments, relies on PUT requests and will just return a json containing
+      the rating associated to this package.
+    </p>
+    <ul>
+      <li>Package name</li>
+      <li>Tag</li>
+      <li>Vote (either -1 or 1)</li>
+    </ul>
+    <p>Example output:</p>
+    <code>
+    curl -X PUT --data "pkgname=guake&tag=terminal&vote=1" http://.../api/vote/guake/
+
+    {
+      "output": "ok", 
+      "messages": [
+        "Vote added to the tag \"terminal\" of the package \"guake\""
+      ]
+    }
+
+    curl http://.../api/tag/guake/
+    {
+      "name": "guake", 
+      "tags": [
+        {
+          "total": 2, 
+          "dislike": 0, 
+          "tag": "terminal", 
+          "votes": 2, 
+          "like": 2
+        }, 
+      ]
+    }
+
+    curl -X PUT --data "pkgname=guake&tag=terminal&vote=-1" http://.../api/vote/guake/
+
+    {
+      "output": "ok", 
+      "messages": [
+        "Vote changed to the tag \"terminal\" of the package \"guake\""
+      ]
+    }
+
+    curl http://.../api/tag/guake/
+    {
+      "name": "guake", 
+      "tags": [
+        {
+          "total": 0, 
+          "dislike": 1, 
+          "tag": "terminal", 
+          "votes": 2, 
+          "like": 1
+        }
+      ]
+    }
+
+    </code>
+
+    <h2>Retrieve the leaderboard</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.leaderboard') }}</code>
+      It does not take any argument, relies on GET requests and will
+      return a json with the top 10 contributors to tagger.
+    </p>
+
+    <p>Example output:</p>
+    <code>
+    curl http://.../api/leaderboard/
+    {
+      "1": {
+        "score": 0, 
+        "gravatar": "&lt;img src='http://www.gravatar.com/avatar/a04d77b61372a61cc4f064f7e5bbb2f4?s=32&d=mm'&gt;&lt;/img&gt;", 
+        "name": "lmacken"
+      }, 
+      "2": {
+        "score": 0, 
+        "gravatar": "&lt;img src='http://www.gravatar.com/avatar/71bcc747a3911e12789b00ebabd31889?s=32&d=mm'&gt;&lt;/img&gt;", 
+        "name": "nonamedotc"
+      }, 
+      "3": {
+        "score": 0, 
+        "gravatar": "&lt;img src='http://www.gravatar.com/avatar/2bd6d5b82bf626fbc5e38ea942f34ffb?s=32&d=mm'&gt;&lt;/img&gt;", 
+        "name": "gcampax"
+      }, 
+      "4": {
+        "score": 0, 
+        "gravatar": "&lt;img src='http://www.gravatar.com/avatar/fe0be0dc71bd3c89fe3a4ffde5a5cb01?s=32&d=mm'&gt;&lt;/img&gt;", 
+        "name": "keramidas"
+      }
+    }
+    </code>
+
+    <h2>Retrieve someone's score</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.score', username='username') }}</code>
+      It takes one argument, relies on GET requests and will return a
+      json with the .
+    </p>
+
+    <ul>
+      <li>Username</li>
+    </ul>
+
+    <p>Example output:</p>
+    <code>
+    curl http://.../api/score/pingou/
+    {
+      "score": 0, 
+      "gravatar": "&lt;img src='http://www.gravatar.com/avatar/072b4416fbfad867a44bc7a5be5eddb9?s=32&d=mm'&gt;&lt;/img&gt;", 
+      "name": "pingou"
+    }
+    </code>
+
+    <h2>Retrieve database statistics</h2>
+    <p>
+      This happens at the url <code>{{ url_for('api.statistics') }}</code>
+      It does not take any argument, relies on GET requests and will
+      return a json with some basic statistics about the tags in the
+      database.
+    </p>
+
+    <p>Example output:</p>
+    <code>
+    curl http://.../api/statistics/
+    {
+      "summary": {
+        "tags_per_package": 0.64386180527106374, 
+        "with_tags": 3466, 
+        "tags_per_package_no_zeroes": 2.7207155222158108, 
+        "no_tags": 11180, 
+        "total_packages": 14646, 
+        "total_unique_tags": 2865
+      }
+    }
+    </code>
+
+  </div>
+{% endblock %}
