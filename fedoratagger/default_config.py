@@ -25,3 +25,7 @@ Default configuration for taggerapi
 
 # url to the database server:
 DB_URL = 'sqlite:////var/tmp/taggerapi.sqlite'
+
+# Resource prefix for tw2 middleware.
+# In production this is usually '/tagger/_res/'
+RES_PREFIX = '/_tw2_resources/'

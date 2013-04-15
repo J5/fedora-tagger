@@ -45,14 +45,16 @@ FAS = FAS(APP)
 mako = MakoTemplates(APP)
 SESSION = create_session(APP.config['DB_URL'])
 
-
 from fedoratagger.api import API
 from fedoratagger.frontend import FRONTEND
 
 
 APP.register_blueprint(API)
 APP.register_blueprint(FRONTEND)
-APP.wsgi_app = make_tw2_middleware(APP.wsgi_app)
+APP.wsgi_app = make_tw2_middleware(
+    APP.wsgi_app,
+    res_prefix=APP.config['RES_PREFIX'],
+)
 
 
 # pylint: disable=W0613
