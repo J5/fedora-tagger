@@ -40,7 +40,7 @@ import forms as forms
 
 API = flask.Blueprint(
     'api', __name__,
-    url_prefix='/api/v1/',
+    url_prefix='/api/v1',
     template_folder='templates',
     static_folder='static',
 )
