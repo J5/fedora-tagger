@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.0a
+Version:        2.0.0
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -30,7 +30,7 @@ BuildRequires:  python-flask-mako
 
 BuildRequires:  python-kitchen
 BuildRequires:  python-fedora
-BuildRequires;  python-fedora-flask
+BuildRequires:  python-fedora-flask
 BuildRequires:  python-openid
 
 BuildRequires:  python-tw2-core
@@ -61,7 +61,7 @@ Requires:  python-flask-mako
 
 Requires:  python-kitchen
 Requires:  python-fedora
-Requires;  python-fedora-flask
+Requires:  python-fedora-flask
 Requires:  python-openid
 
 Requires:  python-tw2-core
@@ -125,6 +125,9 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Wed Apr 24 2013 Ralph Bean <rbean@redhat.com> - 2.0.0-1
+- Incorporated some lessons learned in staging.
+
 * Fri Apr 05 2013 Ralph Bean <rbean@redhat.com> - 2.0.0a-1
 - Initial packaging of rewrite against python-flask.
 
