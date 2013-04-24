@@ -37,6 +37,8 @@ WITH (
   OIDS=FALSE
 );
 
+alter table "rating" owner to "fedoratagger";
+
 
 -- Clean the TG tables
 DROP TABLE tg_user_group;
@@ -45,7 +47,7 @@ DROP TABLE tg_permission;
 DROP TABLE tg_group;
 DROP TABLE tg_user;
 
--- Add the score entry to the user table
+-- Add the score entry to the "user" table
 
 ALTER TABLE "user" ADD COLUMN score INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE "user" ADD COLUMN api_token VARCHAR(50) DEFAULT NULL;
@@ -56,9 +58,9 @@ UPDATE "user" SET anonymous = TRUE where username = 'anonymous';
 
 ---- Add Unique Constraints
 
---ALTER TABLE tag ADD CONSTRAINT unique_package_label UNIQUE (package_id, label);
---ALTER TABLE "package" ADD CONSTRAINT unique_package UNIQUE (name);
---ALTER TABLE vote ADD CONSTRAINT unique_vote_tag UNIQUE (tag_id, user_id);
+ALTER TABLE tag ADD CONSTRAINT unique_package_label UNIQUE (package_id, label);
+ALTER TABLE "package" ADD CONSTRAINT unique_package UNIQUE (name);
+ALTER TABLE vote ADD CONSTRAINT unique_vote_tag UNIQUE (tag_id, user_id);
 
 
 ---- -- Queries to check duplicates:
