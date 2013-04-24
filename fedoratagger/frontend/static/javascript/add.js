@@ -49,6 +49,7 @@ $(document).ready(function () {
                 error: error,
                 success: success,
             });
+            $(this).blur();
         }
     });
 
