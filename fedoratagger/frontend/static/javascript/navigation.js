@@ -124,7 +124,7 @@ function statistics() {
     request_in_progress = true;
     $.ajax({
         type: "GET",
-        url: "api/statistics/",
+        url: "api/v1/statistics/",
         cache: false,
         data: $.param({
             _csrf_token: $.getUrlVar("_csrf_token"),

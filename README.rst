@@ -66,7 +66,7 @@ And lastly point your browser at http://localhost:5000.
 The REST API
 ------------
 
-Visit http://localhost:5000/api/ for some HTML docs.  You can use the
+Visit http://localhost:5000/api/v1/ for some HTML docs.  You can use the
 awesome `HTTPie <https://github.com/jkbr/httpie>`_ to try it from the
 command line::
 
@@ -74,7 +74,7 @@ command line::
 
 You can GET Tagger's data on a package::
 
-    $ http get http://localhost:5000/api/nethack/
+    $ http get http://localhost:5000/api/v1/nethack/
     HTTP/1.1 200 OK
     Connection: close
     Content-Length: 750
@@ -125,7 +125,7 @@ You can GET Tagger's data on a package::
 
 Or PUT your rating on a package::
 
-    $ http put http://localhost:5000/api/rating/nethack/ pkgname=nethack rating=100
+    $ http put http://localhost:5000/api/v1/rating/nethack/ pkgname=nethack rating=100
     HTTP/1.1 200 OK
     Connection: close
     Content-Length: 97
@@ -142,7 +142,7 @@ Or PUT your rating on a package::
 
 Or PUT your vote on a particular tag::
 
-    $ http put http://localhost:5000/api/vote/nethack/ pkgname=nethack tag=rogue-like vote=1
+    $ http put http://localhost:5000/api/v1/vote/nethack/ pkgname=nethack tag=rogue-like vote=1
     HTTP/1.1 200 OK
     Connection: close
     Content-Length: 353
