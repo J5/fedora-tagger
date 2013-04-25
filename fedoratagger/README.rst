@@ -1,14 +1,7 @@
 Fedora-Tagger
 =============
 
-A TurboGears 2 app for helping us tag fedora packages.  Users who login with
-their `FAS <https://admin.fedoraproject.org/accounts>`_ credentials can upvote
-and downvote tags on packages as well as add new tags alltogether.
-
-Vote it up!  The votes you place are tracked and rank you against other users.
-
-Fedora Tagger is licensed the under the `GPLv2+
-<http://www.gnu.org/licenses/gpl-2.0.txt>`_.
+A Flask app for helping us tag fedora packages.
 
 Hotkeys
 -------
@@ -41,69 +34,139 @@ Requires authentication.
 
 .. hotkeys
 
-Running from source
--------------------
+Hacking on Fedora Tagger
+------------------------
 
-You need ``curl-config``::
+You can setup a development environment like this::
 
-  $ sudo yum install libcurl-devel
+    # Create a virtualenv
+    $ sudo yum install -y python-virtualenvwrapper
+    $ mkvirtualenv tagger
 
-Setup a virtual environment::
+    # Install dependencies
+    $ pip install kitchen paver
+    $ pip install git+https://github.com/fedora-infra/python-fedora.git
+    $ pip install -r requirements.txt
 
-  $ virtualenv --system-site-packages ~/tagger-env
-  $ source ~/tagger-env/bin/activate
+    # Run the tests
+    $ pip install -r test-requirements.txt
+    $ ./runtests.sh
 
-Get ``python-fedora``::
+    # Install the egg link
+    $ python setup.py develop
 
-  $ wget https://fedorahosted.org/releases/p/y/python-fedora/python-fedora-0.3.25.tar.gz
-  $ tar -xzvf python-fedora-0.3.25.tar.gz
-  $ pushd python-fedora-0.3.25
-  $ python setup.py develop
-  $ popd
+    # Create a dev database
+    $ python createdb.py --with-dev-data
 
-Get fedora-tagger::
+    # Run the development server
+    $ python runserver.py
 
-  $ git clone git://github.com/ralphbean/fedora-tagger.git
-  $ cd fedora-tagger
-  $ python setup.py develop
-  $ paster setup-app development.ini
-  $ paster serve development.ini
+And lastly point your browser at http://localhost:5000
 
-The setup-app step will try and use ``yum`` to get package summaries.  It won't
-be able to find it if you specify ``--no-site-packages`` with virtualenv.
-
-Old Notes
-=========
-
-Workflow
---------
-
- * Randomly select two packages (you will need to cache a list of all packages and randomly generate an index)
- * Display the first package on the center card w/ the top 3 tags and randomly select 2 tags from the list of tags associated with this package (not including the tags already selected)
- * Do the same for the right card with the second package but make sure they can't be clicked
- * With each tag the user can click if they like or dislike the tag, once they select they can change their mind
- * A form element is also needed to add new tags
- * new tags start with a count of one in the like field
- * clicking on the right card generates a new right card moves all cards one place to the left
- * all fields should be instantly recorded
- * regardless of the format used to store the results a command line script shall be provided that outputs the data in JSON format
- * The script must be able to be run even if the web service is not running
- * Output should be in this format::
-
-     {_format_version: ${current_version},
-      ${package_name}:[{tag: ${tag_label},
-                        like: ${num_likes},
-                        dislike: ${num_dislike}},
-                        total: ${num_likes} - ${num_dislike}
-                        ...
-                      ]
-     }
-
- * The tag list for each package should be sorted in descending order by the total score, ties are broken by the number of votes cast and if there is still a tie, alphabetically by the tag
-
-
-User Scoring
+The REST API
 ------------
 
-Eventually we want users to be able to log in and get points for participating.  This is not a priotity for the initial implementation.
+Visit http://localhost:5000/api/ for some HTML docs.  You can use the
+awesome `HTTPie <https://github.com/jkbr/httpie>`_ to try it from the
+command line::
 
+    $ sudo yum -y install httpie
+
+You can GET tagger's data on a package::
+
+    $ http get http://localhost:5000/api/nethack/
+    HTTP/1.1 200 OK
+    Connection: close
+    Content-Length: 750
+    Content-Type: application/json
+    Date: Wed, 10 Apr 2013 01:46:58 GMT
+    Server: Apache/2.2.15 (Red Hat)
+
+    {
+        "icon": "https://apps.fedoraproject.org/packages/images/icons/package_128x128.png",
+        "name": "nethack",
+        "rating": -1.0,
+        "summary": "",
+        "tags": [
+            {
+                "dislike": 0,
+                "like": 5,
+                "package": "nethack",
+                "tag": "games",
+                "total": 5,
+                "votes": 5
+            },
+            {
+                "dislike": 0,
+                "like": 4,
+                "package": "nethack",
+                "tag": "rogue-like",
+                "total": 4,
+                "votes": 4
+            },
+            {
+                "dislike": 0,
+                "like": 4,
+                "package": "nethack",
+                "tag": "the greatest game ever made",
+                "total": 4,
+                "votes": 4
+            },
+            {
+                "dislike": 0,
+                "like": 4,
+                "package": "nethack",
+                "tag": "@",
+                "total": 4,
+                "votes": 4
+            }
+        ]
+    }
+
+Or PUT your rating on a package::
+
+    $ http put http://localhost:5000/api/rating/nethack/ pkgname=nethack rating=100
+    HTTP/1.1 200 OK
+    Connection: close
+    Content-Length: 97
+    Content-Type: application/json
+    Date: Wed, 10 Apr 2013 01:49:07 GMT
+    Server: Apache/2.2.15 (Red Hat)
+
+    {
+        "messages": [
+            "Rating on package \"nethack\" changed to \"100\""
+        ],
+        "output": "ok"
+    }
+
+Or PUT your vote on a particular tag::
+
+    $ http put http://localhost:5000/api/vote/nethack/ pkgname=nethack tag=rogue-like vote=1
+    HTTP/1.1 200 OK
+    Connection: close
+    Content-Length: 353
+    Content-Type: application/json
+    Date: Wed, 10 Apr 2013 01:53:32 GMT
+    Server: Apache/2.2.15 (Red Hat)
+
+    {
+        "messages": [
+            "Vote added on the tag \"rogue-like\" of the package \"nethack\""
+        ],
+        "output": "ok",
+        "tag": {
+            "dislike": 0,
+            "like": 5,
+            "package": "nethack",
+            "tag": "rogue-like",
+            "total": 5,
+            "votes": 5
+        },
+        "user": {
+            "anonymous": true,
+            "rank": -1,
+            "username": "anonymous",
+            "votes": 8
+        }
+    }

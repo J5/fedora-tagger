@@ -5,76 +5,82 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        0.2.3
+Version:        2.0.1
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
 License:        LGPLv2
-URL:            https://github.com/ralphbean/fedora-tagger
+URL:            https://github.com/fedora-infra/fedora-tagger
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  python-devel
-BuildRequires:  python-setuptools-devel
-BuildRequires:  libcurl-devel
-BuildRequires:  python-kitchen
-BuildRequires:  python-nose
-BuildRequires:  python-paste
-BuildRequires:  python-paste-deploy
-BuildRequires:  TurboGears2
-BuildRequires:  python-pylons
-BuildRequires:  python-mako
-BuildRequires:  python-zope-sqlalchemy
+BuildRequires:  python-setuptools
+
 %if %{?rhel}%{!?rhel:0} >= 6
 BuildRequires:  python-sqlalchemy0.7
 %else
 BuildRequires:  python-sqlalchemy
 %endif
-BuildRequires:  python-repoze-what
-BuildRequires:  python-repoze-who-friendlyform
-BuildRequires:  python-repoze-what-pylons
-BuildRequires:  python-repoze-who
-BuildRequires:  python-repoze-what-plugins-sql
+
+BuildRequires:  python-flask
+BuildRequires:  python-wtforms
+BuildRequires:  python-flask-wtf
+BuildRequires:  python-flask-mako
+
 BuildRequires:  python-kitchen
-BuildRequires:  pycurl
+BuildRequires:  python-fedora
+BuildRequires:  python-fedora-flask
+BuildRequires:  python-openid
+
 BuildRequires:  python-tw2-core
 BuildRequires:  python-tw2-forms
+BuildRequires:  python-tw2-jquery
 BuildRequires:  python-tw2-jqplugins-ui
 BuildRequires:  python-tw2-jqplugins-gritter
-BuildRequires:  python-docutils
-BuildRequires:  python-bunch
-BuildRequires:  python-fedora
-BuildRequires:  python-fedora-turbogears2
-BuildRequires:  fedmsg >= 0.1.5
-%if %{?rhel}%{!?rhel:0} >= 6
-BuildRequires:  python-argparse
-%endif
 
-Requires:       TurboGears2
-Requires:       python-mako
-Requires:       python-zope-sqlalchemy
+BuildRequires:  fedmsg
+BuildRequires:  python-pkgwat-api
+
+
+## Not needed for testing only when working with postgresql
+#BuildRequires:  python-psycopg2
+
+BuildRequires:  python-nose
+
 %if %{?rhel}%{!?rhel:0} >= 6
 Requires:  python-sqlalchemy0.7
 %else
 Requires:  python-sqlalchemy
 %endif
-Requires:       python-repoze-what
-Requires:       python-repoze-who-friendlyform
-Requires:       python-repoze-what-pylons
-Requires:       python-repoze-who
-#Requires:       python-repoze-what-quickstart
-Requires:       python-repoze-what-plugins-sql
-Requires:       python-kitchen
-Requires:       pycurl
-Requires:       python-tw2-core
-Requires:       python-tw2-jqplugins-gritter
-Requires:       python-tw2-jqplugins-ui
-Requires:       python-fedora-turbogears2
-Requires:       python-psycopg2
-Requires:       fedmsg >= 0.1.5
+
+Requires:  python-flask
+Requires:  python-wtforms
+Requires:  python-flask-wtf
+Requires:  python-flask-mako
+
+Requires:  python-kitchen
+Requires:  python-fedora
+Requires:  python-fedora-flask
+Requires:  python-openid
+
+Requires:  python-tw2-core
+Requires:  python-tw2-forms
+Requires:  python-tw2-jquery
+Requires:  python-tw2-jqplugins-ui
+Requires:  python-tw2-jqplugins-gritter
+
+Requires:  fedmsg
+Requires:  python-pkgwat-api
+
+Requires:  python-psycopg2
+
+# Sad panda.  Oldschool mako doesn't handle encoding issues well.
 %if %{?rhel}%{!?rhel:0} >= 6
-Requires:  python-argparse
+BuildRequires:  python-mako0.4
+Requires:       python-mako0.4
 %endif
+
 
 %description
 A web application for adding and ranking tags for Fedora packages.
@@ -83,42 +89,56 @@ A web application for adding and ranking tags for Fedora packages.
 %setup -q
 
 %if %{?rhel}%{!?rhel:0} >= 6
-
 # Make sure that epel/rhel picks up the correct version of webob
-awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"WebOb>=1.0\", \"sqlalchemy>=0.7\"]; import pkg_resources"}1' setup.py > setup.py.tmp
+awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"Mako>=0.4.2\", \"sqlalchemy>=0.7\"]; import pkg_resources"}1' setup.py > setup.py.tmp
 mv setup.py.tmp setup.py
-
 %endif
-
 
 %build
 %{__python} setup.py build
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build \
     --install-data=%{_datadir} --root %{buildroot}
-%{__python} setup.py archive_tw2_resources -f -o %{buildroot}%{_datadir}/%{name}/public/toscawidgets -d fedora_tagger
+%{__python} setup.py archive_tw2_resources -f -o %{buildroot}%{_datadir}/%{modname}/toscawidgets -d fedora-tagger
 
+# This may not be necessary anymore
 rm -fr %{buildroot}%{python_sitelib}/migration
 
-%{__mkdir_p} %{buildroot}%{_datadir}/%{name}/apache
-%{__install} apache/%{modname}.wsgi %{buildroot}%{_datadir}/%{name}/apache/%{modname}.wsgi
+%{__mkdir_p} %{buildroot}%{_datadir}/%{modname}/apache
+%{__install} apache/%{modname}.wsgi %{buildroot}%{_datadir}/%{modname}/%{modname}.wsgi
 
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/%{modname}/
+%{__install} apache/%{modname}.cfg %{buildroot}%{_sysconfdir}/%{modname}/%{modname}.cfg
 
 %pre
 %{_sbindir}/groupadd -r %{modname} &>/dev/null || :
 %{_sbindir}/useradd  -r -s /sbin/nologin -d %{_datadir}/%{modname} -M \
               -c 'Fedora Tagger' -g %{modname} %{modname} &>/dev/null || :
 
-
 %files
 %doc README.rst
-%{_datadir}/%{name}/
+%{_bindir}/fedoratagger-update-db
+%config %{_sysconfdir}/%{modname}/
+%{_datadir}/%{modname}/
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Wed Apr 24 2013 Ralph Bean <rbean@redhat.com> - 2.0.1-1
+- Incorporated some lessons learned in staging.
+
+* Fri Apr 05 2013 Ralph Bean <rbean@redhat.com> - 2.0.0a-1
+- Initial packaging of rewrite against python-flask.
+
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-5
+- Don't spam the bus with users' entire voting histories.
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-4
+- Bugfix.  Iterators don't have a .__len__.
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-3
+- Bugfix.  Iterators don't have a .index method.
+* Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-2
+- Reverse the rank ordering.
 * Tue Oct 09 2012 Ralph Bean <rbean@redhat.com> - 0.2.3-1
 - More intelligent rank calculation.
 - Unescape nested widgets to support tw2.core>=2.1.2.

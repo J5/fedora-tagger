@@ -1,5 +1,9 @@
-graft fedoratagger
-graft apache
+include fedoratagger/dirtywords.txt
+include requirements.txt
+include test-requirements.txt
+include setup.cfg
 include README.rst
-include LICENSE
-include development.ini
+include fedoratagger/README.rst
+graft apache
+graft fedoratagger/frontend/static
+recursive-include fedoratagger *.py *.mak *.js *.css *.png *.gif *.html
