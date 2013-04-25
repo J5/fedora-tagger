@@ -262,7 +262,7 @@ class Flasktests(Modeltests):
         output = self.app.get('/api/v1/rating/75')
         self.assertEqual(output.status_code, 301)
 
-        output = self.app.get('/api/rating/76/')
+        output = self.app.get('/api/v1/rating/76/')
         self.assertEqual(output.status_code, 404)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'notok')
