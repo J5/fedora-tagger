@@ -454,7 +454,7 @@ class FASUser(DeclarativeBase):
 
         users = session.query(FASUser)\
                 .filter(FASUser.username != 'anonymous').all()
-        lookup = list(reversed(sorted(set([u.score for u in users]))))
+        lookup = sorted(set([u.score for u in users]), reverse=True)
         rank = lookup.index(self.score) + 1
 
         # If their rank has changed.
