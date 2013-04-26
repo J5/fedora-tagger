@@ -262,7 +262,7 @@ class Flasktests(Modeltests):
         output = self.app.get('/api/v1/rating/75')
         self.assertEqual(output.status_code, 301)
 
-        output = self.app.get('/api/rating/76/')
+        output = self.app.get('/api/v1/rating/76/')
         self.assertEqual(output.status_code, 404)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'notok')
@@ -480,6 +480,46 @@ class Flasktests(Modeltests):
         self.assertEqual(output.data, 'guake\tgnome\n'
         'guake\tterminal\n'
         'geany\tgnome\ngeany\tide')
+
+    def test_tag_export(self):
+        """ Test tag_pkg_export.
+
+        A backwards compat url for fedora-packages' cronjob.
+        """
+        output = self.app.get('/api/v1/tag/export/')
+        self.assertEqual(output.status_code, 200)
+        target = {'packages': []}
+        self.assertEqual(json.loads(output.data), target)
+
+        create_package(self.session)
+        create_tag(self.session)
+
+        output = self.app.get('/api/v1/tag/export/')
+        self.assertEqual(output.status_code, 200)
+        target = {
+            u'packages': [
+                {
+                    u'guake': [{
+                        u'tag': u'gnome',
+                        u'total': 2,
+                    },{
+                        u'tag': u'terminal',
+                        u'total': 2,
+                    }]
+                }, {
+                    u'geany': [{
+                        u'tag': u'gnome',
+                        u'total': 2,
+                    },{
+                        u'tag': u'ide',
+                        u'total': 2,
+                    }]
+                }, {
+                    u'gitg': [],
+                }
+            ]
+        }
+        self.assertEqual(json.loads(output.data), target)
 
     def test_rating_dump(self):
         """ Test rating_pkg_dump """
