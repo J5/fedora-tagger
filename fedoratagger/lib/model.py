@@ -470,6 +470,8 @@ class FASUser(DeclarativeBase):
 
         if changed:
             self._rank = rank
+            session.add(self)
+            session.commit()
 
         if changed and not is_last:
             fedmsg.send_message(topic='user.rank.update', msg={
