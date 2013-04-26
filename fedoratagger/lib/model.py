@@ -454,8 +454,8 @@ class FASUser(DeclarativeBase):
 
         users = session.query(FASUser)\
                 .filter(FASUser.username != 'anonymous').all()
-        lookup = list(reversed(sorted(set([u.total_votes for u in users]))))
-        rank = lookup.index(self.total_votes) + 1
+        lookup = list(reversed(sorted(set([u.score for u in users]))))
+        rank = lookup.index(self.score) + 1
 
         # If their rank has changed.
         changed = rank != _rank
