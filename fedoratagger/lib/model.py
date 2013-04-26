@@ -458,7 +458,7 @@ class FASUser(DeclarativeBase):
         rank = lookup.index(self.score) + 1
 
         # If their rank has changed.
-        changed = rank != _rank
+        changed = (rank != _rank)
 
         # And it didn't change to last place.  We check last_place only to try
         # and avoid spamming the fedmsg bus.  We have a number of users who
@@ -466,7 +466,7 @@ class FASUser(DeclarativeBase):
         # in and votes once, *all* the users in last place get bumped down
         # one notch.
         # No need to spew that to the message bus.
-        is_last = rank == len(lookup)
+        is_last = (rank == len(lookup))
 
         if changed:
             self._rank = rank
