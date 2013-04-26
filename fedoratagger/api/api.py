@@ -426,6 +426,26 @@ def tag_pkg_dump():
             output.append('\n'.join(tmp))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
+@API.route('/tag/export/')
+def tag_pkg_export():
+    """ Returns a JSON blob of all tags for all packages.
+
+    The format is a little funky, but it exists for backwards compatibility
+    with the fedora-packages webapp.  It has a cronjob which scrapes this
+    URL on the nightly.
+    """
+
+    output = dict(packages=[])
+    for package in model.Package.all(ft.SESSION):
+        tmp = {package.name: []}
+        for tag in package.tags:
+            if tag.label.strip():
+                tmp[package.name].append({
+                    'tag': tag.label.strip(),
+                    'total': tag.total,
+                })
+        output['packages'].append(tmp)
+    return flask.jsonify(output)
 
 @API.route('/rating/<pkgname>/', methods=['GET', 'PUT'])
 def rating_pkg(pkgname):
