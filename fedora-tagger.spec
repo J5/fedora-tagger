@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.1
+Version:        2.0.2
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -125,6 +125,10 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Fri Apr 26 2013 Ralph Bean <rbean@redhat.com> - 2.0.2-1
+- Add compat URL for fedora-packages cronjob.
+- Bugfix - rank changes weren't saved back to the DB.
+
 * Wed Apr 24 2013 Ralph Bean <rbean@redhat.com> - 2.0.1-1
 - Incorporated some lessons learned in staging.
 
