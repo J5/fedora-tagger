@@ -1,0 +1,328 @@
+html,
+body {
+  height: 100%;
+  background-color: #60605b;
+}
+
+body, p, a, li, div, input, button {
+  font-family: Cantarell, sans-serif;
+  font-size: 12pt;
+}
+
+#header h1 span#logo {
+	background:transparent url("../images/fedora-logo.png") no-repeat scroll 0px 0px;
+	height: 50px;
+	width: 162px;
+	display: block;
+	text-indent: -9999px;
+}
+
+#header {
+  height: 120px;
+  background-color: #60605b;
+  float: left;
+  overflow: visible;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+#header div {
+  z-index: 200;
+  overflow: visible;
+}
+
+#header h1 {
+  font-family: "ComfortaaRegular", "sans-serif" !important;
+  text-transform: lowercase;
+  color: #d8d9dc;
+  font-size: 35pt;
+  font-weight: normal;
+  line-height: 88%;
+  margin-bottom: 1.6em;
+  margin-left: 1.2em;
+}
+
+.body {
+  background-color: #60605b;
+}
+
+#gameboard {
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.card {
+  background-color: white;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  display: inline;
+  float: left;
+  top: 10px;
+  position: absolute;
+  -moz-box-shadow: 5px -5px 5px #333;
+  -webkit-box-shadow: 5px -5px 5px #333;
+  box-shadow: 5px -5px 5px #333;
+
+}
+
+.card .content {
+  padding: 1.6em;
+}
+
+.userinfo {
+  background-color: #EFEFEF;
+
+  float: right;
+  height: 100px;
+  min-width: 200px;
+  display: inline !important;
+  position: absolute;
+  right: 50px;
+  top: 20px;
+  padding: 5px;
+  z-index: 100;
+
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  -webkit-box-shadow: 3px -3px 3px #333;
+  -moz-box-shadow: 3px -3px 3px #333;
+  box-shadow: 3px -3px 3px #333;
+}
+
+.userinfo * p {
+        margin-bottom: -4px;
+        margin-top: -1px;
+}
+
+#leftfade {
+  background-image: -moz-linear-gradient(right, rgba(96,96,91,0), rgba(96,96,91,255) 50%);
+  background-image: -webkit-gradient(linear, right top, left top, color-stop(0, rgba(96,96,91,0)), color-stop(0.5, rgba(96,96,91,255)));
+  background-image: linear-gradient(right, rgba(96,96,91,0), rgba(96,96,91,255) 50%);
+  z-index: 99;
+  width: 150px;
+  left: 0px;
+  top: 0px;
+  position: absolute;
+  float: left;
+  height: 100%;
+}
+
+#rightfade {
+  background-image: -moz-linear-gradient(left, rgba(96,96,91,0), rgba(96,96,91,255) 50%);
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(96,96,91,0)), color-stop(0.5, rgba(96,96,91,255)));
+  background-image: linear-gradient(left, rgba(96,96,91,0), rgba(96,96,91,255) 50%);
+  z-index: 99;
+  width: 150px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  float: right;
+  height: 100%;
+}
+
+div.new {
+    font-weight: bold;
+}
+
+div.plus {
+	background-image: url("../images/gfx_add-button.png");
+    width: 29px;
+    height: 27px;
+    margin-bottom: -7px;
+    margin-right: 5px;
+    display:inline-block;
+    cursor:pointer;
+}
+
+#nextbutton {
+    z-index: 100;
+    position: absolute;
+    right: 0px;
+    float:right;
+    top: 33%;
+}
+
+.package_header {
+  right: auto;
+  left: auto;
+  margin-bottom: 1em;
+  float: left;
+  color: #61615c;
+}
+
+.package_header h2 {
+  margin: 0px;
+  float: left;
+  text-transform: lowercase;
+  font-size: 23pt;
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+.package_header .summary {
+  float: left;
+  font-style: italic; 
+}
+
+.package_header .title {
+  float: left;
+}
+
+.package_header .details {
+  float: right;
+}
+
+.package_header img.icon {
+  height: 64px;
+  width: 64px;
+  float: left;
+}
+
+.card {
+  min-width: 360px;
+}
+
+.card .content .question {
+  font-weight: bold;
+  right: auto;
+  left: auto;
+  float: left;
+  width: 340px;
+}
+
+.card .content ul {
+  left: 0px;
+  list-style-type: none;
+}
+
+.card .content li {
+  margin-top: .5em;
+  margin-bottom: .5em;
+  margin-left: 0px;
+}
+
+.card .content li a {
+  font-size: 14pt;
+}
+
+.card .content li a:link { color: #3c6eb4; text-decoration: none; font-weight: bold;}
+.card .content li a:visited { color: #3c6eb4; text-decoration: none; font-weight: bold;}
+.card .content li a:hover { color: #3c6eb4; text-decoration: none; font-weight: bold;}
+.card .content li a:active { color: #3c6eb4; text-decoration: none; font-weight: bold;}
+
+.center .content .selected a:link { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}
+.center .content .selected a:visited { color: #db347a; text-decoration: none; background-color: #e7e8e9; font-weight: bold;}
+
+.statistics th {
+    padding-left: 10px;
+    padding-right:10px;
+}
+
+.statistics td {
+    padding-top: 5px;
+    border-top: 1px dashed black;
+    text-align: center;
+}
+
+.leaderboard th {
+    padding-left: 10px;
+    padding-right:10px;
+}
+
+.leaderboard td {
+    padding-top: 5px;
+    border-top: 1px dashed black;
+    text-align: center;
+}
+
+.card .icon img {
+  max-width: 75px !important;
+  background-color: #ccc;
+  border: 5px solid white;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+}
+
+div.icon {
+  max-width: 88px;
+  float: left !important;
+  margin-right: 1em;
+}
+
+.package_header,
+.title {
+  width: 100%;
+  display: block;
+}
+
+.package_header h2,
+.package_header .summary {
+  float: right;
+}
+.package_header .rating_wrapper {
+  float: right;
+}
+
+
+.package_header h2 {
+  font-size: 18pt !important;
+  margin-top: 1px !important;
+  width: 70%;
+  text-align: right;
+  color: black;
+}
+
+.summary {
+  clear: none !important;
+  width: 70%;
+  text-align: right;
+  margin-top: 7px;
+}
+
+.details a {
+  font-size: 8pt !important;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.details {
+  float: right;
+  background-color: #3c6eb4;
+  padding: 3px;
+  -moz-border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.details:hover {
+  background-color: #db3279;
+}
+
+.question {
+  width: 100% !important;
+}
+
+.card .content li a {
+  font-size: 12pt !important;
+  text-transform: lowercase;
+  font-weight: normal !important;
+}
+
+.card .content li {
+  padding: 3px;
+  margin-bottom: 4px !important;
+  margin-top: 2px !important;
+}
+
+.tags {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.selected {
+  height: 24px !important;
+}
