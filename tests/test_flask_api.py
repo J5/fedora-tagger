@@ -28,6 +28,8 @@ import pkg_resources
 import base64
 import json
 import unittest
+import tempfile
+import sqlite3
 import os
 import sys
 from werkzeug import wrappers
@@ -520,6 +522,38 @@ class Flasktests(Modeltests):
             ]
         }
         self.assertEqual(json.loads(output.data), target)
+
+    def test_tag_sqlite(self):
+        """ Test tag_pkg_sqlite.
+
+        A url for bodhi's masher.
+        """
+        create_package(self.session)
+        create_tag(self.session)
+
+        output = self.app.get('/api/v1/tag/sqlitebuildtags/')
+        self.assertEqual(output.status_code, 200)
+
+        fd, db_filename = tempfile.mkstemp()
+        os.close(fd)
+
+        with open(db_filename, 'w') as f:
+            f.write(output.data)
+
+        with sqlite3.connect(db_filename) as conn:
+            cursor = conn.cursor();
+            cursor.execute("select * from packagetags;")
+            rows = cursor.fetchall()
+
+        target_rows = [
+            (u'guake', u'gnome', 2),
+            (u'guake', u'terminal', 2),
+            (u'geany', u'gnome', 2),
+            (u'geany', u'ide', 2),
+        ]
+        self.assertEqual(len(rows), len(target_rows))
+        for actual, target in zip(rows, target_rows):
+            self.assertEqual(actual, target)
 
     def test_rating_dump(self):
         """ Test rating_pkg_dump """
