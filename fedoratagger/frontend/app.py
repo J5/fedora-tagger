@@ -152,6 +152,7 @@ def details(name):
 
     Return a list of details for a package.
     """
+    name = name or flask.request.args.get('name', None)
 
     items = [
         item_template.format(
