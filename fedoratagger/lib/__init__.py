@@ -33,6 +33,8 @@ from sqlalchemy.orm.exc import NoResultFound
 
 import model
 
+from sqlite_export import sqlitebuildtags
+
 
 def create_session(db_url, debug=False, pool_recycle=3600):
     """ Create the Session object to use to query the database.
