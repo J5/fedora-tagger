@@ -33,7 +33,9 @@
       Do these tags match this package?
       % elif not w.not_anonymous:
       This package currently has no tags.<br/>Login to help us add some:
-      <form id="login_form" action="login/" method="post"><input value="Login" type="submit"></form>
+      <form id="login_form" action="login/?next=/${w.package.name}" method="post">
+	     <input value="Login" type="submit">
+      </form>
      % endif
     </div>
     <div class="clear"></div>

@@ -16,7 +16,7 @@
           ${str(w.notifications_on)|n} />Notifications</p>
         <p><a href="logout/">Logout</a></p>
 % else:
-        <form id="login_form" action="login/" method="post">
+        <form id="login_form" action="/login/?next=${w.url}" method="post">
           <input type="submit" value="Login" />
         </form>
 % endif

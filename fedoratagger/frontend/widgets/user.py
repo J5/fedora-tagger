@@ -42,6 +42,10 @@ class UserWidget(tw2.core.Widget):
         return flask.g.fas_user
 
     @property
+    def url(self):
+        return flask.request.url
+
+    @property
     def gravatar_tag(self):
         if self.logged_in:
             return self.user.gravatar_md
