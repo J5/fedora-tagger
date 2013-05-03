@@ -14,11 +14,9 @@
         <p>Rank: <span id="rank">${str(w.rank)}</span></p>
         <p><input type="checkbox" id="notifs_toggle"
           ${str(w.notifications_on)|n} />Notifications</p>
-        <p><a href="logout/">Logout</a></p>
+        <p><a href="javascript:logout();">Logout</a></p>
 % else:
-        <form id="login_form" action="/login/?next=${w.url}" method="post">
-          <input type="submit" value="Login" />
-        </form>
+        <button onclick="javascript:login();">Login</button>
 % endif
       </td>
     </tr>
