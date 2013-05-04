@@ -1,11 +1,11 @@
 function logout() {
-    window.location = "logout_handler?" + $.param({
-        came_from: window.location.href.split('?')[0]
+    window.location = "logout/?" + $.param({
+        next: window.location.href.split('?')[0]
     })
 }
 function login() {
-    window.location = "login?" + $.param({
-        came_from: window.location.href.split('?')[0]
+    window.location = "login/?" + $.param({
+        next: window.location.href.split('?')[0]
     })
 }
 function next_item() {
