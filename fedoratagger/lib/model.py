@@ -560,6 +560,7 @@ class FASUser(DeclarativeBase):
         obj = {
             'username': self.anonymous and 'anonymous' or self.username,
             'votes': self.total_votes,
+            'score': self.score,
             'rank': self._rank,
             'anonymous': self.anonymous,
         }

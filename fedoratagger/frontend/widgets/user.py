@@ -64,7 +64,7 @@ class UserWidget(tw2.core.Widget):
         return self.user.username
 
     @property
-    def total_votes(self):
+    def score(self):
         return self.user.score
 
     @property
