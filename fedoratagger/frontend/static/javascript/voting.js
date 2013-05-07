@@ -83,7 +83,7 @@ function client_side_mod(pkgname, tag, like, json) {
     arrow.addClass(dir1 + 'mod');
 
     // Update the user thumbnail widget
-    $('#total_votes').html(json.user.votes);
+    $('#total_votes').html(json.user.score);
     $('#rank').html(json.user.rank);
     if (! notifications_on) { return; }
     if (gritter_id != undefined) { $.gritter.remove(gritter_id); }

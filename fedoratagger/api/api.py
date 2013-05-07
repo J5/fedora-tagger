@@ -145,6 +145,7 @@ def tag_pkg_put(pkgname):
             ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = messages
+            output['user'] = flask.g.fas_user.__json__()
         except NoResultFound, err:
             ft.SESSION.rollback()
             output['output'] = 'notok'
@@ -220,6 +221,7 @@ def rating_pkg_put(pkgname):
             ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
+            output['user'] = flask.g.fas_user.__json__()
         except NoResultFound, err:
             ft.SESSION.rollback()
             output['output'] = 'notok'

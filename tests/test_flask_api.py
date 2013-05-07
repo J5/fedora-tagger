@@ -183,6 +183,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['output'], 'ok')
         self.assertEqual(output['messages'][0],
                           'Tag "terminal" added to the package "guake"')
+        self.assertEqual(output['user']['username'], 'anonymous')
 
         output = self.app.put('/api/v1/tag/guake/', data=data)
         self.assertEqual(output.status_code, 500)
