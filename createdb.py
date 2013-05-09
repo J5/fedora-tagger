@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 __requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']

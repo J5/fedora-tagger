@@ -454,11 +454,11 @@ class FASUser(DeclarativeBase):
 
         users = session.query(FASUser)\
                 .filter(FASUser.username != 'anonymous').all()
-        lookup = list(reversed(sorted(set([u.total_votes for u in users]))))
-        rank = lookup.index(self.total_votes) + 1
+        lookup = sorted(set([u.score for u in users]), reverse=True)
+        rank = lookup.index(self.score) + 1
 
         # If their rank has changed.
-        changed = rank != _rank
+        changed = (rank != _rank)
 
         # And it didn't change to last place.  We check last_place only to try
         # and avoid spamming the fedmsg bus.  We have a number of users who
@@ -466,10 +466,12 @@ class FASUser(DeclarativeBase):
         # in and votes once, *all* the users in last place get bumped down
         # one notch.
         # No need to spew that to the message bus.
-        is_last = rank == len(lookup)
+        is_last = (rank == len(lookup))
 
         if changed:
             self._rank = rank
+            session.add(self)
+            session.commit()
 
         if changed and not is_last:
             fedmsg.send_message(topic='user.rank.update', msg={
@@ -558,6 +560,7 @@ class FASUser(DeclarativeBase):
         obj = {
             'username': self.anonymous and 'anonymous' or self.username,
             'votes': self.total_votes,
+            'score': self.score,
             'rank': self._rank,
             'anonymous': self.anonymous,
         }

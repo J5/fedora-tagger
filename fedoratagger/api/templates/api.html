@@ -82,7 +82,7 @@
     }
     </code>
 
-    <h2>Retriete rating of a package</h2>
+    <h2>Retrieve rating of a package</h2>
     <p>
       This happens at the url <code>{{ url_for('api.pkg_rating', pkgname='pkgname') }}</code>
       It needs one argument, relies on GET requests and will just return
@@ -362,6 +362,25 @@
       }
     }
     </code>
+
+    <h2>Bulk exporting data</h2>
+    <p>There are a handful of ways to bulk export tagger data.
+
+    <p>Export all package tags as tab-separated values:</p>
+    <code>curl http://.../api/v1/tag/dump/</code>
+
+    <p>Export all package ratings as tab-separated values:</p>
+    <code>curl http://.../api/v1/rating/dump/</code>
+
+    <h3>Backwards compatibility exports</h3>
+    <p>A few URLs exist for exporting tagger data to other older Fedora
+    Infrastructure webapps</p>
+
+    <p>Export all tags as JSON for the fedora-packages webapp indexer:</p>
+    <code>curl http://.../api/v1/tag/export/</code>
+
+    <p>Export all tags as JSON for the bodhi masher:</p>
+    <code>curl http://.../api/v1/tag/sqlitebuildtags/</code>
 
   </div>
 {% endblock %}

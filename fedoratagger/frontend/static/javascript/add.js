@@ -18,7 +18,7 @@ $(document).ready(function () {
 
         // Update the user thumbnail widget
         if (json.user) {
-            $('#total_votes').html(json.user.votes);
+            $('#total_votes').html(json.user.score);
             $('#rank').html(json.user.rank);
         }
 

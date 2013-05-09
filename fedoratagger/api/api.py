@@ -145,6 +145,7 @@ def tag_pkg_put(pkgname):
             ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = messages
+            output['user'] = flask.g.fas_user.__json__()
         except NoResultFound, err:
             ft.SESSION.rollback()
             output['output'] = 'notok'
@@ -220,6 +221,7 @@ def rating_pkg_put(pkgname):
             ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
+            output['user'] = flask.g.fas_user.__json__()
         except NoResultFound, err:
             ft.SESSION.rollback()
             output['output'] = 'notok'
@@ -426,6 +428,7 @@ def tag_pkg_dump():
             output.append('\n'.join(tmp))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
+
 @API.route('/tag/export/')
 def tag_pkg_export():
     """ Returns a JSON blob of all tags for all packages.
@@ -446,6 +449,17 @@ def tag_pkg_export():
                 })
         output['packages'].append(tmp)
     return flask.jsonify(output)
+
+
+@API.route('/tag/sqlitebuildtags/')
+def tag_pkg_sqlite():
+    """ Returns a sqlite blob of all tags for all packages.
+
+    This export format is consumed by the bodhi masher for inclusion
+    in created yum repositories.
+    """
+    return fedoratagger.lib.sqlitebuildtags()
+
 
 @API.route('/rating/<pkgname>/', methods=['GET', 'PUT'])
 def rating_pkg(pkgname):

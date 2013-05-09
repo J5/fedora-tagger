@@ -10,15 +10,13 @@
       <td>
 % if w.logged_in:
         <p>Logged in (<span id="username">${str(w.formatted_name)}</span>)</p>
-        <p><span id="total_votes">${str(w.total_votes)}</span> votes cast.</p>
+        <p>Score: <span id="total_votes">${str(w.score)}</span></p>
         <p>Rank: <span id="rank">${str(w.rank)}</span></p>
         <p><input type="checkbox" id="notifs_toggle"
           ${str(w.notifications_on)|n} />Notifications</p>
-        <p><a href="logout/">Logout</a></p>
+        <p><a href="javascript:logout();">Logout</a></p>
 % else:
-        <form id="login_form" action="login/" method="post">
-          <input type="submit" value="Login" />
-        </form>
+        <button onclick="javascript:login();">Login</button>
 % endif
       </td>
     </tr>

@@ -129,6 +129,31 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
 
+    def test_rank_changes(self):
+        """ Test that user rank changes appropriately. """
+        self.test_add_tag()
+        user_pingou = model.FASUser.by_name(self.session, 'pingou')
+        user_toshio = model.FASUser.by_name(self.session, 'toshio')
+        user_kevin = model.FASUser.by_name(self.session, 'kevin')
+
+        self.assertEqual(user_pingou.rank(self.session), 1)
+        self.assertEqual(user_toshio.rank(self.session), 3)
+        self.assertEqual(user_kevin.rank(self.session), 3)
+
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
+                                        'terminal', True , user_pingou)
+
+        self.assertEqual(user_pingou.rank(self.session), 1)
+        self.assertEqual(user_toshio.rank(self.session), 3)
+        self.assertEqual(user_kevin.rank(self.session), 3)
+
+        out = fedoratagger.lib.add_vote(self.session, 'guake',
+                                           'terminal', True , user_toshio)
+
+        self.assertEqual(user_pingou.rank(self.session), 1)
+        self.assertEqual(user_toshio.rank(self.session), 3)
+        self.assertEqual(user_kevin.rank(self.session), 4)
+
     def test_add_vote(self):
         """ Test the add_vote function of taggerlib. """
         self.test_add_tag()
