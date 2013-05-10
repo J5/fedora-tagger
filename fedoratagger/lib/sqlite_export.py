@@ -23,7 +23,8 @@ import os
 import tempfile
 import sqlite3
 
-create_statement = """
+
+create_statement = u"""
 create table packagetags (
     name        text,
     tag         text,
@@ -32,9 +33,10 @@ create table packagetags (
 )
 """
 
-insert_statement = """
+
+insert_statement = u"""
 insert into packagetags (name, tag, score)
-values ('{name}', '{tag}', {score})
+values (?, ?, ?)
 """
 
 
@@ -46,11 +48,12 @@ def sqlitebuildtags():
     os.close(fd)
 
     # Build our statements
-    script = ';\n'.join(_prepare_sqlite_statements())
+    rows = _prepare_sqlite_tuples()
 
     # Execute them to the temp file
     with sqlite3.connect(db_filename) as conn:
-        conn.executescript(script)
+        conn.execute(create_statement)
+        conn.executemany(insert_statement, rows)
 
     # Read the raw contents back out and return
     f = open(db_filename, 'r')
@@ -60,20 +63,18 @@ def sqlitebuildtags():
     return dump
 
 
-def _prepare_sqlite_statements():
-    """ Yield SQL statements to create a sqlite3 dump of our tags. """
+def _prepare_sqlite_tuples():
+    """ Yield tuples of values for a sqlite db. """
 
     # Avoid circular imports
     import fedoratagger as ft
     import fedoratagger.lib.model as m
 
-    yield create_statement
-
     packages = ft.SESSION.query(m.Package).all()
     for package in packages:
         for tag in package.tags:
-            yield insert_statement.format(
-                name=package.name,
-                tag=tag.label,
-                score=tag.total,
+            yield (
+                package.name,
+                tag.label,
+                tag.total,
             )

@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.3
+Version:        2.0.4
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -125,6 +125,9 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Fri May 10 2013 Ralph Bean <rbean@redhat.com> - 2.0.4-1
+- Fix unicode issues in the sqlitebuildtags export API.
+
 * Thu May 09 2013 Ralph Bean <rbean@redhat.com> - 2.0.3-1
 - Fix openid login redirect.
 - Fix score UI updating dynamically.

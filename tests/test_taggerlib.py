@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is a part of Fedora Tagger
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,7 +17,6 @@
 # MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
-# -*- coding: utf-8 -*-
 
 '''
 fedoratagger tests lib.
@@ -90,19 +90,19 @@ class TaggerLibtests(Modeltests):
 
         create_package(self.session)
 
-        out = fedoratagger.lib.add_tag(self.session, 'guake', 'gnome',
+        out = fedoratagger.lib.add_tag(self.session, 'guake', u'gnóme',
                                           user_pingou)
-        self.assertEqual(out, 'Tag "gnome" added to the package "guake"')
+        self.assertEqual(out, u'Tag "gnóme" added to the package "guake"')
         self.session.commit()
 
         pkg = model.Package.by_name(self.session, 'guake')
         self.assertEqual(1, len(pkg.tags))
-        self.assertEqual('gnome', pkg.tags[0].label)
+        self.assertEqual(u'gnóme', pkg.tags[0].label)
 
 
         self.assertRaises(IntegrityError,
                           fedoratagger.lib.add_tag,
-                          self.session, 'guake', 'gnome', user_pingou)
+                          self.session, 'guake', u'gnóme', user_pingou)
         self.session.rollback()
 
         out = fedoratagger.lib.add_tag(self.session, 'guake', 'terminal',
@@ -112,7 +112,7 @@ class TaggerLibtests(Modeltests):
 
         pkg = model.Package.by_name(self.session, 'guake')
         self.assertEqual(2, len(pkg.tags))
-        self.assertEqual('gnome', pkg.tags[0].label)
+        self.assertEqual(u'gnóme', pkg.tags[0].label)
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(1, pkg.tags[1].like)
@@ -124,7 +124,7 @@ class TaggerLibtests(Modeltests):
 
         pkg = model.Package.by_name(self.session, 'guake')
         self.assertEqual(2, len(pkg.tags))
-        self.assertEqual('gnome', pkg.tags[0].label)
+        self.assertEqual(u'gnóme', pkg.tags[0].label)
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
@@ -179,7 +179,7 @@ class TaggerLibtests(Modeltests):
 
         pkg = model.Package.by_name(self.session, 'guake')
         self.assertEqual(2, len(pkg.tags))
-        self.assertEqual('gnome', pkg.tags[0].label)
+        self.assertEqual(u'gnóme', pkg.tags[0].label)
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
