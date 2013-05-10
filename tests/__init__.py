@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is a part of Fedora Tagger
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,7 +17,6 @@
 # MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
-# -*- coding: utf-8 -*-
 
 '''
 fedoratagger tests.
@@ -119,13 +119,13 @@ def create_package(session):
     """ Create some basic Package for testing. """
     package = model.Package(
                                   name = 'guake',
-                                  summary = 'drop-down terminal for gnome',
+                                  summary = u'drop-down terminal for gnóme',
                                   )
     session.add(package)
 
     package = model.Package(
                                   name = 'geany',
-                                  summary = 'IDE for Gnome',
+                                  summary = u'IDE for gnóme',
                                   )
     session.add(package)
 
@@ -148,15 +148,15 @@ def create_tag(session):
     user_kevin = model.FASUser.by_name(session, 'kevin')
     user_skvidal = model.FASUser.by_name(session, 'skvidal')
 
-    fedoratagger.lib.add_tag(session, 'guake', 'gnome', user_pingou)
+    fedoratagger.lib.add_tag(session, 'guake', u'gnóme', user_pingou)
     fedoratagger.lib.add_tag(session, 'guake', 'terminal', user_pingou)
     fedoratagger.lib.add_tag(session, 'geany', 'ide', user_pingou)
-    fedoratagger.lib.add_tag(session, 'geany', 'gnome', user_pingou)
+    fedoratagger.lib.add_tag(session, 'geany', u'gnóme', user_pingou)
 
-    fedoratagger.lib.add_tag(session, 'guake', 'gnome', user_toshio)
+    fedoratagger.lib.add_tag(session, 'guake', u'gnóme', user_toshio)
     fedoratagger.lib.add_tag(session, 'guake', 'terminal', user_kevin)
     fedoratagger.lib.add_tag(session, 'geany', 'ide', user_skvidal)
-    fedoratagger.lib.add_tag(session, 'geany', 'gnome', user_toshio)
+    fedoratagger.lib.add_tag(session, 'geany', u'gnóme', user_toshio)
 
     session.commit()
 
@@ -183,7 +183,7 @@ def create_vote(session):
     user_toshio = model.FASUser.by_name(session, 'toshio')
     user_kevin = model.FASUser.by_name(session, 'kevin')
 
-    fedoratagger.lib.add_vote(session, 'guake', 'gnome', True,
+    fedoratagger.lib.add_vote(session, 'guake', u'gnóme', True,
                                  user_toshio)
     fedoratagger.lib.add_vote(session, 'guake', 'terminal', False,
                                  user_toshio)

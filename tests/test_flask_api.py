@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file is a part of Fedora Tagger
 #
 # This program is free software; you can redistribute it and/or modify
@@ -16,7 +17,6 @@
 # MA  02110-1301  USA
 #
 # Refer to the README.rst and LICENSE files for full details of the license
-# -*- coding: utf-8 -*-
 
 '''
 fedoratagger tests lib.
@@ -89,7 +89,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
-        self.assertEqual(output['summary'], 'drop-down terminal for gnome')
+        self.assertEqual(output['summary'], u'drop-down terminal for gnóme')
         self.assertEqual(output['icon'],'https://apps.fedoraproject.org/'
                          'packages/images/icons/guake.png')
         self.assertEqual(output['rating'], -1)
@@ -121,7 +121,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
-        self.assertEqual(output['tags'][0]['tag'], 'gnome')
+        self.assertEqual(output['tags'][0]['tag'], u'gnóme')
         self.assertEqual(output['tags'][0]['votes'], 2)
         self.assertEqual(output['tags'][0]['like'], 2)
         self.assertEqual(output['tags'][0]['dislike'], 0)
@@ -133,22 +133,22 @@ class Flasktests(Modeltests):
     def test_tag_get(self):
         """ Test the tag_get function.  """
 
-        output = self.app.get('/api/v1/tag/gnome')
+        output = self.app.get(u'/api/v1/tag/gnóme')
         self.assertEqual(output.status_code, 301)
 
-        output = self.app.get('/api/v1/tag/gnome/')
+        output = self.app.get(u'/api/v1/tag/gnóme/')
         self.assertEqual(output.status_code, 404)
         output = json.loads(output.data)
         self.assertEqual(output['output'], 'notok')
-        self.assertEqual(output['error'], 'Tag "gnome" not found')
+        self.assertEqual(output['error'], u'Tag "gnóme" not found')
 
         create_package(self.session)
         create_tag(self.session)
 
-        output = self.app.get('/api/v1/tag/gnome/')
+        output = self.app.get(u'/api/v1/tag/gnóme/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output['tag'], 'gnome')
+        self.assertEqual(output['tag'], u'gnóme')
         self.assertEqual(len(output['packages']), 2)
         self.assertEqual(output['packages'][0]['package'], 'guake')
 
@@ -192,7 +192,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['error'],
                          'This tag is already associated to this package')
 
-        data = {'pkgname': 'guake', 'tag': 'terminal,, gnome'}
+        data = {'pkgname': 'guake', 'tag': u'terminal,, gnóme'}
 
         create_user(self.session)
         user = model.FASUser.by_name(self.session, 'pingou')
@@ -216,13 +216,13 @@ class Flasktests(Modeltests):
         self.assertEqual(output['messages'][0],
                           'Tag "terminal" added to the package "guake"')
         self.assertEqual(output['messages'][1],
-                          'Tag "gnome" added to the package "guake"')
+                          u'Tag "gnóme" added to the package "guake"')
 
         output = self.app.get('/api/v1/guake/tag/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
-        self.assertEqual(output['tags'][0]['tag'], 'gnome')
+        self.assertEqual(output['tags'][0]['tag'], u'gnóme')
         self.assertEqual(output['tags'][0]['votes'], 1)
         self.assertEqual(output['tags'][0]['like'], 1)
         self.assertEqual(output['tags'][0]['dislike'], 0)
@@ -453,7 +453,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
-        self.assertEqual(output['tags'][0]['tag'], 'gnome')
+        self.assertEqual(output['tags'][0]['tag'], u'gnóme')
         self.assertEqual(output['tags'][0]['votes'], 2)
         self.assertEqual(output['tags'][0]['like'], 2)
         self.assertEqual(output['tags'][0]['dislike'], 0)
@@ -480,9 +480,9 @@ class Flasktests(Modeltests):
 
         output = self.app.get('/api/v1/tag/dump/')
         self.assertEqual(output.status_code, 200)
-        self.assertEqual(output.data, 'guake\tgnome\n'
-        'guake\tterminal\n'
-        'geany\tgnome\ngeany\tide')
+        self.assertEqual(output.data.decode('utf-8'), u'guake\tgnóme\n'
+        u'guake\tterminal\n'
+        u'geany\tgnóme\ngeany\tide')
 
     def test_tag_export(self):
         """ Test tag_pkg_export.
@@ -503,7 +503,7 @@ class Flasktests(Modeltests):
             u'packages': [
                 {
                     u'guake': [{
-                        u'tag': u'gnome',
+                        u'tag': u'gnóme',
                         u'total': 2,
                     },{
                         u'tag': u'terminal',
@@ -511,7 +511,7 @@ class Flasktests(Modeltests):
                     }]
                 }, {
                     u'geany': [{
-                        u'tag': u'gnome',
+                        u'tag': u'gnóme',
                         u'total': 2,
                     },{
                         u'tag': u'ide',
@@ -547,9 +547,9 @@ class Flasktests(Modeltests):
             rows = cursor.fetchall()
 
         target_rows = [
-            (u'guake', u'gnome', 2),
+            (u'guake', u'gnóme', 2),
             (u'guake', u'terminal', 2),
-            (u'geany', u'gnome', 2),
+            (u'geany', u'gnóme', 2),
             (u'geany', u'ide', 2),
         ]
         self.assertEqual(len(rows), len(target_rows))
