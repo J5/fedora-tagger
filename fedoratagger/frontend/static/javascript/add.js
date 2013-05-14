@@ -54,6 +54,9 @@ $(document).ready(function () {
     });
 
     $("#add_dialog").bind("dialogclose", function (e, ui) {
+        // Remove anything they had typed in.
+        $("#add_box").val('');
+        // Return focus to whoever
         $("#add_box").blur();
     });
 });
