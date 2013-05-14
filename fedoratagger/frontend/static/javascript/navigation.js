@@ -122,6 +122,16 @@ var statistics_template = "                                     \
 
 function statistics() {
     request_in_progress = true;
+    $("body").append("<div id='statistics-dialog'></div>");
+    $("#statistics-dialog").attr('title', "Statistics");
+    $("#statistics-dialog").html("Calculating stats...  please wait.  " +
+                                 "This will take about 30 seconds.");
+    $("#statistics-dialog").dialog({
+        autoOpen: true,
+        modal: true,
+        close: function() { $('#statistics-dialog').dialog('destroy'); },
+    });
+
     $.ajax({
         type: "GET",
         url: "api/v1/statistics/",
@@ -131,6 +141,7 @@ function statistics() {
         }),
         error: function() {
             request_in_progress = false;
+            $('#statistics-dialog').dialog('destroy');
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
@@ -140,8 +151,6 @@ function statistics() {
             });
         },
         success: function(json) {
-            $("body").append("<div id='statistics-dialog'></div>");
-            $("#statistics-dialog").attr('title', "Statistics");
             $("#statistics-dialog").html(statistics_template.format(
                 json.summary.total_packages,
                 json.summary.total_unique_tags,
@@ -150,11 +159,6 @@ function statistics() {
                 json.summary.tags_per_package.toFixed(3),
                 json.summary.tags_per_package_no_zeroes.toFixed(3)
             ));
-            $("#statistics-dialog").dialog({
-                autoOpen: true,
-                modal: true,
-                close: function() { $('#statistics-dialog').dialog('destroy'); },
-            });
             request_in_progress = false;
         }
     });
