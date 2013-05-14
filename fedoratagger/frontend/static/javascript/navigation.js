@@ -20,6 +20,8 @@ function next_item() {
 function navigate_new_card(name, callback) {
     if ( animation_elements != null )
         return;
+    if ( request_in_progress )
+        return;
 
     var sel = $('.center .selected');
     change_card();
