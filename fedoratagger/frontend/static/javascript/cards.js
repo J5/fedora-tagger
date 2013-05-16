@@ -110,10 +110,9 @@ function card_new(name, callback) {
     request_in_progress = true;
     $.ajax({
         type: "GET",
-        url: "card",
+        url: "card/" + name,
         cache: false,
         data: $.param({
-            name: name,
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
