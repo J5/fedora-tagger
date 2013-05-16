@@ -5,8 +5,8 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.4
-Release:        1%{?dist}
+Version:        2.0.5
+Release:        2%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
 License:        LGPLv2
@@ -125,6 +125,17 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Thu May 16 2013 Ralph Bean <rbean@redhat.com> - 2.0.5-2
+- Always force new tags to be lowercased.
+- Remove some console.log js statements.
+
+* Wed May 15 2013 Ralph Bean <rbean@redhat.com> - 2.0.5-1
+- Fix https://github.com/fedora-infra/fedora-tagger/issues/90
+- Fix https://github.com/fedora-infra/fedora-tagger/issues/89
+- Fix https://github.com/fedora-infra/fedora-tagger/issues/84
+- Fix https://github.com/fedora-infra/fedora-tagger/issues/87
+- Fix https://github.com/fedora-infra/fedora-tagger/issues/88
+
 * Fri May 10 2013 Ralph Bean <rbean@redhat.com> - 2.0.4-1
 - Fix unicode issues in the sqlitebuildtags export API.
 

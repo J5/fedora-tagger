@@ -54,6 +54,9 @@ def create_session(db_url, debug=False, pool_recycle=3600):
 
 def add_tag(session, pkgname, tag, user):
     """ Add a provided tag to the specified package. """
+
+    tag = tag.lower()
+
     package = model.Package.by_name(session, pkgname)
     try:
         tagobj = model.Tag.get(session, package.id, tag)

@@ -29,8 +29,6 @@ $(document).ready(function () {
         // We got some search results back from the /packages app.
         // See https://github.com/fedora-infra/fedora-tagger/issues/88
         // for a description and discussion.
-        console.log("got json in success:");
-        console.log(json.total_rows + " rows found.")
 
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
         if ( json.total_rows == 0 ) {
@@ -93,7 +91,6 @@ $(document).ready(function () {
                 start_row: 0,
             });
             search_url = base_url + path + query ;
-            console.log(search_url);
 
             // Now make that query.
             $.ajax({
