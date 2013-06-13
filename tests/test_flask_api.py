@@ -437,7 +437,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['output'], 'ok')
         self.assertEqual(output['messages'], ['Your vote on the tag '
                                               '"terminal" for the package'
-                                              ' "guake" did not changed'])
+                                              ' "guake" did not change'])
 
         data = {'pkgname': 'guake', 'tag': 'terminal', 'vote': '1'}
 

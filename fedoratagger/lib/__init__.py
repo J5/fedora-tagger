@@ -137,7 +137,7 @@ def add_vote(session, pkgname, tag, vote, user):
                                  tag_id=tagobj.id)
         if voteobj.like == vote:
             return 'Your vote on the tag "%s" for the package "%s" did ' \
-                   'not changed' % (tag, pkgname)
+                   'not change' % (tag, pkgname)
         else:
             if voteobj.like:
                 tagobj.like -= 1
