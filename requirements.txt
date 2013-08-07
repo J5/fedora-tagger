@@ -29,5 +29,6 @@ pyzmq<=2.2.0.1
 
 python-openid
 python-openid-cla # required by flask_fas_openid
+python-openid-teams # required by flask_fas_openid
 requests
 urllib3
