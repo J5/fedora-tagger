@@ -28,5 +28,6 @@ pyzmq<=2.2.0.1
 #git+https://github.com/fedora-infra/python-fedora.git
 
 python-openid
+python-openid-cla # required by flask_fas_openid
 requests
 urllib3
