@@ -31,6 +31,14 @@
         <div class="clear"></div>
 		${self.body()}
         <div class="clear"></div>
+
+		<div class="box-container">
+			<div class="box searchbox">
+				<input placeholder="Search for packages"/>
+			</div>
+		</div>
+        <div class="clear"></div>
+
 		<div id="footer">
 			You can report bugs and file issues with Fedora Tagger on
 			<a href="https://github.com/fedora-infra/fedora-tagger/issues">
