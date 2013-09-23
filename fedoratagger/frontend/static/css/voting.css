@@ -94,7 +94,7 @@ span.down_text { color: #3C6EB4; }
   padding: 0.8em;
   width: 33%;
 }
-.searchbox input {
+.searchbox-onpage input {
     width: 100%;
     border: 1px dashed;
 }
