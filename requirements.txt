@@ -32,3 +32,6 @@ python-openid-cla # required by flask_fas_openid
 python-openid-teams # required by flask_fas_openid
 requests
 urllib3
+
+python-openid-cla
+python-openid-teams
