@@ -81,6 +81,13 @@ $(document).ready(function () {
         }
     });
 
+    $(".searchbox > input").keydown(function(e) {
+        if( e.keyCode == 13 ){
+            search_term = $(this).val();
+            perform_search(search_term);
+        }
+    });
+
     perform_search = function(term) {
         request_in_progress = true;
 
