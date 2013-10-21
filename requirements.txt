@@ -17,9 +17,7 @@ docutils
 WebOb
 fedmsg
 pkgwat.api
-
-# This is temporary until other upstream deps become more flexible.
-pyzmq<=2.2.0.1
+pyzmq
 
 # Really, just 'python-fedora' will do, but we need the
 # flask_fas_openid stuff that hasn't yet been released.
