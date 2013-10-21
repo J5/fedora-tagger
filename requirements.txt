@@ -8,11 +8,11 @@ Flask-Mako
 mako>=0.4.2
 #psycopg2 ## Not needed for testing only when working with postgresql
 kitchen
-tw2.core
-tw2.forms
-tw2.jquery
-tw2.jqplugins.ui
-tw2.jqplugins.gritter
+tw2.core<2.2
+tw2.forms<2.2
+tw2.jquery<2.2
+tw2.jqplugins.ui<2.2
+tw2.jqplugins.gritter<2.2
 docutils
 WebOb
 fedmsg
