@@ -87,8 +87,15 @@ def pkg_get_rating(pkgname):
     httpcode = 200
     output = {}
     try:
-        package = model.Package.by_name(ft.SESSION, pkgname)
-        output = package.__rating_json__(ft.SESSION)
+        if isinstance(pkgname, list):
+            tmp = []
+            for pkg in pkgname:
+                package = model.Package.by_name(ft.SESSION, pkg)
+                tmp.append(package.__rating_json__(ft.SESSION))
+            output['ratings'] = tmp
+        else:
+            package = model.Package.by_name(ft.SESSION, pkgname)
+            output = package.__rating_json__(ft.SESSION)
     except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
@@ -196,7 +203,6 @@ def rating_pkg_get(rating):
         output['error'] = 'Invalid rating provided "%s"' % rating
         httpcode = 500
     except NoResultFound, err:
-        print err
         ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'No packages found with rating "%s"' % rating
@@ -401,6 +407,16 @@ def pkg_rating(pkgname):
     """ Returns all known information about a package including it's
     icon, it's rating, it's tags...
     """
+    return pkg_get_rating(pkgname)
+
+
+@API.route('/ratings/<pkgname>/', methods=['GET'])
+def pkg_ratings(pkgname):
+    """ Returns the ratings associated with several packages
+    """
+    if ',' in pkgname:
+        pkgname = pkgname.split(',')
+
     return pkg_get_rating(pkgname)
 
 
