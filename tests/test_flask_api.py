@@ -259,6 +259,40 @@ class Flasktests(Modeltests):
         self.assertEqual(output['rating'], 75.0)
         self.assertEqual(output['name'], 'guake')
 
+    def test_pkg_ratings(self):
+        """ Test the pkg_ratings function.  """
+
+        output = self.app.get('/api/v1/ratings/guake')
+        self.assertEqual(output.status_code, 301)
+
+        output = self.app.get('/api/v1/ratings/guake/')
+        self.assertEqual(output.status_code, 404)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
+
+        create_package(self.session)
+
+        output = self.app.get('/api/v1/ratings/guake,geany/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(len(output['ratings']), 2)
+        self.assertEqual(output['ratings'][0]['rating'], -1)
+        self.assertEqual(output['ratings'][0]['name'], 'guake')
+        self.assertEqual(output['ratings'][1]['rating'], -1)
+        self.assertEqual(output['ratings'][1]['name'], 'geany')
+
+        create_rating(self.session)
+
+        output = self.app.get('/api/v1/ratings/guake,geany/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(len(output['ratings']), 2)
+        self.assertEqual(output['ratings'][0]['name'], 'guake')
+        self.assertEqual(output['ratings'][0]['rating'], 75)
+        self.assertEqual(output['ratings'][1]['name'], 'geany')
+        self.assertEqual(output['ratings'][1]['rating'], 100.0)
+
     def test_rating_get(self):
         """ Test the rating_get function.  """
 

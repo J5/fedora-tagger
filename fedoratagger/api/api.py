@@ -87,8 +87,15 @@ def pkg_get_rating(pkgname):
     httpcode = 200
     output = {}
     try:
-        package = model.Package.by_name(ft.SESSION, pkgname)
-        output = package.__rating_json__(ft.SESSION)
+        if isinstance(pkgname, list):
+            tmp = []
+            for pkg in pkgname:
+                package = model.Package.by_name(ft.SESSION, pkg)
+                tmp.append(package.__rating_json__(ft.SESSION))
+            output['ratings'] = tmp
+        else:
+            package = model.Package.by_name(ft.SESSION, pkgname)
+            output = package.__rating_json__(ft.SESSION)
     except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
@@ -196,7 +203,6 @@ def rating_pkg_get(rating):
         output['error'] = 'Invalid rating provided "%s"' % rating
         httpcode = 500
     except NoResultFound, err:
-        print err
         ft.SESSION.rollback()
         output['output'] = 'notok'
         output['error'] = 'No packages found with rating "%s"' % rating
@@ -404,6 +410,16 @@ def pkg_rating(pkgname):
     return pkg_get_rating(pkgname)
 
 
+@API.route('/ratings/<pkgname>/', methods=['GET'])
+def pkg_ratings(pkgname):
+    """ Returns the ratings associated with several packages
+    """
+    if ',' in pkgname:
+        pkgname = pkgname.split(',')
+
+    return pkg_get_rating(pkgname)
+
+
 @API.route('/tag/<pkgname>/', methods=['GET', 'PUT'])
 def tag_pkg(pkgname):
     """ Returns the tags associated with a package
@@ -477,7 +493,6 @@ def rating_pkg_dump():
     """
     output = []
     for (package, rating) in model.Rating.all(ft.SESSION):
-        print package.name, rating
         output.append('%s\t%0.1f' % (package.name, rating))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
