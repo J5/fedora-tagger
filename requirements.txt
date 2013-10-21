@@ -1,9 +1,9 @@
 # Used for when working from a virtualenv.
 # Use this file by running "$ pip install -r requirements.txt"
-flask
+flask<0.10
 sqlalchemy
 wtforms
-Flask-WTF
+Flask-WTF<0.9
 Flask-Mako
 mako>=0.4.2
 #psycopg2 ## Not needed for testing only when working with postgresql
@@ -30,6 +30,3 @@ python-openid-cla # required by flask_fas_openid
 python-openid-teams # required by flask_fas_openid
 requests
 urllib3
-
-python-openid-cla
-python-openid-teams
