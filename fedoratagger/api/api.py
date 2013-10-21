@@ -477,7 +477,6 @@ def rating_pkg_dump():
     """
     output = []
     for (package, rating) in model.Rating.all(ft.SESSION):
-        print package.name, rating
         output.append('%s\t%0.1f' % (package.name, rating))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
