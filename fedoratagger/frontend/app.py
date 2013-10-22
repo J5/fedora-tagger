@@ -217,7 +217,8 @@ def home(name=None):
     cards = [CardWidget(package=packages[i]) for i in range(3)]
     cards[1].css_class = 'card center'
 
-    return render_template('tagger.mak', cards=cards)
+    return render_template('tagger.mak', cards=cards,
+                           title=cards[1].package.name)
 
 
 @FRONTEND.route('/login/', methods=('GET', 'POST'))
