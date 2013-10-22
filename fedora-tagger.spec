@@ -5,8 +5,8 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.5
-Release:        2%{?dist}
+Version:        2.0.6
+Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
 License:        LGPLv2
@@ -129,6 +129,12 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Tue Oct 22 2013 Ralph Bean <rbean@redhat.com> - 2.0.6-1
+- Dynamically update the title.
+- No longer pull tags from the old pkgdb in the cronjov.
+- Add a search bar to the main page.
+- Expand the API for gnome-software.
+
 * Thu May 16 2013 Ralph Bean <rbean@redhat.com> - 2.0.5-2
 - Always force new tags to be lowercased.
 - Remove some console.log js statements.
