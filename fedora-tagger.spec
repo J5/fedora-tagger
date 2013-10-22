@@ -32,6 +32,8 @@ BuildRequires:  python-kitchen
 BuildRequires:  python-fedora
 BuildRequires:  python-fedora-flask
 BuildRequires:  python-openid
+BuildRequires:  python-openid-cla
+BuildRequires:  python-openid-teams
 
 BuildRequires:  python-tw2-core
 BuildRequires:  python-tw2-forms
@@ -63,6 +65,8 @@ Requires:  python-kitchen
 Requires:  python-fedora
 Requires:  python-fedora-flask
 Requires:  python-openid
+Requires:  python-openid-cla
+Requires:  python-openid-teams
 
 Requires:  python-tw2-core
 Requires:  python-tw2-forms
