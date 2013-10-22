@@ -4,7 +4,7 @@
         <link href="css/960_24_col.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/slider.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/voting.css" media="screen" type="text/css" rel="stylesheet"></link>
-        <title>Fedora Tagger</title>
+        <title>Fedora Tagger - ${title}</title>
     </head>
     <body>
 % if hasattr(g, 'hotkeys_dialog') and g.hotkeys_dialog:

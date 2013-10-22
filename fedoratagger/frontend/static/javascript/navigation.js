@@ -88,6 +88,7 @@ function change_card() {
         query_string = href.slice(href.indexOf('?'));
     }
     window.history.pushState({}, "", val + query_string);
+    document.title = "Fedora Tagger - " + val;
 }
 
 function init_mouseover() {
