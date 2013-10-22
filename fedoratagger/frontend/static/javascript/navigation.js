@@ -88,6 +88,7 @@ function change_card() {
         query_string = href.slice(href.indexOf('?'));
     }
     window.history.pushState({}, "", val + query_string);
+    document.title = "Fedora Tagger - " + val;
 }
 
 function init_mouseover() {
@@ -229,6 +230,7 @@ function init_navigation() {
     $(document).keyup(function(e){
         if ( $("#search_box").is(":focus") ) { return; }
         if ( $("#add_box").is(":focus") ) { return; }
+        if ( $(".searchbox-onpage > input").is(":focus")) { return; }
         if ( animation_elements != null ) { return; }
         if ( request_in_progress ) { return; }
         var now = new Date();

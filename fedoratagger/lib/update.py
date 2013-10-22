@@ -85,57 +85,6 @@ def get_yum_query(require=True):
     return YumQuery()
 
 
-def import_pkgdb_tags():
-    log.info("Importing pkgdb tags.")
-    yumq = get_yum_query()
-    repo = "F-18-i386-u"
-    base_url = "https://admin.fedoraproject.org/pkgdb"
-    url = base_url + "/lists/sqlitebuildtags/F-18-i386-u"
-    f, fname = tempfile.mkstemp(suffix="-%s.db" % repo)
-    urllib.urlretrieve(url, fname)
-
-    conn = sqlite3.connect(fname)
-    cursor = conn.cursor()
-    cursor.execute('select * from packagetags')
-    for row in cursor:
-        name, tag, score = map(to_unicode, row)
-
-        p = m.Package.query.filter_by(name=name)
-        tl = m.TagLabel.query.filter_by(label=tag)
-        if p.count() == 0:
-            if yumq:
-                summary = to_unicode(yumq.summary(name))
-            else:
-                # If we have no access to yum... oh well.
-                summary = u''
-
-            ft.SESSION.add(m.Package(name=name, summary=summary))
-
-        if tl.count() == 0:
-            ft.SESSION.add(m.TagLabel(label=tag))
-
-        package = p.one()
-        label = tl.one()
-
-        t = m.Tag()
-        t.package = package
-        t.label = label
-        ft.SESSION.add(t)
-
-        if label not in package.tag_labels:
-            package.tag_labels.append(label)
-
-    conn.close()
-    os.remove(fname)
-
-    npacks = ft.SESSION.query(m.Package).count()
-    ntags = ft.SESSION.query(m.Tag).count()
-
-    log.info("Done with pkgdb import.")
-    log.debug("Imported %i packages." % npacks)
-    log.debug("Imported %i tags." % ntags)
-
-
 def import_koji_pkgs():
     """ Get the latest packages from koji.  These might not have made it into
     yum yet, so we won't even check for their summary until later.
@@ -208,7 +157,6 @@ def parse_args():
 def main():
     args = parse_args()
     log.info("Starting up fedoratagger-update-db")
-    import_pkgdb_tags()
     import_koji_pkgs()
     update_summaries(int(args.summaries_to_process))
 

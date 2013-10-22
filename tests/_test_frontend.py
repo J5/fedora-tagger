@@ -132,5 +132,5 @@ class TestFrontend(_Base):
         time.sleep(1)  # Sorry, @lmacken
         elem.click()
         self.assert_gritter(
-            'Your vote on the tag "q" for the package "mattd" did not changed'
+            'Your vote on the tag "q" for the package "mattd" did not change'
         )

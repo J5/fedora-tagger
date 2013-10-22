@@ -4,7 +4,7 @@
         <link href="css/960_24_col.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/slider.css" media="screen" type="text/css" rel="stylesheet"></link>
         <link href="css/voting.css" media="screen" type="text/css" rel="stylesheet"></link>
-        <title>Fedora Tagger</title>
+        <title>Fedora Tagger - ${title}</title>
     </head>
     <body>
 % if hasattr(g, 'hotkeys_dialog') and g.hotkeys_dialog:
@@ -31,6 +31,14 @@
         <div class="clear"></div>
 		${self.body()}
         <div class="clear"></div>
+
+		<div class="box-container">
+			<div class="box searchbox">
+				<input placeholder="Search for packages"/>
+			</div>
+		</div>
+        <div class="clear"></div>
+
 		<div id="footer">
 			You can report bugs and file issues with Fedora Tagger on
 			<a href="https://github.com/fedora-infra/fedora-tagger/issues">

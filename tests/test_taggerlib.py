@@ -175,7 +175,7 @@ class TaggerLibtests(Modeltests):
         out = fedoratagger.lib.add_vote(self.session, 'guake',
                                            'terminal', True , user_pingou)
         self.assertEqual(out, 'Your vote on the tag "terminal" for the '
-                         'package "guake" did not changed')
+                         'package "guake" did not change')
 
         pkg = model.Package.by_name(self.session, 'guake')
         self.assertEqual(2, len(pkg.tags))

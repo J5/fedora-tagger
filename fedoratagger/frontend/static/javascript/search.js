@@ -1,3 +1,5 @@
+var perform_search = null;
+
 $(document).ready(function () {
     var search_term = null;
 
@@ -73,36 +75,46 @@ $(document).ready(function () {
     };
 
     $("#search_box").keydown(function(e){
-
         if( e.keyCode == 13 ){
-            request_in_progress = true;
-
-            // * Construct a query against the Fedora Packages API *
-            // Note that if you are running this on your own machine in dev
-            // mode, that this constitutes a cross-domain XHR request which
-            // will fail.  You can disable web security on your browser to hack
-            // on it.
-            base_url = "https://apps.fedoraproject.org/packages/fcomm_connector";
-            path = "/xapian/query/search_packages/";
             search_term = $(this).val();
-            query = JSON.stringify({
-                filters: { search: search_term },
-                rows_per_page: 10,
-                start_row: 0,
-            });
-            search_url = base_url + path + query ;
-
-            // Now make that query.
-            $.ajax({
-                type: "GET",
-                url: search_url,
-                dataType: "json",
-                cache: false,
-                error: error,
-                success: success,
-            });
+            perform_search(search_term);
         }
     });
+
+    $(".searchbox-onpage > input").keydown(function(e) {
+        if( e.keyCode == 13 ){
+            search_term = $(this).val();
+            perform_search(search_term);
+        }
+    });
+
+    perform_search = function(term) {
+        request_in_progress = true;
+
+        // * Construct a query against the Fedora Packages API *
+        // Note that if you are running this on your own machine in dev
+        // mode, that this constitutes a cross-domain XHR request which
+        // will fail.  You can disable web security on your browser to hack
+        // on it.
+        base_url = "https://apps.fedoraproject.org/packages/fcomm_connector";
+        path = "/xapian/query/search_packages/";
+        query = JSON.stringify({
+            filters: { search: term },
+            rows_per_page: 10,
+            start_row: 0,
+        });
+        search_url = base_url + path + query ;
+
+        // Now make that query.
+        $.ajax({
+            type: "GET",
+            url: search_url,
+            dataType: "json",
+            cache: false,
+            error: error,
+            success: success,
+        });
+    }
 
     $("#search_dialog").bind("dialogclose", function (e, ui) {
         $("#search_box").val('');
