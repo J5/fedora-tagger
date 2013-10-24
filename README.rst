@@ -43,6 +43,10 @@ You can set up a development environment like this::
     $ sudo yum install -y python-virtualenvwrapper
     $ mkvirtualenv tagger
 
+    # Configure virtualenvwrapper for your shell
+    echo '\nexport WORKON_HOME=$HOME/.virtualenvs\nsource /usr/bin/virtualenvwrapper.sh' >> ~/.bashrc
+    source ~/.bashrc
+
     # Install dependencies
     $ pip install kitchen paver
     $ pip install git+https://github.com/fedora-infra/python-fedora.git
