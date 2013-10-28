@@ -85,7 +85,6 @@ class TaggerLibtests(Modeltests):
         r = fedoratagger.lib.model.Package.rating(pkg, self.session)
         self.assertEquals(75, r)
         
-
     def test_add_tag(self):
         """ Test the add_tag function of taggerlib. """
         create_user(self.session)
@@ -132,72 +131,32 @@ class TaggerLibtests(Modeltests):
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
-        
-        ################
-        
+                
         self.assertRaises(ValueError,
                           fedoratagger.lib.add_tag,
-                          self.session, 'guake', 'ass',
+                          self.session,'guake','ass',
                           user_pingou)
-
-        
-        ####################
-        
-
-######################
 
     def test_tag_sorter(self):
         """ Test the tag_sorter function of model. """
-        #sort should be done in following cases:
-        #if new tag added
-        #liked a tag
-        #disliked a tag
-        
-        create_user(self.session)
+        self.test_add_tag()
         user_pingou = model.FASUser.by_name(self.session, 'pingou')
-        user_ralph = model.FASUser.by_name(self.session, 'ralph')
-        
-        create_package(self.session)
-        out = fedoratagger.lib.add_tag(self.session, 'guake', u'gnóme',
-                                          user_pingou)
-        self.assertEqual(out, u'Tag "gnóme" added to the package "guake"')
-        self.session.commit()
+        user_toshio = model.FASUser.by_name(self.session, 'toshio')
 
         pkg = model.Package.by_name(self.session, 'guake')
-        self.assertEqual(1, len(pkg.tags))
-        self.assertEqual(u'gnóme', pkg.tags[0].label)
 
-
-        self.assertRaises(IntegrityError,
-                          fedoratagger.lib.add_tag,
-                          self.session, 'guake', u'gnóme', user_pingou)
-        self.session.rollback()
-
-        out = fedoratagger.lib.add_tag(self.session, 'guake', 'terminal',
-                                          user_pingou)
-        self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
-        self.session.commit()
-
-        pkg = model.Package.by_name(self.session, 'guake')
-        self.assertEqual(2, len(pkg.tags))
-        self.assertEqual(u'gnóme', pkg.tags[0].label)
-        self.assertEqual('terminal', pkg.tags[1].label)
-        self.assertEqual(1, pkg.tags[0].like)
-        self.assertEqual(1, pkg.tags[1].like)
-        
         tagobj1 = model.Tag.get(self.session, pkg.id, 'terminal')
         tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')
-        result = fedoratagger.lib.model.tag_sorter(self.session,tagobj1,tagobj2)
-        
-        if result == -1 :
+        result = fedoratagger.lib.model.tag_sorter(self.session,
+                                                   tagobj1, tagobj2)
+
+        if result == -1:
             result = 1
-        self.assertEqual(1,result)
-        
-        result = fedoratagger.lib.model.tag_sorter(self.session,tagobj1,tagobj1)
-        self.assertEquals(0,result)
-   
-    
-#####################################
+        self.assertEqual(1, result)
+
+        result = fedoratagger.lib.model.tag_sorter(self.session,
+                                                   tagobj1, tagobj1)
+        self.assertEquals(0, result)
 
     def test_rank_changes(self):
         """ Test that user rank changes appropriately. """
