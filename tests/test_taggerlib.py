@@ -145,15 +145,15 @@ class TaggerLibtests(Modeltests):
 
         tagobj1 = model.Tag.get(self.session, pkg.id, 'terminal')
         tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')
-        result = fedoratagger.lib.model.tag_sorter(self.session,
-                                                   tagobj1, tagobj2)
+        result = fedoratagger.lib.model.tag_sorter(tagobj1,
+                                                   tagobj2)
 
         if result == -1:
             result = 1
         self.assertEqual(1, result)
 
-        result = fedoratagger.lib.model.tag_sorter(self.session,
-                                                   tagobj1, tagobj1)
+        result = fedoratagger.lib.model.tag_sorter(tagobj1,
+                                                   tagobj1)
         self.assertEquals(0, result)
 
     def test_rank_changes(self):
