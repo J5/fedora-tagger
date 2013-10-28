@@ -162,7 +162,7 @@ def create_tag(session):
 
 
 def create_rating(session):
-    """ Add Vote on tags of packages. """
+    """ Add Rating on packages. """
 
     create_user(session)
     user_pingou = model.FASUser.by_name(session, 'pingou')
@@ -191,7 +191,6 @@ def create_vote(session):
                                 user_kevin)
 
     session.commit()
-
 
 if __name__ == '__main__':
     SUITE = unittest.TestLoader().loadTestsFromTestCase(Modeltests)

@@ -81,7 +81,10 @@ class TaggerLibtests(Modeltests):
 
         rating = model.Rating.rating_of_package(self.session, pkg.id)
         self.assertEqual(75, rating)
-
+        
+        r = fedoratagger.lib.model.Package.rating(pkg, self.session)
+        self.assertEquals(75, r)
+        
     def test_add_tag(self):
         """ Test the add_tag function of taggerlib. """
         create_user(self.session)
@@ -128,6 +131,34 @@ class TaggerLibtests(Modeltests):
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
+                
+        self.assertRaises(ValueError,
+                          fedoratagger.lib.add_tag,
+                          self.session, 'guake', 'ass',
+                          user_pingou)
+
+    def test_tag_sorter(self):
+        """ Test the tag_sorter function of model. """
+        self.test_add_tag()
+
+        pkg = model.Package.by_name(self.session, 'guake')
+
+        tagobj1 = model.Tag.get(self.session, pkg.id, 'terminal')
+        tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')
+        result = fedoratagger.lib.model.tag_sorter(tagobj1,
+                                                   tagobj2)
+
+        self.assertEqual(1, result)
+
+        result = fedoratagger.lib.model.tag_sorter(tagobj1,
+                                                   tagobj1)
+        self.assertEquals(0, result)
+
+        result = fedoratagger.lib.model.tag_sorter(tagobj2,
+                                                   tagobj1)
+
+        self.assertEqual(-1, result)
+
 
     def test_rank_changes(self):
         """ Test that user rank changes appropriately. """
