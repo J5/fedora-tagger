@@ -134,14 +134,12 @@ class TaggerLibtests(Modeltests):
                 
         self.assertRaises(ValueError,
                           fedoratagger.lib.add_tag,
-                          self.session,'guake','ass',
+                          self.session, 'guake', 'ass',
                           user_pingou)
 
     def test_tag_sorter(self):
         """ Test the tag_sorter function of model. """
         self.test_add_tag()
-        user_pingou = model.FASUser.by_name(self.session, 'pingou')
-        user_toshio = model.FASUser.by_name(self.session, 'toshio')
 
         pkg = model.Package.by_name(self.session, 'guake')
 
