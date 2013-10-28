@@ -154,6 +154,12 @@ class TaggerLibtests(Modeltests):
                                                    tagobj1)
         self.assertEquals(0, result)
 
+        result = fedoratagger.lib.model.tag_sorter(tagobj2,
+                                                   tagobj1)
+
+        self.assertEqual(-1, result)
+
+
     def test_rank_changes(self):
         """ Test that user rank changes appropriately. """
         self.test_add_tag()
