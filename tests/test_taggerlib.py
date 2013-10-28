@@ -148,8 +148,6 @@ class TaggerLibtests(Modeltests):
         result = fedoratagger.lib.model.tag_sorter(tagobj1,
                                                    tagobj2)
 
-        if result == -1:
-            result = 1
         self.assertEqual(1, result)
 
         result = fedoratagger.lib.model.tag_sorter(tagobj1,
