@@ -159,7 +159,6 @@ class TaggerLibtests(Modeltests):
 
         self.assertEqual(-1, result)
 
-
     def test_rank_changes(self):
         """ Test that user rank changes appropriately. """
         self.test_add_tag()
@@ -184,6 +183,11 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(user_pingou.rank(self.session), 1)
         self.assertEqual(user_toshio.rank(self.session), 3)
         self.assertEqual(user_kevin.rank(self.session), 4)
+
+        user = model.FASUser(username='anonymous',
+                             email='anonymous@p.o',
+                             anonymous=True)
+        self.assertEqual(user.rank(self.session), -1)
 
     def test_add_vote(self):
         """ Test the add_vote function of taggerlib. """
