@@ -136,6 +136,11 @@ class TaggerLibtests(Modeltests):
                           fedoratagger.lib.add_tag,
                           self.session, 'guake', 'ass',
                           user_pingou)
+        
+        tagobj1 = model.Tag.get(self.session, pkg.id, 'terminal')
+        self.assertEquals('terminal on guake', tagobj1.__unicode__())
+        tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')
+        self.assertEquals(u'gnóme on guake', tagobj2.__unicode__())
 
     def test_tag_sorter(self):
         """ Test the tag_sorter function of model. """
