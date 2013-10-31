@@ -102,7 +102,6 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(1, len(pkg.tags))
         self.assertEqual(u'gnóme', pkg.tags[0].label)
 
-
         self.assertRaises(IntegrityError,
                           fedoratagger.lib.add_tag,
                           self.session, 'guake', u'gnóme', user_pingou)
@@ -141,6 +140,31 @@ class TaggerLibtests(Modeltests):
         self.assertEquals('terminal on guake', tagobj1.__unicode__())
         tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')
         self.assertEquals(u'gnóme on guake', tagobj2.__unicode__())
+
+    def test_banned(self):
+        """ Test the banned property of a Tag"""
+        create_user(self.session)
+        user_pingou = model.FASUser.by_name(self.session, 'pingou')
+        create_package(self.session)
+        pkg = model.Package.by_name(self.session, 'guake')
+        out = fedoratagger.lib.add_tag(self.session, 'guake', 'X-test',
+                                       user_pingou)
+        self.assertEqual(out, 'Tag "x-test" added to the package "guake"')
+
+        tagobj = model.Tag.get(self.session, pkg.id, 'x-test')
+        self.assertEquals(True, tagobj.banned)
+        out = fedoratagger.lib.add_tag(self.session, 'guake',
+                                       'terminal',
+                                       user_pingou)
+        self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
+        tagobj = model.Tag.get(self.session, pkg.id, 'terminal')
+        self.assertEquals(False, tagobj.banned)
+        out = fedoratagger.lib.add_tag(self.session, 'guake',
+                                       'application',
+                                       user_pingou)
+        self.assertEqual(out, 'Tag "application" added to the package "guake"')
+        tagobj = model.Tag.get(self.session, pkg.id, 'application')
+        self.assertEquals(True, tagobj.banned)
 
     def test_tag_sorter(self):
         """ Test the tag_sorter function of model. """
