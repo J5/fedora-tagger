@@ -250,7 +250,7 @@ class Tag(DeclarativeBase):
         """
 
         return any([
-            self.label.startswith('X-'),
+            self.label.startswith('x-'),
             self.label == 'Application',
             self.label == 'System',
             self.label == 'Utility',
