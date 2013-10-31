@@ -251,9 +251,9 @@ class Tag(DeclarativeBase):
 
         return any([
             self.label.startswith('x-'),
-            self.label == 'Application',
-            self.label == 'System',
-            self.label == 'Utility',
+            self.label == 'application',
+            self.label == 'system',
+            self.label == 'utility',
         ])
 
     @property

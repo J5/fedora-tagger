@@ -159,6 +159,12 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(out, 'Tag "terminal" added to the package "guake"')
         tagobj = model.Tag.get(self.session, pkg.id, 'terminal')
         self.assertEquals(False, tagobj.banned)
+        out = fedoratagger.lib.add_tag(self.session, 'guake',
+                                       'application',
+                                       user_pingou)
+        self.assertEqual(out, 'Tag "application" added to the package "guake"')
+        tagobj = model.Tag.get(self.session, pkg.id, 'application')
+        self.assertEquals(True, tagobj.banned)
 
     def test_tag_sorter(self):
         """ Test the tag_sorter function of model. """
