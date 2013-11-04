@@ -231,6 +231,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['tags'][1]['like'], 2)
         self.assertEqual(output['tags'][1]['dislike'], 0)
 
+        #This tests that invalid tags are rejected.
         data = {'pkgname': 'guake', 'tag': 'ass'}
 
         output = self.app.put('/api/v1/tag/guake/', data=data)
