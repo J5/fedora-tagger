@@ -231,6 +231,14 @@ class Flasktests(Modeltests):
         self.assertEqual(output['tags'][1]['like'], 2)
         self.assertEqual(output['tags'][1]['dislike'], 0)
 
+        #This tests that invalid tags are rejected.
+        data = {'pkgname': 'guake', 'tag': 'ass'}
+
+        output = self.app.put('/api/v1/tag/guake/', data=data)
+        self.assertEqual(output.status_code, 406)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+
     def test_pkg_get_rating(self):
         """ Test the pkg_get_rating function.  """
 
