@@ -526,6 +526,13 @@ def statistics():
     return jsonout
 
 
+@API.route('/statistics/<username>/')
+def statistics_per_user(username):
+    """ Return the statistics of the user votes
+    """
+    return statistics_per_user_get(username)
+
+
 @API.route('/leaderboard/')
 def leaderboard():
     """ Return the top 10 user, aka the leaderboard
