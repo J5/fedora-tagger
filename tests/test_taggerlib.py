@@ -54,6 +54,7 @@ class TaggerLibtests(Modeltests):
         create_user(self.session)
         user_pingou = model.FASUser.by_name(self.session, 'pingou')
         user_ralph = model.FASUser.by_name(self.session, 'ralph')
+        user_yograterol = model.FASUser.by_name(self.session, 'yograterol')
 
         create_package(self.session)
         out = fedoratagger.lib.add_rating(self.session, 'guake', 100,
@@ -81,10 +82,10 @@ class TaggerLibtests(Modeltests):
 
         rating = model.Rating.rating_of_package(self.session, pkg.id)
         self.assertEqual(75, rating)
-        
+
         r = fedoratagger.lib.model.Package.rating(pkg, self.session)
         self.assertEquals(75, r)
-        
+
     def test_add_tag(self):
         """ Test the add_tag function of taggerlib. """
         create_user(self.session)
@@ -130,12 +131,12 @@ class TaggerLibtests(Modeltests):
         self.assertEqual('terminal', pkg.tags[1].label)
         self.assertEqual(1, pkg.tags[0].like)
         self.assertEqual(2, pkg.tags[1].like)
-                
+
         self.assertRaises(ValueError,
                           fedoratagger.lib.add_tag,
                           self.session, 'guake', 'ass',
                           user_pingou)
-        
+
         tagobj1 = model.Tag.get(self.session, pkg.id, 'terminal')
         self.assertEquals('terminal on guake', tagobj1.__unicode__())
         tagobj2 = model.Tag.get(self.session, pkg.id, u'gnóme')

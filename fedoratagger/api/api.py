@@ -37,7 +37,6 @@ import fedoratagger.flask_utils
 # Relative import
 import forms as forms
 
-
 API = flask.Blueprint(
     'api', __name__,
     url_prefix='/api/v1',
@@ -233,7 +232,7 @@ def rating_pkg_put(pkgname):
             output['output'] = 'notok'
             output['error'] = 'Package "%s" not found' % pkgname
             httpcode = 404
-       
+
     else:
         output['output'] = 'notok'
         output['error'] = 'Invalid input submitted'

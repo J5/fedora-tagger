@@ -330,6 +330,10 @@ class Vote(DeclarativeBase):
         return session.query(cls).filter_by(user_id=user_id
                                             ).filter_by(tag_id=tag_id).one()
 
+    @classmethod
+    def get_vote_user(cls, session, user_id):
+        return session.query(cls).filter_by(user_id=user_id).all()
+
     def __json__(self):
 
         result = {
