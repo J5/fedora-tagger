@@ -112,6 +112,10 @@ def create_user(session):
                                   )
     session.add(user)
 
+    user = model.FASUser(username='yograterol',
+                         email='yograterol@fp.o',)
+
+    session.add(user)
     session.commit()
 
 
