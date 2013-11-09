@@ -54,7 +54,6 @@ class TaggerLibtests(Modeltests):
         create_user(self.session)
         user_pingou = model.FASUser.by_name(self.session, 'pingou')
         user_ralph = model.FASUser.by_name(self.session, 'ralph')
-        user_yograterol = model.FASUser.by_name(self.session, 'yograterol')
 
         create_package(self.session)
         out = fedoratagger.lib.add_rating(self.session, 'guake', 100,
@@ -332,6 +331,39 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(2, out['summary']['tags_per_package_no_zeroes'])
         self.assertEqual(3, out['summary']['total_packages'])
         self.assertEqual(3, out['summary']['total_unique_tags'])
+
+    def test_statistics_per_user(self):
+        """ Test the statistics per user method. """
+        self.test_add_vote()
+        user_yograterol = model.FASUser.by_name(self.session, 'yograterol')
+
+        fedoratagger.lib.add_vote(self.session, 'guake',
+                                  'terminal', False, user_yograterol)
+
+        #fedoratagger.lib.add_vote(self.session, 'geany',
+        #                          'ide', True, user_yograterol)
+
+        out = fedoratagger.lib.statistics_per_user(self.session,
+                                                   user_yograterol)
+        self.assertEqual(out["total_like"], 0)
+        self.assertEqual(out["total_dislike"], 1)
+
+        self.assertEqual(out["dislike"][0][0], 'guake')
+        self.assertEqual(out["dislike"][0][1], 'terminal')
+
+        fedoratagger.lib.add_vote(self.session, 'guake',
+                                  'terminal', True, user_yograterol)
+
+        out = fedoratagger.lib.statistics_per_user(self.session,
+                                                   user_yograterol)
+
+        self.assertEqual(out["total_like"], 1)
+        self.assertEqual(out["total_dislike"], 0)
+
+        self.assertEqual(out["like"][0][0], 'guake')
+        self.assertEqual(out["like"][0][1], 'terminal')
+
+
 
     def test_leaderboard(self):
         """ Test the leaderboard method. """

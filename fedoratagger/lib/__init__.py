@@ -212,8 +212,8 @@ def statistics_per_user(session, user):
     Returns a dictionnary of statistics of an user votes.
     """
     votes = model.Vote.get_vote_user(session, user.id)
-    votes_like = [(v.tag.package, v.tag.label) for v in votes if v.like]
-    votes_dislike = [(v.tag.package, v.tag.label) for v in votes if not v.like]
+    votes_like = [(v.tag.package.name, v.tag.label) for v in votes if v.like]
+    votes_dislike = [(v.tag.package.name, v.tag.label) for v in votes if not v.like]
 
     total_like = len(votes_like)
     total_dislike = len(votes_dislike)
