@@ -212,14 +212,19 @@ def statistics_per_user(session, user):
     Returns a dictionnary of statistics of an user votes.
     """
     votes = model.Vote.get_vote_user(session, user.id)
-    votes_like = [(v.tag.package.name, v.tag.label) for v in votes if v.like]
-    votes_dislike = [(v.tag.package.name, v.tag.label) for v in votes if not v.like]
 
-    total_like = len(votes_like)
-    total_dislike = len(votes_dislike)
+    if votes:
+        votes_like = \
+            [(v.tag.package.name, v.tag.label) for v in votes if v.like]
+        votes_dislike = \
+            [(v.tag.package.name, v.tag.label) for v in votes if not v.like]
 
-    return dict(like=votes_like, total_like=total_like,
-                dislike=votes_dislike, total_dislike=total_dislike)
+        total_like = len(votes_like)
+        total_dislike = len(votes_dislike)
+
+        return dict(like=votes_like, total_like=total_like,
+                    dislike=votes_dislike, total_dislike=total_dislike)
+    return dict(output="NoVotes")
 
 
 def leaderboard(session):

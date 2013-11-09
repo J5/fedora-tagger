@@ -364,7 +364,6 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(out["like"][0][1], 'terminal')
 
 
-
     def test_leaderboard(self):
         """ Test the leaderboard method. """
         out = fedoratagger.lib.leaderboard(self.session)

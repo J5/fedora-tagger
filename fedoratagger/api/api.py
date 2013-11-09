@@ -290,6 +290,24 @@ def vote_pkg_put(pkgname):
     return jsonout
 
 
+def statistics_per_user_get(username):
+    """
+    Get statistics per user from username (if exist)
+    """
+    try:
+        user = model.FASUser.by_name(ft.SESSION, username)
+        output = fedoratagger.lib.statistics_per_user(ft.SESSION,
+                                                      user)
+    except NoResultFound, err:
+        ft.SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = 'User "%s" not found' % username
+        httpcode = 404
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
 def fas_login_required(function):
     """ Flask decorator to ensure that the user is logged in against FAS.
     To use this decorator you need to have a function named 'auth_login'.
