@@ -233,11 +233,7 @@ def rating_pkg_put(pkgname):
             output['output'] = 'notok'
             output['error'] = 'Package "%s" not found' % pkgname
             httpcode = 404
-        except IntegrityError, err:
-            ft.SESSION.rollback()
-            output['output'] = 'notok'
-            output['error'] = 'You have already rated this package'
-            httpcode = 500
+       
     else:
         output['output'] = 'notok'
         output['error'] = 'Invalid input submitted'
