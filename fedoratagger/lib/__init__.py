@@ -211,7 +211,7 @@ def statistics_by_user(session, user):
 
     Returns a dictionnary of statistics of an user votes.
     """
-    votes = model.Vote.get_vote_user(session, user.id)
+    votes = model.Vote.get_votes_user(session, user.id)
 
     if votes:
         votes_like = \
