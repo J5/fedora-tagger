@@ -332,19 +332,24 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, out['summary']['total_packages'])
         self.assertEqual(3, out['summary']['total_unique_tags'])
 
-    def test_statistics_per_user(self):
+    def test_statistics_by_user(self):
         """ Test the statistics per user method. """
         self.test_add_vote()
         user_yograterol = model.FASUser.by_name(self.session, 'yograterol')
 
+        # Check nothing vote
+        out = fedoratagger.lib.statistics_by_user(self.session,
+                                                  user_yograterol)
+
+        self.assertEqual(out["total_like"], 0)
+        self.assertEqual(out["total_dislike"], 0)
+
+        # Do a vote and generate the statistics
         fedoratagger.lib.add_vote(self.session, 'guake',
                                   'terminal', False, user_yograterol)
 
-        #fedoratagger.lib.add_vote(self.session, 'geany',
-        #                          'ide', True, user_yograterol)
-
-        out = fedoratagger.lib.statistics_per_user(self.session,
-                                                   user_yograterol)
+        out = fedoratagger.lib.statistics_by_user(self.session,
+                                                  user_yograterol)
         self.assertEqual(out["total_like"], 0)
         self.assertEqual(out["total_dislike"], 1)
 
@@ -354,15 +359,14 @@ class TaggerLibtests(Modeltests):
         fedoratagger.lib.add_vote(self.session, 'guake',
                                   'terminal', True, user_yograterol)
 
-        out = fedoratagger.lib.statistics_per_user(self.session,
-                                                   user_yograterol)
+        out = fedoratagger.lib.statistics_by_user(self.session,
+                                                  user_yograterol)
 
         self.assertEqual(out["total_like"], 1)
         self.assertEqual(out["total_dislike"], 0)
 
         self.assertEqual(out["like"][0][0], 'guake')
         self.assertEqual(out["like"][0][1], 'terminal')
-
 
     def test_leaderboard(self):
         """ Test the leaderboard method. """

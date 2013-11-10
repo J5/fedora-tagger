@@ -206,7 +206,7 @@ def statistics(session):
     }
 
 
-def statistics_per_user(session, user):
+def statistics_by_user(session, user):
     """ Handles the /statistics/<user> path.
 
     Returns a dictionnary of statistics of an user votes.
@@ -221,10 +221,15 @@ def statistics_per_user(session, user):
 
         total_like = len(votes_like)
         total_dislike = len(votes_dislike)
+        total_votes = total_like + total_dislike
 
         return dict(like=votes_like, total_like=total_like,
-                    dislike=votes_dislike, total_dislike=total_dislike)
-    return dict(output="NoVotes")
+                    dislike=votes_dislike, total_dislike=total_dislike,
+                    total=total_votes)
+
+    return dict(like=list(), total_like=0,
+                dislike=list(), total_dislike=0,
+                total=0)
 
 
 def leaderboard(session):

@@ -37,6 +37,7 @@ import fedoratagger.flask_utils
 # Relative import
 import forms as forms
 
+
 API = flask.Blueprint(
     'api', __name__,
     url_prefix='/api/v1',
@@ -290,14 +291,14 @@ def vote_pkg_put(pkgname):
     return jsonout
 
 
-def statistics_per_user_get(username):
+def statistics_by_user_get(username):
     """
     Get statistics per user from username (if exist)
     """
     try:
         user = model.FASUser.by_name(ft.SESSION, username)
-        output = fedoratagger.lib.statistics_per_user(ft.SESSION,
-                                                      user)
+        output = fedoratagger.lib.statistics_by_user(ft.SESSION,
+                                                     user)
     except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
@@ -307,6 +308,7 @@ def statistics_per_user_get(username):
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
+
 
 def fas_login_required(function):
     """ Flask decorator to ensure that the user is logged in against FAS.
@@ -527,10 +529,10 @@ def statistics():
 
 
 @API.route('/statistics/<username>/')
-def statistics_per_user(username):
+def statistics_by_user(username):
     """ Return the statistics of the user votes
     """
-    return statistics_per_user_get(username)
+    return statistics_by_user_get(username)
 
 
 @API.route('/leaderboard/')
