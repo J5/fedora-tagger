@@ -254,3 +254,14 @@ def notifs_toggle():
     jsonout.status_code = 200
 
     return jsonout
+
+#pulls out notification state without changing it
+@FRONTEND.route('/notifs_state/', methods=('GET',))
+def notifs_state():
+
+    jsonout = flask.jsonify(dict(
+        notifications_on=flask.g.fas_user.notifications_on
+    ))
+    jsonout.status_code = 200
+
+    return jsonout
