@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.7
+Version:        2.0.8
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -129,6 +129,9 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Fri Nov 15 2013 Ralph Bean <rbean@redhat.com> - 2.0.8-1
+- Fix search bar -- js locking error.
+
 * Fri Nov 15 2013 Ralph Bean <rbean@redhat.com> - 2.0.7-1
 - Fix search bar on the main page (form and function).
 
