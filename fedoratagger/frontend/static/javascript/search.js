@@ -31,6 +31,7 @@ $(document).ready(function () {
         // We got some search results back from the /packages app.
         // See https://github.com/fedora-infra/fedora-tagger/issues/88
         // for a description and discussion.
+        request_in_progress = false;
 
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
         if ( json.total_rows == 0 ) {
@@ -71,7 +72,6 @@ $(document).ready(function () {
                 window.location = "https://apps.fedoraproject.org/packages/s/" + search_term;
             }
         }
-        request_in_progress = false;
     };
 
     $("#search_box").keydown(function(e){
