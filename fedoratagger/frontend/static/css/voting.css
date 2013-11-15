@@ -87,7 +87,6 @@ span.down_text { color: #3C6EB4; }
   background-color:white;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  border: 2px solid black;
   -webkit-box-shadow: 5px 5px 5px #333;
   -moz-box-shadow: 5px 5px 5px #333;
   box-shadow: 5px 5px 5px #333;
@@ -96,5 +95,4 @@ span.down_text { color: #3C6EB4; }
 }
 .searchbox-onpage input {
     width: 100%;
-    border: 1px dashed;
 }
