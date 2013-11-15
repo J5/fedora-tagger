@@ -33,7 +33,7 @@
         <div class="clear"></div>
 
 		<div class="box-container">
-			<div class="box searchbox">
+			<div class="box searchbox-onpage">
 				<input placeholder="Search for packages"/>
 			</div>
 		</div>
