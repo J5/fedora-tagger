@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0.8
+-----
+
+- Bumpspec. `91df2088d <https://github.com/fedora-infra/fedora-tagger/commit/91df2088d0d2c55ed6634f0bca1c847a63474f90>`_
+- Fix js locking problem that was breaking search (still). `c6e448a1d <https://github.com/fedora-infra/fedora-tagger/commit/c6e448a1dd1f0d293371b5e96e75a531e3afe821>`_
+- Merge pull request #132 from fedora-infra/feature/fix-search-for-the-100000th-time `8fde74839 <https://github.com/fedora-infra/fedora-tagger/commit/8fde74839b975071816cc62a0f14f1e2097904fa>`_
+- Bump spec version. `41b949fab <https://github.com/fedora-infra/fedora-tagger/commit/41b949fabf31068434f6240cb69d8378f0ddff60>`_
+
 2.0.7
 -----
 
