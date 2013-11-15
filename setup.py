@@ -40,7 +40,7 @@ def get_tests_require(filename="test-requirements.txt"):
 setup(
     name='fedora-tagger',
     description='A web application for tagging and ranking packages',
-    version='2.0.7',
+    version='2.0.8',
     author='Pierre-Yves Chibon and Ralph Bean',
     author_email='pingou@pingoured.fr, ralph@fedoraproject.org',
     license='GPLv2+',
