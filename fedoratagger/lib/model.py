@@ -124,7 +124,7 @@ class Package(DeclarativeBase):
         if not getattr(self, '_meta', None):
             try:
                 self._meta = pkgwat.api.get(self.name)
-            except KeyError:
+            except Exception:
                 self._meta = {}
 
         return self._meta
