@@ -187,7 +187,7 @@ var statistics_like_dislike_template = "                        \
     </table>                                                    \
 </div>";
 
-function statistics_user() {
+function statistics_user(username) {
     request_in_progress = true;
     $("body").append("<div id='statistics-dialog'></div>");
     $("#statistics-dialog").attr('title', "Statistics Like/Unlike Packages");
@@ -200,7 +200,7 @@ function statistics_user() {
 
     $.ajax({
         type: "GET",
-        url: "api/v1/statistics-user/",
+        url: "api/v1/statistics-user/" + username + "/",
         cache: false,
         data: $.param({
             _csrf_token: $.getUrlVar("_csrf_token"),

@@ -295,6 +295,7 @@ def statistics_by_user_get(username):
     """
     Get statistics per user from username (if exist)
     """
+    httpcode = 200
     try:
         user = model.FASUser.by_name(ft.SESSION, username)
         output = fedoratagger.lib.statistics_by_user(ft.SESSION,
@@ -304,7 +305,6 @@ def statistics_by_user_get(username):
         output['output'] = 'notok'
         output['error'] = 'User "%s" not found' % username
         httpcode = 404
-
     jsonout = flask.jsonify(output)
     jsonout.status_code = httpcode
     return jsonout
@@ -529,7 +529,7 @@ def statistics():
 
 
 @API.route('/statistics-user/<username>/')
-def statistics_by_user(username=flask.g.fas_user):
+def statistics_by_user(username):
     """ Return the statistics of the user votes
     """
     return statistics_by_user_get(username)
