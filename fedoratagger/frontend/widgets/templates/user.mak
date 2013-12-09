@@ -10,7 +10,9 @@
       <td>
 % if w.logged_in:
         <p>Logged in (<span id="username">${str(w.formatted_name)}</span>)</p>
-        <p>Score: <span id="total_votes">${str(w.score)}</span></p>
+        <p>Score: <span id="total_votes">${str(w.score)}</span> |
+           <a href="javascript:statistics_user();">Statistics Score</a>
+        </p>
         <p>Rank: <span id="rank">${str(w.rank)}</span></p>
         <p><input type="checkbox" id="notifs_toggle"
           ${str(w.notifications_on)|n} />Notifications</p>

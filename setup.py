@@ -16,10 +16,7 @@ def strip_comments(lines):
     for line in lines:
         line = line.strip()
 
-        if line.startswith('#'):
-            continue
-
-        if not line:
+        if line.startswith('#') or not line:
             continue
 
         if not '#' in line:

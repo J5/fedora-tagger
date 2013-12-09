@@ -167,6 +167,76 @@ function statistics() {
     });
 }
 
+var statistics_like_dislike_template = "                        \
+<div id='statistics-dialog'>                                    \
+    <table class='statistics'>                                  \
+        <thead>                                                 \
+            <th>Packages Like</th>                              \
+        </thead>                                                \
+        <tbody>                                                 \
+            {0}                                                 \
+        </tbody>                                                \
+    </table>                                                    \
+    <table class='statistics'>                                  \
+        <thead>                                                 \
+            <th>Packages Dislike</th>                           \
+        </thead>                                                \
+        <tbody>                                                 \
+            {1}                                                 \
+        </tbody>                                                \
+    </table>                                                    \
+</div>";
+
+function statistics_user() {
+    request_in_progress = true;
+    $("body").append("<div id='statistics-dialog'></div>");
+    $("#statistics-dialog").attr('title', "Statistics Like/Unlike Packages");
+    $("#statistics-dialog").html("Calculating stats...  please wait.");
+    $("#statistics-dialog").dialog({
+        autoOpen: true,
+        modal: true,
+        close: function() { $('#statistics-dialog').dialog('destroy'); },
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "api/v1/statistics-user/",
+        cache: false,
+        data: $.param({
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        }),
+        error: function() {
+            request_in_progress = false;
+            $('#statistics-dialog').dialog('destroy');
+            if (! notifications_on) { return; }
+            if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
+            gritter_id = $.gritter.add({
+                title: 'There was a problem getting the statistics.',
+                text: 'Sorry.',
+                image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+            });
+        },
+        success: function(json) {
+            var row_template = '<tr><td>{0}</td></tr>';
+            var likes = '';
+            var dislikes = '';
+            $.each(json.like, function(index, val) {
+                likes += row_template.format(val);
+            });​
+
+            $.each(json.dislike, function(index, val) {
+                dislikes += row_template.format(val);
+            });​
+
+            $("#statistics-dialog").html(statistics_like_dislike_template.format(
+                likes,
+                dislikes
+            ));
+            request_in_progress = false;
+        }
+    });
+}
+
 function leaderboard() {
     request_in_progress = true;
     $.ajax({

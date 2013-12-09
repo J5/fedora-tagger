@@ -528,8 +528,8 @@ def statistics():
     return jsonout
 
 
-@API.route('/statistics/<username>/')
-def statistics_by_user(username):
+@API.route('/statistics-user/<username>/')
+def statistics_by_user(username=flask.g.fas_user):
     """ Return the statistics of the user votes
     """
     return statistics_by_user_get(username)
