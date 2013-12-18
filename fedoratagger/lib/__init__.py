@@ -206,12 +206,15 @@ def statistics(session):
     }
 
 
-def statistics_by_user(session, user):
+def statistics_by_user(session, user, fields="all"):
     """ Handles the /statistics/<user> path.
 
     Returns a dictionnary of statistics of an user votes.
     """
     votes = model.Vote.get_votes_user(session, user.id)
+
+    votes_like = votes_dislike = dict()
+    total_like = total_dislike = total_votes = 0
 
     if votes:
         votes_like = \
@@ -223,14 +226,14 @@ def statistics_by_user(session, user):
         total_dislike = len(votes_dislike)
         total_votes = total_like + total_dislike
 
+    if fields == "all":
         return dict(like=votes_like, total_like=total_like,
                     dislike=votes_dislike, total_dislike=total_dislike,
                     total=total_votes)
-
-    return dict(like=list(), total_like=0,
-                dislike=list(), total_dislike=0,
-                total=0)
-
+    else:
+        return dict(total_like=total_like,
+                    total_dislike=total_dislike,
+                    total=total_votes)
 
 def leaderboard(session):
     """ Handles the /leaderboard/ path.

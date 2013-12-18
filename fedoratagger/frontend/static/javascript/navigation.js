@@ -168,46 +168,40 @@ function statistics() {
 }
 
 var statistics_like_dislike_template = "                        \
-<div id='statistics-dialog'>                                    \
+<div id='statistics-user-table'>                                    \
     <table class='statistics'>                                  \
-        <thead>                                                 \
-            <th>Packages Like</th>                              \
-        </thead>                                                \
-        <tbody>                                                 \
-            {0}                                                 \
-        </tbody>                                                \
-    </table>                                                    \
-    <table class='statistics'>                                  \
-        <thead>                                                 \
-            <th>Packages Dislike</th>                           \
-        </thead>                                                \
-        <tbody>                                                 \
-            {1}                                                 \
-        </tbody>                                                \
+        <tr>\
+            <td>Total Likes</td>\
+            <td>{0}</td>\
+        </tr>      \
+        <tr>\
+            <td>Total Dislikes</td>\
+            <td>{1}</td>\
+        </tr>\
     </table>                                                    \
 </div>";
 
 function statistics_user(username) {
     request_in_progress = true;
-    $("body").append("<div id='statistics-dialog'></div>");
-    $("#statistics-dialog").attr('title', "Statistics Like/Unlike Packages");
-    $("#statistics-dialog").html("Calculating stats...  please wait.");
-    $("#statistics-dialog").dialog({
+    $("body").append("<div id='statistics-user-dialog'></div>");
+    $("#statistics-user-dialog").attr('title', "Statistics Like/Dislike Packages");
+    $("#statistics-user-dialog").html("Calculating stats...  please wait.");
+    $("#statistics-user-dialog").dialog({
         autoOpen: true,
         modal: true,
-        close: function() { $('#statistics-dialog').dialog('destroy'); },
+        close: function() { console.log("Hidden"); },
     });
 
     $.ajax({
         type: "GET",
-        url: "api/v1/statistics-user/" + username + "/",
+        url: "api/v1/statistics-user/" + username + "/total",
         cache: false,
         data: $.param({
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
             request_in_progress = false;
-            $('#statistics-dialog').dialog('destroy');
+            //$('#statistics-user-dialog').dialog('destroy');
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
@@ -217,20 +211,9 @@ function statistics_user(username) {
             });
         },
         success: function(json) {
-            var row_template = '<tr><td>{0}</td></tr>';
-            var likes = '';
-            var dislikes = '';
-            $.each(json.like, function(index, val) {
-                likes += row_template.format(val);
-            });
-
-            $.each(json.dislike, function(index, val) {
-                dislikes += row_template.format(val);
-            });
-
-            $("#statistics-dialog").html(statistics_like_dislike_template.format(
-                likes,
-                dislikes
+            $("#statistics-user-dialog").html(statistics_like_dislike_template.format(
+                json.total_like,
+                json.total_dislike
             ));
             request_in_progress = false;
         }

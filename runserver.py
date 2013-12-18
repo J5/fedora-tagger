@@ -5,5 +5,6 @@ __requires__ = ['SQLAlchemy >= 0.7', 'jinja2 >= 2.4']
 import pkg_resources
 
 from fedoratagger import APP
-APP.debug=True
+APP.debug = True
+APP.threaded = True
 APP.run()

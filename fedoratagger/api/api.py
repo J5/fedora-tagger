@@ -291,7 +291,7 @@ def vote_pkg_put(pkgname):
     return jsonout
 
 
-def statistics_by_user_get(username):
+def statistics_by_user_get(username, fields="all"):
     """
     Get statistics per user from username (if exist)
     """
@@ -299,7 +299,7 @@ def statistics_by_user_get(username):
     try:
         user = model.FASUser.by_name(ft.SESSION, username)
         output = fedoratagger.lib.statistics_by_user(ft.SESSION,
-                                                     user)
+                                                     user, fields)
     except NoResultFound, err:
         ft.SESSION.rollback()
         output['output'] = 'notok'
@@ -528,11 +528,11 @@ def statistics():
     return jsonout
 
 
-@API.route('/statistics-user/<username>/')
-def statistics_by_user(username):
+@API.route('/statistics-user/<username>/<fields>')
+def statistics_by_user(username, fields="all"):
     """ Return the statistics of the user votes
     """
-    return statistics_by_user_get(username)
+    return statistics_by_user_get(username, fields)
 
 
 @API.route('/leaderboard/')
