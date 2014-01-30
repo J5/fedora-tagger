@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.1.1
+-----
+
+- spec work. `89b5273c9 <https://github.com/fedora-infra/fedora-tagger/commit/89b5273c9c697ff01c9d8edbdbbeac799caad3af>`_
+- Make that usage api a little more explicit for @hughsie. `3354de115 <https://github.com/fedora-infra/fedora-tagger/commit/3354de115fdb18cd498ee5c4dbeba112e3ab6ddd>`_
+- Remove unused variable. `ce392f934 <https://github.com/fedora-infra/fedora-tagger/commit/ce392f9342388b3ca3b2536fe06c9ba5b851da81>`_
+- Merge pull request #143 from fedora-infra/feature/explicit-usage-api `f686d941a <https://github.com/fedora-infra/fedora-tagger/commit/f686d941a9b18053ffde217c88c4e24b53569d07>`_
+
 2.1.0
 -----
 
