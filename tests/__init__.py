@@ -41,8 +41,16 @@ from fedoratagger.lib import model
 
 
 DB_URL = 'sqlite:///:memory:'
-#import requests
-#DB_URL = requests.get('http://api.postgression.com').text
+FAITOUT_URL = 'http://209.132.184.152/faitout/'
+try:
+    import requests
+    req = requests.get('%s/new' % FAITOUT_URL)
+    if req.status_code == 200:
+        DB_URL = req.text
+        print 'Using faitout at: %s' % DB_URL
+except:
+    pass
+
 
 class Modeltests(unittest.TestCase):
     """ Model tests. """

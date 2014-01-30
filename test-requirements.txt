@@ -3,3 +3,7 @@ nose-testconfig
 coverage
 nosexcover
 rube.core
+
+# requests and psycopg2 are required to run the tests on faitout
+requests
+psycopg2
