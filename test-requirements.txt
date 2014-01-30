@@ -3,3 +3,4 @@ nose-testconfig
 coverage
 nosexcover
 rube.core
+requests
