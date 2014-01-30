@@ -277,7 +277,6 @@ def rating_pkg_put(pkgname):
 
 def usage_pkg_get(pkgname):
     """ Performs the GET request of usage_pkg. """
-    httpcode = 200
     user = model.FASUser.by_name(ft.SESSION, flask.g.fas_user.username)
     output = dict(
         user=user.__json__(ft.SESSION),
