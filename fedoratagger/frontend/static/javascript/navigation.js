@@ -222,11 +222,11 @@ function statistics_user(username) {
             var dislikes = '';
             $.each(json.like, function(index, val) {
                 likes += row_template.format(val);
-            });​
+            });
 
             $.each(json.dislike, function(index, val) {
                 dislikes += row_template.format(val);
-            });​
+            });
 
             $("#statistics-dialog").html(statistics_like_dislike_template.format(
                 likes,
