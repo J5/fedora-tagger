@@ -22,7 +22,7 @@ function _vote(pkgname, tag, like) {
 
 function toggle_usage(pkgname) {
     $.ajax({
-        type: "PUT",
+        type: "GET",
         url: "api/v1/usage/" + pkgname + "/",
         data: {
             pkgname: pkgname,
@@ -30,8 +30,21 @@ function toggle_usage(pkgname) {
         },
         cache: false,
         error: function(xhr, status, err) { failed_action(xhr, status, err); },
-        success: successful_usage_toggle,
-    });
+        success: function(json) {
+            $.ajax({
+                type: "PUT",
+                url: "api/v1/usage/" + pkgname + "/",
+                data: {
+                    pkgname: pkgname,
+                    usage: !json.usage,
+                    _csrf_token: $.getUrlVar("_csrf_token"),
+                },
+                cache: false,
+                error: function(xhr, status, err) { failed_action(xhr, status, err); },
+                success: successful_usage_toggle,
+            });
+        }
+    })
 }
 
 function successful_usage_toggle(json) {

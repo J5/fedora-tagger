@@ -275,16 +275,51 @@ def rating_pkg_put(pkgname):
     return jsonout
 
 
+def usage_pkg_get(pkgname):
+    """ Performs the GET request of usage_pkg. """
+    user = model.FASUser.by_name(ft.SESSION, flask.g.fas_user.username)
+    output = dict(
+        user=user.__json__(ft.SESSION),
+        pkgname=pkgname,
+        usage=False,
+    )
+
+    for usage in user.usages:
+        if pkgname == usage.package.name:
+            output['usage'] = True
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = 200
+    return jsonout
+
+
 def usage_pkg_put(pkgname):
     """ Performs the PUT request of usage_pkg. """
     httpcode = 200
     output = {}
-    form = forms.ToggleUsageForm(csrf_enabled=False)
+    form = forms.SetUsageForm(csrf_enabled=False)
     if form.validate_on_submit():
         pkgname = form.pkgname.data
+        usage =  form.usage.data
+
+        # Not sure how to do this with just wtforms.
+        # The BooleanField didn't behave like I want.
+        if usage == 'true':
+            usage = True
+        elif usage == 'false':
+            usage = False
+        else:
+            output['output'] = 'notok'
+            output['error'] = 'Invalid input submitted'
+            output['error_detail'] = 'usage must be "true" or "false"'
+            httpcode = 500
+            jsonout = flask.jsonify(output)
+            jsonout.status_code = httpcode
+            return jsonout
+
         try:
-            message = fedoratagger.lib.toggle_usage(
-                ft.SESSION, pkgname, flask.g.fas_user)
+            message = fedoratagger.lib.set_usage(
+                ft.SESSION, pkgname, flask.g.fas_user, usage)
             ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
