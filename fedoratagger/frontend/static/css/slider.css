@@ -282,14 +282,14 @@ div.icon {
   margin-top: 7px;
 }
 
-.details a {
+.usage a, .details a {
   font-size: 8pt !important;
   text-decoration: none;
   color: white;
   font-weight: bold;
 }
 
-.details {
+.usage, .details {
   float: right;
   background-color: #3c6eb4;
   padding: 3px;
@@ -297,7 +297,7 @@ div.icon {
   text-transform: uppercase;
 }
 
-.details:hover {
+.usage:hover, .details:hover {
   background-color: #db3279;
 }
 

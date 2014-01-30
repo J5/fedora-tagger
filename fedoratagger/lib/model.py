@@ -114,6 +114,7 @@ class Package(DeclarativeBase):
 
     tags = relation('Tag', backref=('package'))
     ratings = relation('Rating', backref=('package'))
+    usages = relation('Usage', backref=('package'))
 
     def rating(self, session):
         return session.query(func.avg(Rating.rating))\
@@ -173,6 +174,10 @@ class Package(DeclarativeBase):
         """
         return session.query(cls).all()
 
+    @property
+    def usage(self):
+        return len(self.usages)
+
     def __unicode__(self):
         return self.name
 
@@ -189,6 +194,7 @@ class Package(DeclarativeBase):
             'summary': self.summary,
             'tags': tags,
             'rating': float(rating),
+            'usage': self.usage,
             'icon': self.icon,
         }
 
@@ -216,6 +222,12 @@ class Package(DeclarativeBase):
         }
 
         return result
+
+    def __usage_json__(self, session):
+        return {
+            'name': self.name,
+            'usage': self.usage,
+        }
 
     def __jit_data__(self):
         return {
@@ -345,6 +357,39 @@ class Vote(DeclarativeBase):
         return result
 
 
+class Usage(DeclarativeBase):
+    __tablename__ = 'usage'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'package_id'),
+    )
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    package_id = Column(Integer, ForeignKey('package.id'))
+
+    @classmethod
+    def get(cls, session, package_id, user_id):
+        """ Return a specific user's usage of a specific package. """
+        return session.query(cls)\
+                .filter_by(package_id=package_id)\
+                .filter_by(user_id=user_id).one()
+
+    @classmethod
+    def usage_of_package(cls, session, pkgid):
+        """ Return the usage count of the package specified by a id
+
+        :arg session: the session used to query the database
+        :arg pkgid: the identifier of the package in the database
+            (integer)
+        """
+        return session.query(cls).filter_by(package_id=pkgid).count()
+
+    def __json__(self, session):
+        return {
+            'user': self.user.__json__(),
+            'package': self.package.__json__(session),
+        }
+
+
 class Rating(DeclarativeBase):
     __tablename__ = 'rating'
     __table_args__ = (
@@ -437,6 +482,7 @@ class FASUser(DeclarativeBase):
 
     votes = relation('Vote', backref=('user'))
     ratings = relation('Rating', backref=('user'))
+    usages = relation('Usage', backref=('user'))
 
     email = Column(Unicode(255), default=None)
     notifications_on = Column(Boolean, default=True)
@@ -449,6 +495,12 @@ class FASUser(DeclarativeBase):
     @property
     def total_votes(self):
         return len(self.votes)
+
+    def uses(self, session, package):
+        for usage in self.usages:
+            if usage.package == package:
+                return True
+        return False
 
     def rank(self, session):
         _rank = self._rank

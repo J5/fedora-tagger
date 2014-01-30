@@ -9,7 +9,6 @@ build
 .project
 .pydevproject
 .coverage
-alembic.ini
 _build/
 pylint.out
 *.egg

@@ -188,6 +188,20 @@ def create_rating(session):
     session.commit()
 
 
+def toggle_usages(session):
+    """ Flip Usage stats on packages. """
+
+    user_pingou = model.FASUser.by_name(session, 'pingou')
+    user_toshio = model.FASUser.by_name(session, 'toshio')
+    user_ralph = model.FASUser.by_name(session, 'ralph')
+
+    fedoratagger.lib.toggle_usage(session, 'guake', user_pingou)
+    fedoratagger.lib.toggle_usage(session, 'guake', user_toshio)
+    fedoratagger.lib.toggle_usage(session, 'geany', user_ralph)
+
+    session.commit()
+
+
 def create_vote(session):
     """ Add Vote on tags of packages. """
 

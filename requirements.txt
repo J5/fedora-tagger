@@ -2,6 +2,7 @@
 # Use this file by running "$ pip install -r requirements.txt"
 flask<0.10
 sqlalchemy
+alembic
 wtforms
 Flask-WTF<0.9
 Flask-Mako

@@ -15,8 +15,42 @@ function _vote(pkgname, tag, like) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         },
         cache: false,
-        error: function(xhr, status, err) { failed_vote(xhr, status, err); },
+        error: function(xhr, status, err) { failed_action(xhr, status, err); },
         success: function(json) {client_side_mod(pkgname, tag, like, json);},
+    });
+}
+
+function toggle_usage(pkgname) {
+    $.ajax({
+        type: "PUT",
+        url: "api/v1/usage/" + pkgname + "/",
+        data: {
+            pkgname: pkgname,
+            _csrf_token: $.getUrlVar("_csrf_token"),
+        },
+        cache: false,
+        error: function(xhr, status, err) { failed_action(xhr, status, err); },
+        success: successful_usage_toggle,
+    });
+}
+
+function successful_usage_toggle(json) {
+    if (! notifications_on) { return; }
+    if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
+
+    var change = 1;
+    if ( json.messages.join('').substr(0, 13) == 'You no longer') {
+        change = -1;
+    }
+    $('.center #count').html(
+        parseInt(parseInt($('.center #count').html()) + change)
+    );
+    $('.center #furthermore').toggle();
+    gritter_id = $.gritter.add({
+        title: 'OK',
+        text: json.messages.join('.  '),
+        image: 'http://fedoraproject.org/w/uploads/6/60/Hotdog.gif',
+        sticky: true,
     });
 }
 
@@ -30,7 +64,7 @@ function rate_package(pkgname, rating) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         },
         cache: false,
-        error: function(xhr, status, err) { failed_vote(xhr, status, err); },
+        error: function(xhr, status, err) { failed_action(xhr, status, err); },
         success: successful_rating,
     });
 }
@@ -46,7 +80,7 @@ function successful_rating(json) {
     });
 }
 
-function failed_vote(xhr, status, err) {
+function failed_action(xhr, status, err) {
     if (! notifications_on) { return; }
     if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
     var json = JSON.parse(xhr.responseText);

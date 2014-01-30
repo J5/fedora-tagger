@@ -22,6 +22,17 @@
             </select>
         </div>
       </div>
+        % if w.not_anonymous:
+        <div class="usage">
+            <a href="javascript:toggle_usage('${w.package.name}');">
+                <span id='count'>${w.package.usage}</span> people use this
+                % if w.including_you:
+                <span id='furthermore'>(including you)</span>
+                % endif
+            </a>
+        </div>
+        <div class="clear"></div>
+        % endif
         <div class="details">
             <a href="javascript:more_details('${w.package.name}');">More details...</a>
         </div>

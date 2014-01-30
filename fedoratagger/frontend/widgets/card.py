@@ -84,3 +84,7 @@ class CardWidget(tw2.forms.LabelField):
         target = int(float(self.rating) / 100.0 * N % (N))
         result = i == target and " selected" or ""
         return result
+
+    @property
+    def including_you(self):
+        return flask.g.fas_user.uses(ft.SESSION, self.package)

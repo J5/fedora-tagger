@@ -40,8 +40,16 @@ sys.path.insert(0, os.path.join(os.path.dirname(
 import fedoratagger
 import fedoratagger.lib
 from fedoratagger.lib import model
-from tests import Modeltests, FakeUser, create_package, create_tag, \
-                  create_vote, create_rating, create_user
+from tests import (
+    Modeltests,
+    FakeUser,
+    create_package,
+    create_tag,
+    create_vote,
+    create_rating,
+    create_user,
+    toggle_usages,
+)
 
 
 # pylint: disable=E1103
@@ -93,6 +101,7 @@ class Flasktests(Modeltests):
         self.assertEqual(output['icon'],'https://apps.fedoraproject.org/'
                          'packages/images/icons/guake.png')
         self.assertEqual(output['rating'], -1)
+        self.assertEqual(output['usage'], 0)
         self.assertEqual(output['tags'], [])
 
     def test_pkg_get_tag(self):
@@ -265,6 +274,45 @@ class Flasktests(Modeltests):
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['rating'], 75.0)
+        self.assertEqual(output['name'], 'guake')
+
+    def test_pkg_get_usage(self):
+        """ Test the pkg_get_usage function.  """
+
+        output = self.app.get('/api/v1/guake/usage')
+        self.assertEqual(output.status_code, 301)
+
+        output = self.app.get('/api/v1/guake/usage/')
+        self.assertEqual(output.status_code, 404)
+        output = json.loads(output.data)
+        self.assertEqual(output['output'], 'notok')
+        self.assertEqual(output['error'], 'Package "guake" not found')
+
+        create_user(self.session)
+        create_package(self.session)
+
+        output = self.app.get('/api/v1/guake/usage/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output['name'], 'guake')
+        self.assertEqual(output['usage'], 0)
+
+        # Mark two people as using i
+        toggle_usages(self.session)
+
+        output = self.app.get('/api/v1/guake/usage/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output['usage'], 2)
+        self.assertEqual(output['name'], 'guake')
+
+        # And now have them no longer use it.
+        toggle_usages(self.session)
+
+        output = self.app.get('/api/v1/guake/usage/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output['usage'], 0)
         self.assertEqual(output['name'], 'guake')
 
     def test_pkg_ratings(self):
@@ -609,7 +657,7 @@ class Flasktests(Modeltests):
 
         output = self.app.get('/api/v1/rating/dump/')
         self.assertEqual(output.status_code, 200)
-        expected = 'guake\t75.0\t2\ngeany\t100.0\t1'
+        expected = 'guake\t75.0\t2\t0\ngeany\t100.0\t1\t0'
         self.assertEqual(output.data, expected)
 
     def test_random(self):
@@ -628,8 +676,9 @@ class Flasktests(Modeltests):
         output = json.loads(output.data)
         keys = output.keys()
         keys.sort()
-        self.assertEqual(output.keys(), ['rating', 'summary', 'name',
-                         'tags', 'icon'])
+        self.assertEqual(set(output.keys()), set([
+            'rating', 'summary', 'name', 'tags', 'usage', 'icon',
+        ]))
 
     def test_statistics(self):
         """ Test statistics """
@@ -750,7 +799,7 @@ class Flasktests(Modeltests):
         new_response = self.app.get('/notifs_toggle/')
         self.assertEqual(new_response.status_code, 200)
         data = json.loads(new_response.data)
-        new_state = data['notifications_on'] 
+        new_state = data['notifications_on']
         if old_state == False:
             self.assertEqual(new_state, True)
         elif old_state == True:
