@@ -1,6 +1,40 @@
 Changelog
 =========
 
+2.1.0
+-----
+
+- Gracefully degrade if the fedora-packages app is unavailable. `bcfdf4e6a <https://github.com/fedora-infra/fedora-tagger/commit/bcfdf4e6a6b75e8c2e9d07cdd01f895db95c654d>`_
+- Merge pull request #133 from fedora-infra/feature/careful `a407ece00 <https://github.com/fedora-infra/fedora-tagger/commit/a407ece00af2350596a388e410c0a962278d77cd>`_
+- Add method to Model Vote and function for statics_per_user in lib `aacbc7f5b <https://github.com/fedora-infra/fedora-tagger/commit/aacbc7f5bde4f59efd6bb0a8304975e3c83f1b0c>`_
+- Add new test user `06080d61a <https://github.com/fedora-infra/fedora-tagger/commit/06080d61a9564cd6ffe313a56f8187720cf2815a>`_
+- Add test for statistics_per_user `b636ec9af <https://github.com/fedora-infra/fedora-tagger/commit/b636ec9afab46de3d0fbf2e5bd3ade844f450e9f>`_
+- Add function for API `b785f9bd3 <https://github.com/fedora-infra/fedora-tagger/commit/b785f9bd3439d11f3a0f237a5de4d25c1eb1e285>`_
+- Add API `659be25f2 <https://github.com/fedora-infra/fedora-tagger/commit/659be25f23d6df7de051f73bddc85733291298b1>`_
+- Change per with by and fix minor issues `7c94e6cba <https://github.com/fedora-infra/fedora-tagger/commit/7c94e6cba0b9b816404448b8e67857194f6a97ff>`_
+- Change get_vote_user with get_votes_user `4e67c0199 <https://github.com/fedora-infra/fedora-tagger/commit/4e67c0199caed540d37a079b08409df4a9cd6af4>`_
+- Add statistics link to user card `38bca0d61 <https://github.com/fedora-infra/fedora-tagger/commit/38bca0d612df6f5be37d834690b19e9cbc4eb580>`_
+- Change minor in API and frontend `5661b1a22 <https://github.com/fedora-infra/fedora-tagger/commit/5661b1a22eecc5824f6ced705879c3cc0b511248>`_
+- add username to .mak file `87af805a6 <https://github.com/fedora-infra/fedora-tagger/commit/87af805a67b76594ffffff4ff6a22fcb531d1bc7>`_
+- Remove erroneous characters. `37c7ed36c <https://github.com/fedora-infra/fedora-tagger/commit/37c7ed36cf8ee2058d78ddbc9d48db58d483db85>`_
+- Fix the tests. `819641379 <https://github.com/fedora-infra/fedora-tagger/commit/819641379ce0331dc8c03d21db0e382a49dba0c0>`_
+- Fix problem with table and data `4edd1d408 <https://github.com/fedora-infra/fedora-tagger/commit/4edd1d4083ea6053809f75a8737ed7acab7edd5d>`_
+- Remove unnecessary files `eb3b84081 <https://github.com/fedora-infra/fedora-tagger/commit/eb3b840811901db0b67cadc483b3d856756d9229>`_
+- Just update this text. `7ab8038b6 <https://github.com/fedora-infra/fedora-tagger/commit/7ab8038b6237838b2e5807092f80504dd3d79c42>`_
+- Change the format of the ratings dump endpoint. `55ed00b4f <https://github.com/fedora-infra/fedora-tagger/commit/55ed00b4f5857be3b6d6b20b37f68e5623fb2877>`_
+- Import list of meta-applications from gnome-software. `11878c60d <https://github.com/fedora-infra/fedora-tagger/commit/11878c60d4ff9bf907b9a21a40e06462d6019022>`_
+- Merge pull request #138 from fedora-infra/feature/dump-votes-number `c8e0908dd <https://github.com/fedora-infra/fedora-tagger/commit/c8e0908dda3b082772173b9d571d716429b26f4b>`_
+- Handle case where meta-application data is malformed. `358adfb88 <https://github.com/fedora-infra/fedora-tagger/commit/358adfb88cb6c013503f3a5280f17e875d190722>`_
+- Merge pull request #139 from fedora-infra/feature/meta-applications `5d87db572 <https://github.com/fedora-infra/fedora-tagger/commit/5d87db5729a39b4c3fa0995bcb7d15e5144146f1>`_
+- model, lib, api, and tests for an "i use this" feature. `4a264acb1 <https://github.com/fedora-infra/fedora-tagger/commit/4a264acb125777455a77438a20cce82edf3b20b4>`_
+- Add requests as a requirement for the tests `429de8f85 <https://github.com/fedora-infra/fedora-tagger/commit/429de8f857a8053fcbed70ad72b1773232cde18b>`_
+- Port the unit-tests to faitout `9bc453022 <https://github.com/fedora-infra/fedora-tagger/commit/9bc453022e5d9f31826ce44ea9e57ecad461a500>`_
+- Add alembic upgrade stuffs for the new usage table. `94fe45c3b <https://github.com/fedora-infra/fedora-tagger/commit/94fe45c3bde4b219ec113e64ba0227b29b2e5be4>`_
+- Add a usage button to the frontend. `12ce1e381 <https://github.com/fedora-infra/fedora-tagger/commit/12ce1e38127f6146358fa0dba627fcb5aeac8233>`_
+- Add missing requirement to run the tests on faitout: psycopg2 `8e2a07764 <https://github.com/fedora-infra/fedora-tagger/commit/8e2a07764a359f216ad149786a6172b9529ecf12>`_
+- Merge pull request #140 from fedora-infra/faitout `07530a99a <https://github.com/fedora-infra/fedora-tagger/commit/07530a99a0e0c522475c72ac3410a1db49adb448>`_
+- Merge pull request #141 from fedora-infra/feature/i_use_this `7c60a206a <https://github.com/fedora-infra/fedora-tagger/commit/7c60a206a5abeeb461a9d177f26e2d5014ad4ff0>`_
+
 2.0.8
 -----
 
