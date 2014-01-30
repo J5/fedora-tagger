@@ -86,19 +86,23 @@ def add_tag(session, pkgname, tag, user):
     return 'Tag "%s" added to the package "%s"' % (tag, pkgname)
 
 
-def toggle_usage(session, pkgname, user):
-    """ Toggle the usage marker for a specified package. """
+def set_usage(session, pkgname, user, usage):
+    """ Set the usage marker for a specified package. """
     package = model.Package.by_name(session, pkgname)
 
     try:
         # Try to change an existing usage first.
         usageobj = model.Usage.get(session, package_id=package.id,
                                    user_id=user.id)
+        if usage:
+            return 'You already do not use %s' % pkgname
         session.delete(usageobj)
         message = 'You no longer use %s' % pkgname
         usage = False
     except NoResultFound:
         # If no usage was found, we need to add a new one.
+        if not usage:
+            return 'You already use %s' % pkgname
         usageobj = model.Usage(package_id=package.id, user_id=user.id)
         session.add(usageobj)
         message = 'Marked that you use %s' % pkgname

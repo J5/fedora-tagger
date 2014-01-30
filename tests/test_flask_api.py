@@ -48,7 +48,7 @@ from tests import (
     create_vote,
     create_rating,
     create_user,
-    toggle_usages,
+    set_usages,
 )
 
 
@@ -297,8 +297,8 @@ class Flasktests(Modeltests):
         self.assertEqual(output['name'], 'guake')
         self.assertEqual(output['usage'], 0)
 
-        # Mark two people as using i
-        toggle_usages(self.session)
+        # Mark two people as using it.
+        set_usages(self.session, usage=True)
 
         output = self.app.get('/api/v1/guake/usage/')
         self.assertEqual(output.status_code, 200)
@@ -307,12 +307,23 @@ class Flasktests(Modeltests):
         self.assertEqual(output['name'], 'guake')
 
         # And now have them no longer use it.
-        toggle_usages(self.session)
+        set_usages(self.session, usage=False)
 
         output = self.app.get('/api/v1/guake/usage/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
         self.assertEqual(output['usage'], 0)
+        self.assertEqual(output['name'], 'guake')
+
+        # But if we try to mark this twice, it only counts once.
+        set_usages(self.session, usage=True)
+        set_usages(self.session, usage=True)
+        set_usages(self.session, usage=True)
+
+        output = self.app.get('/api/v1/guake/usage/')
+        self.assertEqual(output.status_code, 200)
+        output = json.loads(output.data)
+        self.assertEqual(output['usage'], 2)
         self.assertEqual(output['name'], 'guake')
 
     def test_pkg_ratings(self):
