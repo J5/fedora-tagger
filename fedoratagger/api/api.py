@@ -505,10 +505,15 @@ def rating_pkg(pkgname):
 @API.route('/rating/dump/')
 def rating_pkg_dump():
     """ Returns a tab separated list of the rating of each packages
+
+    Format:
+        NAME    RATING    NUMBER OF VOTES
+
     """
     output = []
     for (package, rating) in model.Rating.all(ft.SESSION):
-        output.append('%s\t%0.1f' % (package.name, rating))
+        n = len(package.ratings)
+        output.append('%s\t%0.1f\t%i' % (package.name, rating, n))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
 
