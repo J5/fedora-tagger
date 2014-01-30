@@ -377,7 +377,7 @@ class TaggerLibtests(Modeltests):
         create_tag(self.session)
 
         out = fedoratagger.lib.leaderboard(self.session)
-        self.assertEqual(out.keys(), [1, 2, 3, 4, 5])
+        self.assertEqual(out.keys(), [1, 2, 3, 4, 5, 6])
         self.assertEqual(out[1].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(out[1]['name'], 'pingou')
         self.assertEqual(out[1]['score'], 8)

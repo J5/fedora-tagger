@@ -683,7 +683,7 @@ class Flasktests(Modeltests):
         output = self.app.get('/api/v1/leaderboard/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual(output.keys(), ['1', '3', '2', '5', '4'])
+        self.assertEqual(output.keys(), ['1', '3', '2', '5', '4', '6'])
         self.assertEqual(output['1'].keys(), ['score', 'gravatar', 'name'])
         self.assertEqual(output['1']['name'], 'pingou')
         self.assertEqual(output['1']['score'], 8)
