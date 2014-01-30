@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.0.8
+Version:        2.1.0
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -27,6 +27,9 @@ BuildRequires:  python-flask
 BuildRequires:  python-wtforms
 BuildRequires:  python-flask-wtf
 BuildRequires:  python-flask-mako
+BuildRequires:  python-requests
+BuildRequires:  PyYAML
+BuildRequires:  python-alembic
 
 BuildRequires:  python-kitchen
 BuildRequires:  python-fedora
@@ -60,6 +63,9 @@ Requires:  python-flask
 Requires:  python-wtforms
 Requires:  python-flask-wtf
 Requires:  python-flask-mako
+Requires:  python-requests
+Requires:  PyYAML
+Requires:  python-alembic
 
 Requires:  python-kitchen
 Requires:  python-fedora
@@ -112,6 +118,10 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{__mkdir_p} %{buildroot}%{_datadir}/%{modname}/apache
 %{__install} apache/%{modname}.wsgi %{buildroot}%{_datadir}/%{modname}/%{modname}.wsgi
 
+%{__mkdir_p} %{buildroot}%{_datadir}/%{modname}/alembic
+%{__install} alembic.ini %{buildroot}%{_datadir}/%{modname}/alembic.ini
+cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
+
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/%{modname}/
 %{__install} apache/%{modname}.cfg %{buildroot}%{_sysconfdir}/%{modname}/%{modname}.cfg
 
@@ -125,10 +135,19 @@ rm -fr %{buildroot}%{python_sitelib}/migration
 %{_bindir}/fedoratagger-update-db
 %config %{_sysconfdir}/%{modname}/
 %{_datadir}/%{modname}/
+%config %{_datadir}/%{modname}/alembic.ini
 %{python_sitelib}/%{modname}/
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Thu Jan 30 2014 Ralph Bean <rbean@redhat.com> - 2.1.0-1
+- Add more granular stats for users (@yograterol)
+- Add a Usage table to count how many users declare they are using a package.
+- Add import of gnome-software meta-applications.
+- Return more information in the ratings dump api endpoint.
+- Add alembic upgrade scripts.
+- New deps on requests, alembic, and pyyaml.
+
 * Fri Nov 15 2013 Ralph Bean <rbean@redhat.com> - 2.0.8-1
 - Fix search bar -- js locking error.
 
