@@ -496,6 +496,12 @@ class FASUser(DeclarativeBase):
     def total_votes(self):
         return len(self.votes)
 
+    def uses(self, session, package):
+        for usage in self.usages:
+            if usage.package == package:
+                return True
+        return False
+
     def rank(self, session):
         _rank = self._rank
 

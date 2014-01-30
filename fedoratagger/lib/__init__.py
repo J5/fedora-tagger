@@ -95,18 +95,21 @@ def toggle_usage(session, pkgname, user):
         usageobj = model.Usage.get(session, package_id=package.id,
                                    user_id=user.id)
         session.delete(usageobj)
-        message = 'OK.  You no longer use %s' % pkgname
+        message = 'You no longer use %s' % pkgname
+        usage = False
     except NoResultFound:
         # If no usage was found, we need to add a new one.
         usageobj = model.Usage(package_id=package.id, user_id=user.id)
         session.add(usageobj)
-        message = 'OK.  Marked that you use %s' % pkgname
+        message = 'Marked that you use %s' % pkgname
         session.add(usageobj)
+        usage = True
 
     session.flush()
     fedmsg.publish('usage.toggle', msg=dict(
         user=user.__json__(session),
         package=package.__json__(session),
+        usage=usage,
     ))
 
     return message

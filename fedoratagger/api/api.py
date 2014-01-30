@@ -561,6 +561,16 @@ def tag_pkg_sqlite():
     return fedoratagger.lib.sqlitebuildtags()
 
 
+@API.route('/usage/<pkgname>/', methods=['GET', 'PUT'])
+def usage_pkg(pkgname):
+    """ Returns the usage associated with a package
+    """
+    if flask.request.method == 'GET':
+        return usage_pkg_get(pkgname)
+    elif flask.request.method == 'PUT':
+        return usage_pkg_put(pkgname)
+
+
 @API.route('/rating/<pkgname>/', methods=['GET', 'PUT'])
 def rating_pkg(pkgname):
     """ Returns the rating associated with a package
