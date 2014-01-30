@@ -154,8 +154,14 @@ def import_meta_applications(url):
         log.info("No url for meta applications provided.  Bailing.")
         return
     log.info("Loading %r for meta application data." % url)
-    response = requests.get(url)
-    packages = yaml.load(response.text)
+
+    try:
+        response = requests.get(url)
+        packages = yaml.load(response.text)
+    except Exception as e:
+        log.error("Failed to parse meta application data from %r" % url)
+        log.exception(e)
+        return
 
     count = 0
     for package in packages:
