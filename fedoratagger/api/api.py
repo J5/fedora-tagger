@@ -82,6 +82,31 @@ def pkg_get_tag(pkgname):
     return jsonout
 
 
+def pkg_get_usage(pkgname):
+    """ Performs the GET request of pkg_usage. """
+    httpcode = 200
+    output = {}
+    try:
+        if isinstance(pkgname, list):
+            tmp = []
+            for pkg in pkgname:
+                package = model.Package.by_name(ft.SESSION, pkg)
+                tmp.append(package.__usage_json__(ft.SESSION))
+            output['usage'] = tmp
+        else:
+            package = model.Package.by_name(ft.SESSION, pkgname)
+            output = package.__usage_json__(ft.SESSION)
+    except NoResultFound, err:
+        ft.SESSION.rollback()
+        output['output'] = 'notok'
+        output['error'] = 'Package "%s" not found' % pkgname
+        httpcode = 404
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
+
 def pkg_get_rating(pkgname):
     """ Performs the GET request of pkg_rating. """
     httpcode = 200
@@ -224,6 +249,42 @@ def rating_pkg_put(pkgname):
         try:
             message = fedoratagger.lib.add_rating(ft.SESSION, pkgname, rating,
                                                   flask.g.fas_user)
+            ft.SESSION.commit()
+            output['output'] = 'ok'
+            output['messages'] = [message]
+            output['user'] = flask.g.fas_user.__json__()
+        except NoResultFound, err:
+            ft.SESSION.rollback()
+            output['output'] = 'notok'
+            output['error'] = 'Package "%s" not found' % pkgname
+            httpcode = 404
+
+    else:
+        output['output'] = 'notok'
+        output['error'] = 'Invalid input submitted'
+        if form.errors:
+            detail = []
+            for error in form.errors:
+                detail.append('%s: %s' % (error,
+                              '; '.join(form.errors[error])))
+            output['error_detail'] = detail
+        httpcode = 500
+
+    jsonout = flask.jsonify(output)
+    jsonout.status_code = httpcode
+    return jsonout
+
+
+def usage_pkg_put(pkgname):
+    """ Performs the PUT request of usage_pkg. """
+    httpcode = 200
+    output = {}
+    form = forms.ToggleUsageForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        pkgname = form.pkgname.data
+        try:
+            message = fedoratagger.lib.toggle_usage(
+                ft.SESSION, pkgname, flask.g.fas_user)
             ft.SESSION.commit()
             output['output'] = 'ok'
             output['messages'] = [message]
@@ -417,6 +478,14 @@ def pkg_tag(pkgname):
     return pkg_get_tag(pkgname)
 
 
+@API.route('/<pkgname>/usage/')
+def pkg_usage(pkgname):
+    """ Returns all known information about a package including it's
+    icon, it's usage, it's tags...
+    """
+    return pkg_get_usage(pkgname)
+
+
 @API.route('/<pkgname>/rating/')
 def pkg_rating(pkgname):
     """ Returns all known information about a package including it's
@@ -507,13 +576,15 @@ def rating_pkg_dump():
     """ Returns a tab separated list of the rating of each packages
 
     Format:
-        NAME    RATING    NUMBER OF VOTES
+        NAME    RATING    NUMBER OF VOTES     NUMBER OF INSTALLS
 
     """
     output = []
     for (package, rating) in model.Rating.all(ft.SESSION):
-        n = len(package.ratings)
-        output.append('%s\t%0.1f\t%i' % (package.name, rating, n))
+        n_ratings = len(package.ratings)
+        n_users = model.Usage.usage_of_package(ft.SESSION, package.id)
+        output.append('%s\t%0.1f\t%i\t%i' % (
+            package.name, rating, n_ratings, n_users))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
 

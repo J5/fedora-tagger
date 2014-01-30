@@ -68,6 +68,13 @@ class AddRatingForm(wtf.Form):
                               validate_percentage])
 
 
+class ToggleUsageForm(wtf.Form):
+    """ Form used when toggling usage on a package. """
+    pkgname = wtf.TextField('Package name',
+                            [wtf.validators.Required(), validate_package]
+                            )
+
+
 class VoteTagForm(wtf.Form):
     """ Form used to add a rating to a package. """
     pkgname = wtf.TextField('Package name',
