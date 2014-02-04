@@ -669,7 +669,7 @@ class Flasktests(Modeltests):
 
         output = self.app.get('/api/v1/rating/dump/')
         self.assertEqual(output.status_code, 200)
-        expected = 'guake\t75.0\t2\t0\ngeany\t100.0\t1\t0\ngitg\t-1.0\t0\t1'
+        expected = 'guake\t75.0\t2\t2\ngeany\t100.0\t1\t1\ngitg\t-1.0\t0\t1'
         self.assertEqual(output.data, expected)
 
     def test_random(self):

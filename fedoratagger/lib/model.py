@@ -383,6 +383,29 @@ class Usage(DeclarativeBase):
         """
         return session.query(cls).filter_by(package_id=pkgid).count()
 
+    @classmethod
+    def all(cls, session):
+        """ Return the total usage of all the packages in the database.
+
+        Returns a list of tuples of the form::
+
+            [
+                (Package1, total_usage),
+                (Package2, total_usage),
+                ...
+            ]
+
+        :arg session: the session used to query the database
+        """
+        subquery = session.query(
+            cls.package_id.label('package_id'),
+            func.count(cls.id).label('total_usage')
+        ).group_by(cls.package_id).subquery()
+
+        return session.query(Package, subquery.c.total_usage).filter(
+            Package.id == subquery.c.package_id
+        ).all()
+
     def __json__(self, session):
         return {
             'user': self.user.__json__(),

@@ -19,6 +19,7 @@ BuildRequires:  python-setuptools
 
 %if %{?rhel}%{!?rhel:0} >= 6
 BuildRequires:  python-sqlalchemy0.7
+BuildRequires:  python-ordereddict
 %else
 BuildRequires:  python-sqlalchemy
 %endif
@@ -55,6 +56,7 @@ BuildRequires:  python-nose
 
 %if %{?rhel}%{!?rhel:0} >= 6
 Requires:  python-sqlalchemy0.7
+Requires:  python-ordereddict
 %else
 Requires:  python-sqlalchemy
 %endif

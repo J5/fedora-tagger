@@ -25,6 +25,11 @@ from urlparse import urljoin, urlparse
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
+
 import flask
 from functools import wraps
 
@@ -625,11 +630,21 @@ def rating_pkg_dump():
 
     """
     output = []
-    for (package, rating) in model.Rating.all(ft.SESSION):
+    ratings = OrderedDict(model.Rating.all(ft.SESSION))
+    usages = OrderedDict(model.Usage.all(ft.SESSION))
+
+    # Build a unique list while maintaining order
+    packages = ratings.keys()
+    packages += [p for p in usages.keys() if not p in packages]
+
+    for package in packages:
         n_ratings = len(package.ratings)
-        n_users = model.Usage.usage_of_package(ft.SESSION, package.id)
         output.append('%s\t%0.1f\t%i\t%i' % (
-            package.name, rating, n_ratings, n_users))
+            package.name,
+            ratings.get(package, -1),
+            n_ratings,
+            usages.get(package, 0),
+        ))
     return flask.Response('\n'.join(output), mimetype='text/plain')
 
 
