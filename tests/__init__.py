@@ -198,6 +198,7 @@ def set_usages(session, usage):
     fedoratagger.lib.set_usage(session, 'guake', user_pingou, usage)
     fedoratagger.lib.set_usage(session, 'guake', user_toshio, usage)
     fedoratagger.lib.set_usage(session, 'geany', user_ralph, usage)
+    fedoratagger.lib.set_usage(session, 'gitg', user_ralph, usage)
 
     session.commit()
 
