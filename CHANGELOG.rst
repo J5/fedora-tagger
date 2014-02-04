@@ -1,6 +1,17 @@
 Changelog
 =========
 
+2.1.2
+-----
+
+- spec bump. `3252451de <https://github.com/fedora-infra/fedora-tagger/commit/3252451decd5e1345455bdc6d4c9900eb37fbbc1>`_
+- Use a hash of anonymous users' IPs. `db417f003 <https://github.com/fedora-infra/fedora-tagger/commit/db417f003764511a09269b0d4eccd6dad7f78b74>`_
+- Alembic upgrade script for hashed ips. `eb75bdb29 <https://github.com/fedora-infra/fedora-tagger/commit/eb75bdb29f69c241d5656b8d720d555a7054e913>`_
+- Merge pull request #145 from fedora-infra/feature/hash-ip `a014a0a83 <https://github.com/fedora-infra/fedora-tagger/commit/a014a0a839c3804f49301e7a42207ad7f6fddfdb>`_
+- Add failing test for the ratings dump. `74c780ed2 <https://github.com/fedora-infra/fedora-tagger/commit/74c780ed285797a2de6d5cdd13509df7d78c1266>`_
+- Fix the rating/usage list. `f7e1ef874 <https://github.com/fedora-infra/fedora-tagger/commit/f7e1ef87476afa3606333ef9221ec81c8c44823b>`_
+- Merge pull request #146 from fedora-infra/feature/rating-list-fix `16f664926 <https://github.com/fedora-infra/fedora-tagger/commit/16f6649263a9b68f6633c9f311a4e9c2ed7bf482>`_
+
 2.1.1
 -----
 
