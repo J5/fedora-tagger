@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.1.1
+Version:        2.1.2
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -142,6 +142,11 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Tue Feb 04 2014 Ralph Bean <rbean@redhat.com> - 2.1.2-1
+- A /dump api fix for gnome-software
+- Hash the IPs of anonymous users.
+- New dep on python-ordereddict.
+
 * Thu Jan 30 2014 Ralph Bean <rbean@redhat.com> - 2.1.1-1
 - Make the usage api more explicit for gnome-software.
 
