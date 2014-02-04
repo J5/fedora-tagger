@@ -23,9 +23,15 @@ import flask
 
 import base64
 import datetime
+import hashlib
 
 import fedoratagger as ft
 import fedoratagger.lib.model as m
+
+
+def hsh(remote_addr, salt):
+    return hashlib.sha256(salt + remote_addr).hexdigest()
+
 
 def current_user(request):
     """ Given an instance of flask.request, return a FASUser instance.
@@ -57,9 +63,8 @@ def current_user(request):
                 and user.api_date >= datetime.date.today():
             return user
     elif request.remote_addr:
-        user = m.FASUser.get_or_create(ft.SESSION,
-                                       request.remote_addr,
-                                       anonymous=True)
+        hashed = hsh(request.remote_addr, salt=ft.APP.config['SECRET_SALT'])
+        user = m.FASUser.get_or_create(ft.SESSION, hashed, anonymous=True)
         ft.SESSION.commit()
         return user
 
