@@ -29,3 +29,6 @@ DB_URL = 'sqlite:////var/tmp/taggerapi.sqlite'
 # Resource prefix for tw2 middleware.
 # In production this is usually '/tagger/_res/'
 RES_PREFIX = '/_tw2_resources/'
+
+# This is the secret salt used to hash IP addresses.
+SECRET_SALT = 'CHANGE ME'
