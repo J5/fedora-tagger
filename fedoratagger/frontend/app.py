@@ -181,7 +181,7 @@ def leaderboard(N):
     keys = ['gravatar', 'name', 'score']
     row = "<tr>" + ''.join(["<td>{%s}</td>" % k for k in keys]) + "</tr>"
     rows = [
-        row.format(**users[i+1]) for i in range(N)
+        row.format(**users[i + 1]) for i in range(N)
     ]
     template = """
     <table class="leaderboard">
@@ -254,6 +254,7 @@ def notifs_toggle():
     jsonout.status_code = 200
 
     return jsonout
+
 
 #pulls out notification state without changing it
 @FRONTEND.route('/notifs_state/', methods=('GET',))
