@@ -6,7 +6,7 @@
         % if w.package.icon:
           <div class="icon"><img src="${w.package.icon}"/></div>
         % endif
-        <div><h2>${w.package.name}</h2></div>
+        <div><h2><a href="https://apps.fedoraproject.org/packages/${w.package.name}">${w.package.name}</a></h2></div>
         <div class="summary">
           % if w.package.summary:
             ${w.package.summary}
