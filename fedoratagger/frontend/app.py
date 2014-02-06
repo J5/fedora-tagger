@@ -55,12 +55,12 @@ item_template = "<li><img src='{icon}'/>" + \
     "<a href='{url}' target='_blank'>{text}</a></li>"
 services = [
     ('beefy', 'Community', "/packages/{name}"),
-    ('pkgdb', 'Downloads', "https://admin.fedoraproject.org/community/" +
-        "?package={name}#package_maintenance/details/downloads"),
+    ('pkgdb', 'PackageDB', "https://admin.fedoraproject.org/pkgdb/acls/name/"
+        "{name}"),
     ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search" +
         "?terms={name}&type=package&match=exact"),
     ('bodhi', 'Updates', "https://admin.fedoraproject.org/updates/{name}"),
-    ('bugs', 'Bugs', "https://admin.fedoraproject.org/pkgdb/acls/bugs/{name}"),
+    ('bugs', 'Bugs', "/packages/{name}/bugs"),
     ('sources', 'Source', "http://pkgs.fedoraproject.org/gitweb/" +
         "?p={name}.git"),
 ]
@@ -181,7 +181,7 @@ def leaderboard(N):
     keys = ['gravatar', 'name', 'score']
     row = "<tr>" + ''.join(["<td>{%s}</td>" % k for k in keys]) + "</tr>"
     rows = [
-        row.format(**users[i+1]) for i in range(N)
+        row.format(**users[i + 1]) for i in range(N)
     ]
     template = """
     <table class="leaderboard">
@@ -254,6 +254,7 @@ def notifs_toggle():
     jsonout.status_code = 200
 
     return jsonout
+
 
 #pulls out notification state without changing it
 @FRONTEND.route('/notifs_state/', methods=('GET',))
