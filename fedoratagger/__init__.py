@@ -39,7 +39,6 @@ APP = flask.Flask(__name__)
 APP.config.from_object('fedoratagger.default_config')
 if 'FEDORATAGGER_CONFIG' in os.environ:  # pragma: no cover
     APP.config.from_envvar('FEDORATAGGER_CONFIG')
-APP.config['SECRET_KEY'] = 'asljdlkhkfhakdg'
 APP.config['FAS_OPENID_CHECK_CERT'] = False
 FAS = FAS(APP)
 mako = MakoTemplates(APP)
