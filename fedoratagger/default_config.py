@@ -26,6 +26,9 @@ Default configuration for taggerapi
 # url to the database server:
 DB_URL = 'sqlite:////var/tmp/taggerapi.sqlite'
 
+# This is the secret key used to generate teh CSRF
+SECRET_KEY = 'CHANGE ME'
+
 # Resource prefix for tw2 middleware.
 # In production this is usually '/tagger/_res/'
 RES_PREFIX = '/_tw2_resources/'
