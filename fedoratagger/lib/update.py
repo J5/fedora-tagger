@@ -117,7 +117,8 @@ def update_summaries(N=100):
         log.warn("No access to yum.  Aborting.")
         return
 
-    query = ft.SESSION.query(m.Package).filter_by(summary=u'')
+    query = ft.SESSION.query(m.Package).filter(
+                                  m.Package.summary.in_([u'', u'(no summary)']))
     log.info("There are %i such packages... hold on." % query.count())
 
     # We limit this to only getting the first N summaries, since querying yum
