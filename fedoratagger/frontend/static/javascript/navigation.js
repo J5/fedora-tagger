@@ -80,7 +80,7 @@ function change_card() {
     // Change the window location for deep-linkage
     // Thanks to J5 for pointing out HTML5 .pushState
     var href = window.location.href;
-    var val = $('.center h2').html();
+    var val = $('.center h2 a').html();
     var query_string;
     if (href.indexOf('?') == -1) {
         query_string = '';
