@@ -57,6 +57,9 @@ function successful_usage_toggle(json) {
     }
     var c = parseInt(parseInt($('.center #count').html()) + change);
     $('.center #count').html(c >= 0 ? c : '0');
+    $('.center #count_suffix').html(
+        c === 1 ? 'person uses this' : 'people use this'
+    );
     $('.center #furthermore').toggle();
     gritter_id = $.gritter.add({
         title: 'OK',
