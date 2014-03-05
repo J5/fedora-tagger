@@ -25,7 +25,14 @@
         % if w.not_anonymous:
         <div class="usage">
             <a href="javascript:toggle_usage('${w.package.name}');">
-                <span id='count'>${w.package.usage}</span> people use this
+                <span id='count'>${w.package.usage}</span>
+                <span id='count_suffix'>
+                    % if w.package.usage == 1:
+                    person uses this
+                    % else
+                    people use this
+                    % endif
+                </span>
                 % if w.including_you:
                 <span id='furthermore'>(including you)</span>
                 % endif
