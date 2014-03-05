@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %} - Tagger API</title>
+    {% block head %}{% endblock %}
+    <link type="text/css" rel="stylesheet"
+        href="{{ url_for('api.static',
+            filename='taggerapi.css')}}" />
+</head>
+<body>
+    {% block content_titles %}
+        <header id="mainheader">
+            <h1>
+
+            </h1>
+        </header>
+    {% endblock %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul id="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div id="content">
+        {% block content %}{% endblock %}
+</body>
+</html>
