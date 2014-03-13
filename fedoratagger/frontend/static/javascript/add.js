@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     $("#add_box").keydown(function(e){
         if( e.keyCode == 13 ){
-            var pkgname = $('.center * h2').html();
+            var pkgname = $('.center * h2 > a').html();
             request_in_progress = true;
             $.ajax({
                 type: "PUT",
