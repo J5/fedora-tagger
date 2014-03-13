@@ -35,7 +35,7 @@
                 <span id='count_suffix'>
                   % if w.package.usage == 1:
                     person uses this
-                  % else
+                  % else:
                     people use this
                   % endif
                 </span>
@@ -67,19 +67,20 @@
           No package found.
         % endif
       </div>
-    <div class="clear"></div>
-    <div class="tags">
-      <ul>
-        % for tag in w.tags:
-          ${tag.display() | n}
-        % endfor
-      </ul>
-    </div>
-    <div class="clear"></div>
-    % if w.not_anonymous:
-      <div class="new">
-        <div class="plus" onclick="javascript:$('#add_dialog').dialog('open');"></div>Add a new tag.
+      <div class="clear"></div>
+      <div class="tags">
+        <ul>
+          % for tag in w.tags:
+            ${tag.display() | n}
+          % endfor
+        </ul>
       </div>
-    % endif
+      <div class="clear"></div>
+      % if w.not_anonymous:
+        <div class="new">
+          <div class="plus" onclick="javascript:$('#add_dialog').dialog('open');"></div>Add a new tag.
+        </div>
+      % endif
+    </div>
   </div>
 </div>
