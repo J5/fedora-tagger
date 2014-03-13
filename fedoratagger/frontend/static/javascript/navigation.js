@@ -10,11 +10,15 @@ function login() {
 }
 function next_item() {
     var sel = $('.center .selected');
+    var next;
     if (sel.next().length != 0) {
-        change_selected(sel, sel.next());
+        // Select the next one
+        next = sel.next();
     } else {
-        navigate_new_card();
+        // Cycle back to the top
+        next = sel.parent().children().first();
     }
+    change_selected(sel, next);
 }
 
 function navigate_new_card(name, callback) {
