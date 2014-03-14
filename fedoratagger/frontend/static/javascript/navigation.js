@@ -10,11 +10,15 @@ function login() {
 }
 function next_item() {
     var sel = $('.center .selected');
+    var next;
     if (sel.next().length != 0) {
-        change_selected(sel, sel.next());
+        // Select the next one
+        next = sel.next();
     } else {
-        navigate_new_card();
+        // Cycle back to the top
+        next = sel.parent().children().first();
     }
+    change_selected(sel, next);
 }
 
 function navigate_new_card(name, callback) {
@@ -259,6 +263,7 @@ function init_navigation() {
         right: [39, 76],
         down: [40, 74],
         add: [65, 73],
+        next: [78],
         help: [27, 112],
         leaderboard: [66],
         statistics: [84],
@@ -271,6 +276,7 @@ function init_navigation() {
         right: function() { upvote_this(); next_item(); },
         left: function() { downvote_this(); next_item(); },
         add: add,
+        next: navigate_new_card,
         help: help,
         leaderboard: leaderboard,
         statistics: statistics,
