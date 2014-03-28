@@ -227,6 +227,11 @@ def statistics(session):
         tags_per_package_no_zeroes = sum([len(p.tags) for p in packages]) \
             / float(with_tags)
 
+    n_votes = float(session.query(model.Vote).count())
+    avg_votes_per_tag = n_votes / n_tags
+    avg_votes_per_package  = n_votes / n_packs
+    most_votes_per_tag = max(raw_data.values())
+
     return {
         'summary': {
             'total_packages': n_packs,
@@ -235,6 +240,9 @@ def statistics(session):
             'with_tags': with_tags,
             'tags_per_package': tags_per_package,
             'tags_per_package_no_zeroes': tags_per_package_no_zeroes,
+            'avg_votes_per_tag': avg_votes_per_tag,
+            'avg_votes_per_package': avg_votes_per_package,
+            'most_votes_per_tag': most_votes_per_tag,
         },
     }
 
