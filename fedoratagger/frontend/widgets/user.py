@@ -51,7 +51,7 @@ class UserWidget(tw2.core.Widget):
             return self.user.gravatar_md
         else:
             system = fedora.client.AccountSystem()
-            url = system.gravatar_url('anonymous-tagger', lookup_email=False)
+            url = system.avatar_url('anonymous-tagger', lookup_email=False)
             return "<img src='{url}' />".format(url=url)
 
     @property
