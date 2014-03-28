@@ -32,3 +32,8 @@ python-openid-teams # required by flask_fas_openid
 requests
 urllib3
 PyYAML
+
+# These are not strictly required, but they enable the libravatar support in
+# python-fedora which we want.
+pylibravatar
+pydns

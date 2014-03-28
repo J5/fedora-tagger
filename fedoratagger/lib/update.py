@@ -18,7 +18,7 @@
 # Refer to the README.rst and LICENSE files for full details of the license
 """ Update the fedora-tagger DB from other sources.
 
-Notably, koji and pkgdb.
+Notably, koji.
 
 Over time, Fedora Packagers will add new packages to Fedora.  Tagger
 needs to find out about them from the authoritative sources.
