@@ -228,9 +228,18 @@ def statistics(session):
             / float(with_tags)
 
     n_votes = float(session.query(model.Vote).count())
-    avg_votes_per_tag = n_votes / n_tags
-    avg_votes_per_package  = n_votes / n_packs
-    most_votes_per_tag = max(raw_data.values())
+
+    if n_tags:
+        avg_votes_per_tag = n_votes / n_tags
+    else:
+        avg_votes_per_tag = 0
+
+    if n_packs:
+        avg_votes_per_package  = n_votes / n_packs
+        most_votes_per_tag = max(raw_data.values())
+    else:
+        avg_votes_per_package = 0
+        most_votes_per_tag = 0
 
     return {
         'summary': {
