@@ -124,6 +124,9 @@ var statistics_template = "                                     \
             <td>Tags / Package (that have at least one tag)</td>\
             <td>{5}</td>                                        \
         </tr>                                                   \
+        <tr><td>Average Votes / Tag</td><td>{6}</td></tr>       \
+        <tr><td>Average Votes / Package</td><td>{7}</td></tr>   \
+        <tr><td>Most Votes / Tag</td><td>{8}</td></tr>          \
     </table>                                                    \
 </div>";
 
@@ -164,7 +167,10 @@ function statistics() {
                 json.summary.no_tags,
                 json.summary.with_tags,
                 json.summary.tags_per_package.toFixed(3),
-                json.summary.tags_per_package_no_zeroes.toFixed(3)
+                json.summary.tags_per_package_no_zeroes.toFixed(3),
+                json.summary.avg_votes_per_tag.toFixed(3),
+                json.summary.avg_votes_per_package.toFixed(3),
+                json.summary.most_votes_per_tag
             ));
             request_in_progress = false;
         }
