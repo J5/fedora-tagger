@@ -32,6 +32,7 @@ function reflow_cards() {
     card_offset[0] = -(card_size * 0.65);
     card_offset[1] = card_size / 2;
     card_offset[2] = (card_size * 1.65);
+    card_offset[3] = (card_size * 2.8);
 
     cards.each( function (index, card) {
         card.style.height = card_size;
@@ -127,7 +128,7 @@ function card_new(name, callback) {
         },
         success: function(html) {
             $('.card:last').after(html);
-            $('.card:last').css('left', (card_size * 2.80) + "px");
+            $('.card:last').css('left', (card_size * 3.5) + "px");
             $('.card:last').css('top', board_margin + "px");
             animate_left();
             init_mouseover();

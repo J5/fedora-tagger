@@ -209,7 +209,7 @@ def home(name=None):
         name = m.Package.random(ft.SESSION).name
         flask.redirect(name)
 
-    packages = [None] * 3
+    packages = [None] * 4
 
     if name:
         try:
@@ -217,7 +217,7 @@ def home(name=None):
         except m.NoResultFound:
             packages[1] = m.Package()
 
-    cards = [CardWidget(package=packages[i]) for i in range(3)]
+    cards = [CardWidget(package=packages[i]) for i in range(4)]
     cards[1].css_class = 'card center'
 
     return render_template('tagger.mak', cards=cards,
