@@ -131,7 +131,7 @@ var statistics_template = "                                     \
 </div>";
 
 function statistics() {
-    request_in_progress = true;
+    signal_request(true);
     $("body").append("<div id='statistics-dialog'></div>");
     $("#statistics-dialog").attr('title', "Statistics");
     $("#statistics-dialog").html("Calculating stats...  please wait.  " +
@@ -150,7 +150,7 @@ function statistics() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             $('#statistics-dialog').dialog('destroy');
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
@@ -172,7 +172,7 @@ function statistics() {
                 json.summary.avg_votes_per_package.toFixed(3),
                 json.summary.most_votes_per_tag
             ));
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }
@@ -192,7 +192,7 @@ var statistics_like_dislike_template = "                        \
 </div>";
 
 function statistics_user(username) {
-    request_in_progress = true;
+    signal_request(true);
     $("body").append("<div id='statistics-user-dialog'></div>");
     $("#statistics-user-dialog").attr('title', "Statistics Like/Dislike Packages");
     $("#statistics-user-dialog").html("Calculating stats...  please wait.");
@@ -210,7 +210,7 @@ function statistics_user(username) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             //$('#statistics-user-dialog').dialog('destroy');
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
@@ -225,13 +225,13 @@ function statistics_user(username) {
                 json.total_like,
                 json.total_dislike
             ));
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }
 
 function leaderboard() {
-    request_in_progress = true;
+    signal_request(true);
     $.ajax({
         type: "GET",
         url: "leaderboard",
@@ -240,7 +240,7 @@ function leaderboard() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
@@ -258,7 +258,7 @@ function leaderboard() {
                 modal: true,
                 close: function() { $('#leaderboard-dialog').dialog('destroy'); },
             });
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }

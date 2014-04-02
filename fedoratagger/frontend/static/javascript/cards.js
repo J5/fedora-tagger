@@ -7,6 +7,17 @@ var request_in_progress = false;
 var animation_elements = null;
 var waiting_cbs = [];
 
+function signal_request(flag) {
+    request_in_progress = flag
+    if ( request_in_progress ) {
+        $('body').css('cursor', 'wait');
+        $('#nextbutton').css('cursor', 'wait');
+    } else {
+        $('body').css('cursor', 'default');
+        $('#nextbutton').css('cursor', 'default');
+    }
+}
+
 function reflow_gradients(content) {
     var lf = document.getElementById("leftfade");
     var rf = document.getElementById("rightfade");
@@ -108,7 +119,7 @@ function card_new(name, callback) {
     if (animation_elements != null)
         return;
 
-    request_in_progress = true;
+    signal_request(true);
     animate_left();
     $.ajax({
         type: "GET",
@@ -118,7 +129,7 @@ function card_new(name, callback) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
@@ -141,13 +152,13 @@ function card_new(name, callback) {
                     callback();
                 }
             }
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }
 
 function more_details(name) {
-    request_in_progress = true;
+    signal_request(true);
     $.ajax({
         type: "GET",
         url: "details",
@@ -157,7 +168,7 @@ function more_details(name) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
@@ -167,7 +178,7 @@ function more_details(name) {
             });
         },
         success: function(html) {
-            request_in_progress = false;
+            signal_request(false);
             $("body").append("<div id='details-dialog'></div>");
             $("#details-dialog").attr('title', name);
             $("#details-dialog").html(html);

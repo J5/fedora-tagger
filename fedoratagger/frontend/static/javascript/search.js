@@ -4,7 +4,7 @@ $(document).ready(function () {
     var search_term = null;
 
     var error = function() {
-        request_in_progress = false;
+        signal_request(false);
         if (! notifications_on) { return; }
         if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
         gritter_id = $.gritter.add({
@@ -31,7 +31,7 @@ $(document).ready(function () {
         // We got some search results back from the /packages app.
         // See https://github.com/fedora-infra/fedora-tagger/issues/88
         // for a description and discussion.
-        request_in_progress = false;
+        signal_request(false);
 
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
         if ( json.total_rows == 0 ) {
@@ -89,7 +89,7 @@ $(document).ready(function () {
     });
 
     perform_search = function(term) {
-        request_in_progress = true;
+        signal_request(true);
 
         // * Construct a query against the Fedora Packages API *
         // Note that if you are running this on your own machine in dev
