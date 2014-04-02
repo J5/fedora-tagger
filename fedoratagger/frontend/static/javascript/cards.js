@@ -109,6 +109,7 @@ function card_new(name, callback) {
         return;
 
     request_in_progress = true;
+    animate_left();
     $.ajax({
         type: "GET",
         url: "card/" + name,
@@ -130,7 +131,7 @@ function card_new(name, callback) {
             $('.card:last').after(html);
             $('.card:last').css('left', (card_size * 3.5) + "px");
             $('.card:last').css('top', board_margin + "px");
-            animate_left();
+            reflow_cards();
             init_mouseover();
 
             if (callback) {
