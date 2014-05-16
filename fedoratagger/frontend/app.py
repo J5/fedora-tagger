@@ -55,7 +55,7 @@ item_template = "<li><img src='{icon}'/>" + \
     "<a href='{url}' target='_blank'>{text}</a></li>"
 services = [
     ('beefy', 'Community', "/packages/{name}"),
-    ('pkgdb', 'PackageDB', "https://admin.fedoraproject.org/pkgdb/acls/name/"
+    ('pkgdb', 'PackageDB', "https://admin.fedoraproject.org/pkgdb/package/"
         "{name}"),
     ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search" +
         "?terms={name}&type=package&match=exact"),
