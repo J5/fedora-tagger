@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.1.2
+Version:        2.1.3
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -47,6 +47,9 @@ BuildRequires:  python-tw2-jqplugins-gritter
 
 BuildRequires:  fedmsg
 BuildRequires:  python-pkgwat-api
+BuildRequires:  python-docutils
+BuildRequires:  python-pylibravatar
+BuildRequires:  python-pydns
 
 
 ## Not needed for testing only when working with postgresql
@@ -84,6 +87,9 @@ Requires:  python-tw2-jqplugins-gritter
 
 Requires:  fedmsg
 Requires:  python-pkgwat-api
+Requires:  python-docutils
+Requires:  python-pylibravatar
+Requires:  python-pydns
 
 Requires:  python-psycopg2
 
@@ -142,6 +148,9 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Wed May 21 2014 Ralph Bean <rbean@redhat.com> - 2.1.3-1
+- Various enhancements.
+
 * Tue Feb 04 2014 Ralph Bean <rbean@redhat.com> - 2.1.2-1
 - A /dump api fix for gnome-software
 - Hash the IPs of anonymous users.
