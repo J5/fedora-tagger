@@ -53,5 +53,6 @@ setup(
 
     [console_scripts]
     fedoratagger-update-db = fedoratagger.lib.update:main
+    fedoratagger-remove-pkgs = fedoratagger.lib.retired:main
     '''
 )
