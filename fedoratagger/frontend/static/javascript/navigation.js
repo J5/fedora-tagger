@@ -10,11 +10,15 @@ function login() {
 }
 function next_item() {
     var sel = $('.center .selected');
+    var next;
     if (sel.next().length != 0) {
-        change_selected(sel, sel.next());
+        // Select the next one
+        next = sel.next();
     } else {
-        navigate_new_card();
+        // Cycle back to the top
+        next = sel.parent().children().first();
     }
+    change_selected(sel, next);
 }
 
 function navigate_new_card(name, callback) {
@@ -80,7 +84,7 @@ function change_card() {
     // Change the window location for deep-linkage
     // Thanks to J5 for pointing out HTML5 .pushState
     var href = window.location.href;
-    var val = $('.center h2').html();
+    var val = $('.center h2 a').html();
     var query_string;
     if (href.indexOf('?') == -1) {
         query_string = '';
@@ -120,11 +124,14 @@ var statistics_template = "                                     \
             <td>Tags / Package (that have at least one tag)</td>\
             <td>{5}</td>                                        \
         </tr>                                                   \
+        <tr><td>Average Votes / Tag</td><td>{6}</td></tr>       \
+        <tr><td>Average Votes / Package</td><td>{7}</td></tr>   \
+        <tr><td>Most Votes / Tag</td><td>{8}</td></tr>          \
     </table>                                                    \
 </div>";
 
 function statistics() {
-    request_in_progress = true;
+    signal_request(true);
     $("body").append("<div id='statistics-dialog'></div>");
     $("#statistics-dialog").attr('title', "Statistics");
     $("#statistics-dialog").html("Calculating stats...  please wait.  " +
@@ -143,7 +150,7 @@ function statistics() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             $('#statistics-dialog').dialog('destroy');
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
@@ -160,9 +167,12 @@ function statistics() {
                 json.summary.no_tags,
                 json.summary.with_tags,
                 json.summary.tags_per_package.toFixed(3),
-                json.summary.tags_per_package_no_zeroes.toFixed(3)
+                json.summary.tags_per_package_no_zeroes.toFixed(3),
+                json.summary.avg_votes_per_tag.toFixed(3),
+                json.summary.avg_votes_per_package.toFixed(3),
+                json.summary.most_votes_per_tag
             ));
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }
@@ -182,7 +192,7 @@ var statistics_like_dislike_template = "                        \
 </div>";
 
 function statistics_user(username) {
-    request_in_progress = true;
+    signal_request(true);
     $("body").append("<div id='statistics-user-dialog'></div>");
     $("#statistics-user-dialog").attr('title', "Statistics Like/Dislike Packages");
     $("#statistics-user-dialog").html("Calculating stats...  please wait.");
@@ -200,7 +210,7 @@ function statistics_user(username) {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             //$('#statistics-user-dialog').dialog('destroy');
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
@@ -215,13 +225,13 @@ function statistics_user(username) {
                 json.total_like,
                 json.total_dislike
             ));
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }
 
 function leaderboard() {
-    request_in_progress = true;
+    signal_request(true);
     $.ajax({
         type: "GET",
         url: "leaderboard",
@@ -230,7 +240,7 @@ function leaderboard() {
             _csrf_token: $.getUrlVar("_csrf_token"),
         }),
         error: function() {
-            request_in_progress = false;
+            signal_request(false);
             if (! notifications_on) { return; }
             if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
             gritter_id = $.gritter.add({
@@ -248,7 +258,7 @@ function leaderboard() {
                 modal: true,
                 close: function() { $('#leaderboard-dialog').dialog('destroy'); },
             });
-            request_in_progress = false;
+            signal_request(false);
         }
     });
 }
@@ -259,6 +269,7 @@ function init_navigation() {
         right: [39, 76],
         down: [40, 74],
         add: [65, 73],
+        next: [78],
         help: [27, 112],
         leaderboard: [66],
         statistics: [84],
@@ -271,6 +282,7 @@ function init_navigation() {
         right: function() { upvote_this(); next_item(); },
         left: function() { downvote_this(); next_item(); },
         add: add,
+        next: navigate_new_card,
         help: help,
         leaderboard: leaderboard,
         statistics: statistics,

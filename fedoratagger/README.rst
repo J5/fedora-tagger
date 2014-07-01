@@ -1,47 +1,53 @@
-Fedora-Tagger
+Fedora Tagger
 =============
 
-A Flask app for helping us tag fedora packages.
+A Flask app for helping us tag Fedora packages.
 
 Hotkeys
 -------
 
 .. hotkeys
 
-+--------------------+----------------+
-| ``j`` *or* ``↓``   | next item      |
-+--------------------+----------------+
-| ``k`` *or* ``↑``   | previous item  |
-+--------------------+----------------+
-| ``l`` *or* ``→``   | upvote tag     |
-+--------------------+----------------+
-| ``h`` *or* ``←``   | downvote tag   |
-+--------------------+----------------+
-| ``b``              | leaderboard    |
-+--------------------+----------------+
-| ``t``              | statistics     |
-+--------------------+----------------+
-| ``s``              | search packages|
-+--------------------+----------------+
-| ``esc``            | help           |
-+--------------------+----------------+
++--------------------+---------------------------------------------------+
+| ``j`` *or* ``↓``   | Move the cursor to the next tag                   |
++--------------------+---------------------------------------------------+
+| ``k`` *or* ``↑``   | Move the cursor to the previous tag               |
++--------------------+---------------------------------------------------+
+| ``l`` *or* ``→``   | Upvote the currently selected tag                 |
++--------------------+---------------------------------------------------+
+| ``h`` *or* ``←``   | Downvote the currently selected tag               |
++--------------------+---------------------------------------------------+
+| ``n``              | Move to a new random package                      |
++--------------------+---------------------------------------------------+
+| ``b``              | Display the leaderboard                           |
++--------------------+---------------------------------------------------+
+| ``t``              | Display package and tag statistics                |
++--------------------+---------------------------------------------------+
+| ``s``              | Search for packages to tag                        |
++--------------------+---------------------------------------------------+
+| ``esc``            | Display this help message                         |
++--------------------+---------------------------------------------------+
 
-Requires authentication.
+The following commands require authentication:
 
-+--------------------+----------------+
-| ``i`` *or* ``a``   | add new tag    |
-+--------------------+----------------+
++--------------------+---------------------------------------------------+
+| ``i`` *or* ``a``   | Add new tags to the currently selected package    |
++--------------------+---------------------------------------------------+
 
 .. hotkeys
 
 Hacking on Fedora Tagger
 ------------------------
 
-You can setup a development environment like this::
+You can set up a development environment like this::
 
     # Create a virtualenv
     $ sudo yum install -y python-virtualenvwrapper
     $ mkvirtualenv tagger
+
+    # Configure virtualenvwrapper for your shell
+    $ echo '\nexport WORKON_HOME=$HOME/.virtualenvs\nsource /usr/bin/virtualenvwrapper.sh' >> ~/.bashrc
+    $ source ~/.bashrc
 
     # Install dependencies
     $ pip install kitchen paver
@@ -61,20 +67,20 @@ You can setup a development environment like this::
     # Run the development server
     $ python runserver.py
 
-And lastly point your browser at http://localhost:5000
+And lastly point your browser at http://localhost:5000.
 
 The REST API
 ------------
 
-Visit http://localhost:5000/api/ for some HTML docs.  You can use the
+Visit http://localhost:5000/api/v1/ for some HTML docs.  You can use the
 awesome `HTTPie <https://github.com/jkbr/httpie>`_ to try it from the
 command line::
 
     $ sudo yum -y install httpie
 
-You can GET tagger's data on a package::
+You can GET Tagger's data on a package::
 
-    $ http get http://localhost:5000/api/nethack/
+    $ http get http://localhost:5000/api/v1/nethack/
     HTTP/1.1 200 OK
     Connection: close
     Content-Length: 750
@@ -125,7 +131,7 @@ You can GET tagger's data on a package::
 
 Or PUT your rating on a package::
 
-    $ http put http://localhost:5000/api/rating/nethack/ pkgname=nethack rating=100
+    $ http put http://localhost:5000/api/v1/rating/nethack/ pkgname=nethack rating=100
     HTTP/1.1 200 OK
     Connection: close
     Content-Length: 97
@@ -142,7 +148,7 @@ Or PUT your rating on a package::
 
 Or PUT your vote on a particular tag::
 
-    $ http put http://localhost:5000/api/vote/nethack/ pkgname=nethack tag=rogue-like vote=1
+    $ http put http://localhost:5000/api/v1/vote/nethack/ pkgname=nethack tag=rogue-like vote=1
     HTTP/1.1 200 OK
     Connection: close
     Content-Length: 353

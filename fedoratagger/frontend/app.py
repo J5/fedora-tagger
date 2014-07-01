@@ -55,7 +55,7 @@ item_template = "<li><img src='{icon}'/>" + \
     "<a href='{url}' target='_blank'>{text}</a></li>"
 services = [
     ('beefy', 'Community', "/packages/{name}"),
-    ('pkgdb', 'PackageDB', "https://admin.fedoraproject.org/pkgdb/acls/name/"
+    ('pkgdb', 'PackageDB', "https://admin.fedoraproject.org/pkgdb/package/"
         "{name}"),
     ('koji', 'Builds', "http://koji.fedoraproject.org/koji/search" +
         "?terms={name}&type=package&match=exact"),
@@ -209,17 +209,23 @@ def home(name=None):
         name = m.Package.random(ft.SESSION).name
         flask.redirect(name)
 
-    packages = [None] * 3
+    packages = [None] * 4
 
     if name:
-        packages[1] = m.Package.by_name(ft.SESSION, name)
+        try:
+            packages[1] = m.Package.by_name(ft.SESSION, name)
+        except m.NoResultFound:
+            packages[1] = m.Package()
 
-    cards = [CardWidget(package=packages[i]) for i in range(3)]
+    cards = [CardWidget(package=packages[i]) for i in range(4)]
     cards[1].css_class = 'card center'
 
     return render_template('tagger.mak', cards=cards,
                            title=cards[1].package.name)
 
+@FRONTEND.route('/<name>/')
+def home2(name=None):
+    return flask.redirect(flask.request.url[:-1])
 
 @FRONTEND.route('/login/', methods=('GET', 'POST'))
 def auth_login():

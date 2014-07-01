@@ -34,13 +34,10 @@ from sqlalchemy.orm import relation, backref, synonym
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.types import Integer, Unicode
 
-try:
-    from hashlib import md5
-except ImportError:  # pragma: no cover
-    import md5
-
 from kitchen.text.converters import to_unicode
 
+import fedora.client
+fas = fedora.client.AccountSystem()
 
 DeclarativeBase = declarative_base()
 
@@ -110,7 +107,7 @@ class Package(DeclarativeBase):
 
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
-    summary = Column(Unicode(1023), nullable=False)
+    summary = Column(UnicodeText(convert_unicode=False), nullable=False)
 
     tags = relation('Tag', backref=('package'))
     ratings = relation('Rating', backref=('package'))
@@ -572,15 +569,7 @@ class FASUser(DeclarativeBase):
         return self._gravatar(s=32)
 
     def _gravatar(self, s):
-        # TODO -- remove this and use
-        # fedora.client.fas2.AccountSystem().gravatar_url(
-        #                                   self.username, size=s)
-        #  - need to have faswho put the gravatar url in the metadata
-        #  - need to have different size images available as defaults
-        d = 'mm'
-        email = self.email if self.email else "whatever"
-        hash = md5(email).hexdigest()
-        url = "http://www.gravatar.com/avatar/%s?s=%i&d=%s" % (hash, s, d)
+        url = fas.avatar_url(self.username, size=s, lookup_email=False)
         return "<img src='%s'></img>" % url
 
     @classmethod

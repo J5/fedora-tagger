@@ -2,7 +2,7 @@ $(document).ready(function () {
     var error = function(xhr) {
         $("#add_dialog input").val('');
         $('#add_dialog').dialog('close');
-        request_in_progress = false;
+        signal_request(false);
         if (! notifications_on) { return; }
         if ( gritter_id != undefined ) { $.gritter.remove(gritter_id); }
         var json = JSON.parse(xhr.responseText);
@@ -22,7 +22,7 @@ $(document).ready(function () {
             $('#rank').html(json.user.rank);
         }
 
-        request_in_progress = false;
+        signal_request(false);
 
         if (! notifications_on) { return; }
         if (gritter_id != undefined) { $.gritter.remove(gritter_id); }
@@ -35,8 +35,8 @@ $(document).ready(function () {
 
     $("#add_box").keydown(function(e){
         if( e.keyCode == 13 ){
-            var pkgname = $('.center * h2').html();
-            request_in_progress = true;
+            var pkgname = $('.center * h2 > a').html();
+            signal_request(true);
             $.ajax({
                 type: "PUT",
                 url: "api/v1/tag/" + pkgname + "/",

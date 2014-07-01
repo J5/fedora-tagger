@@ -18,7 +18,7 @@
 # Refer to the README.rst and LICENSE files for full details of the license
 """ Update the fedora-tagger DB from other sources.
 
-Notably, koji and pkgdb.
+Notably, koji.
 
 Over time, Fedora Packagers will add new packages to Fedora.  Tagger
 needs to find out about them from the authoritative sources.
@@ -109,7 +109,6 @@ def update_summaries(N=100):
     they do not yet have a summary.  Consequently, here we can periodically
     update their summary if they appear in yum.
     """
-    log.info("Updating first %i packages which have no summary (w/ yum)" % N)
 
     yumq = get_yum_query()
 
@@ -117,13 +116,19 @@ def update_summaries(N=100):
         log.warn("No access to yum.  Aborting.")
         return
 
-    query = ft.SESSION.query(m.Package).filter_by(summary=u'')
+    query = ft.SESSION.query(m.Package).filter(
+                                  m.Package.summary.in_([u'', u'(no summary)']))
     log.info("There are %i such packages... hold on." % query.count())
 
     # We limit this to only getting the first N summaries, since querying yum
     # takes so long.
     count = 0
     total = query.count()
+    if N == 0:
+        N = total
+
+    log.info("Updating first %i packages which have no summary (w/ yum)" % N)
+
     packages = query.all()
     for package in packages:
         summary = to_unicode(yumq.summary(package.name))
@@ -183,7 +188,7 @@ def parse_args():
     parser.add_argument(
         '-n', '--summaries-to-process',
         dest='summaries_to_process',
-        default=10,
+        default=0,
         help="Number of summaries to process from yum.  Time intensive."
     )
     parser.add_argument(
