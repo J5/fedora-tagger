@@ -1,6 +1,65 @@
 Changelog
 =========
 
+2.1.4
+-----
+
+- But.... `a715d90a5 <https://github.com/fedora-infra/fedora-tagger/commit/a715d90a58b54eba79b5afe1bb40035c89bcc6c3>`_
+- merge tags duplicate `adcb14784 <https://github.com/fedora-infra/fedora-tagger/commit/adcb147844a84028d01e80b4fe69449abee7f943>`_
+- finds retired packages and removes them `d9b0de970 <https://github.com/fedora-infra/fedora-tagger/commit/d9b0de970647ad024a30965e76d646ef647fdd6b>`_
+- rm retired.py `6ba901bfe <https://github.com/fedora-infra/fedora-tagger/commit/6ba901bfe7b76f7570f9ef9d3189602c4590b89c>`_
+- Finds retired packages and removes them. `9c3c5de95 <https://github.com/fedora-infra/fedora-tagger/commit/9c3c5de9556679e298c5f71353a929cc1eab74a1>`_
+- Merge pull request #168 from arielb2/retire `583fb4fa5 <https://github.com/fedora-infra/fedora-tagger/commit/583fb4fa57e594032a81855ddf0a6945693e0d18>`_
+- Merge remote-tracking branch 'upstream/develop' into develop `bb783fe03 <https://github.com/fedora-infra/fedora-tagger/commit/bb783fe03292dfe54e0d528d47f2cf6d4799863e>`_
+- Lower all tags entered. `a0a090f6d <https://github.com/fedora-infra/fedora-tagger/commit/a0a090f6db76107fde0aa48557ca0265720abd09>`_
+- Merge pull request #169 from arielb2/feature/merge-tag `1a2d5641d <https://github.com/fedora-infra/fedora-tagger/commit/1a2d5641dbe697994e474638f5f097eb423dca48>`_
+
+2.1.3
+-----
+
+- spec bump. `c8b60fd0a <https://github.com/fedora-infra/fedora-tagger/commit/c8b60fd0a5c22b61b3e929b54031930d6df8cfef>`_
+- Link package name to fedora packages app `ae007a31d <https://github.com/fedora-infra/fedora-tagger/commit/ae007a31d0e7b393dcc76be645fa9e17c879d70f>`_
+- Update URLs in package details `f3574a48c <https://github.com/fedora-infra/fedora-tagger/commit/f3574a48ca2016273254ebd9d8257ef5e51f5851>`_
+- Fix some PEP8 violations `1678329df <https://github.com/fedora-infra/fedora-tagger/commit/1678329df443ac1cec8bec0da9eb7f7299f70b17>`_
+- Merge pull request #147 from tyll/link_fedora_packages `1fca39cb6 <https://github.com/fedora-infra/fedora-tagger/commit/1fca39cb6cec88d060c3190aef42956caaa14122>`_
+- Remove hard-coded secret key from the sources `45e3fa789 <https://github.com/fedora-infra/fedora-tagger/commit/45e3fa789ef3de913b0a3c36399b8197988857ed>`_
+- Add a default secret key to the configuration `0c342b890 <https://github.com/fedora-infra/fedora-tagger/commit/0c342b890505968dd9807557399eca394e785d51>`_
+- Merge pull request #148 from fedora-infra/feature/add_default_secret `e72fbf958 <https://github.com/fedora-infra/fedora-tagger/commit/e72fbf958993f98aba7653945a4912811a9f5e1f>`_
+- change unicode `453a4439a <https://github.com/fedora-infra/fedora-tagger/commit/453a4439a72f5d707e159eb4aa2104273e874801>`_
+- filter filter change packages to load summary with ('no summary') `cb337ca02 <https://github.com/fedora-infra/fedora-tagger/commit/cb337ca0266541d78ad327f6003fd3faef898246>`_
+- Merge pull request #150 from arielb2/summarysummary `62a5b15f5 <https://github.com/fedora-infra/fedora-tagger/commit/62a5b15f54980d1a164a0d66c3e93b5d87bd7438>`_
+- Merge pull request #149 from arielb2/feature/unicodetext `e4dfec8c4 <https://github.com/fedora-infra/fedora-tagger/commit/e4dfec8c43a9d4b8f4715a7bae4160a881d53ae2>`_
+- Fix card stepping, which was broken in ae007a31d0e7 `ec6d72e0c <https://github.com/fedora-infra/fedora-tagger/commit/ec6d72e0ceae547d5238d0613209ca9bb3db118e>`_
+- Fix css for the titles of the "cards" `604f252e9 <https://github.com/fedora-infra/fedora-tagger/commit/604f252e9f02906872422888e87a4d4d91dbdaf7>`_
+- Merge pull request #152 from fedora-infra/feature/css-for-package-names `6b3cec6d6 <https://github.com/fedora-infra/fedora-tagger/commit/6b3cec6d60b4afd23a886074bf41d48560fe079c>`_
+- Merge pull request #151 from fedora-infra/feature/fix-card-stepping `7f4452edf <https://github.com/fedora-infra/fedora-tagger/commit/7f4452edf971e0191138f40e433cb6b81e85c3ad>`_
+- Fix JS race condition `301f8140a <https://github.com/fedora-infra/fedora-tagger/commit/301f8140ae2b5878a895eeeaca6155b36c0e78ac>`_
+- Fix "1 people use this" `dd5fc4b28 <https://github.com/fedora-infra/fedora-tagger/commit/dd5fc4b28d5955f2ad7dba05df6c76c2d056df47>`_
+- Merge pull request #156 from fedora-infra/1-people `fa3bd8490 <https://github.com/fedora-infra/fedora-tagger/commit/fa3bd84908ce2048947717aeefae84c4c67d4fad>`_
+- Catch and inform 500 of non-existing packages `7ba763bc3 <https://github.com/fedora-infra/fedora-tagger/commit/7ba763bc327392a504969476243d1307f3ad38ad>`_
+- Rework the indentation and add missing % endif and </div> in the card template `fa7ecbe36 <https://github.com/fedora-infra/fedora-tagger/commit/fa7ecbe36c0dd470f9787fbe481f7792cb49dd0e>`_
+- Merge pull request #159 from fedora-infra/indentation_fix `0711fcdf7 <https://github.com/fedora-infra/fedora-tagger/commit/0711fcdf72f8a0aeefd515273432d14fe3e9a636>`_
+- Further fix indentation and mako control from #159. `671fb3f56 <https://github.com/fedora-infra/fedora-tagger/commit/671fb3f565fcce9a1d40209b2158f8ec9ddb0837>`_
+- Fix another basic bug introduced in a recent pull request. `2355dd612 <https://github.com/fedora-infra/fedora-tagger/commit/2355dd612e6352a1d8200df9085ff62aad4b00e8>`_
+- Make upvoting the last item not automatically move you to the next card. `3847b8051 <https://github.com/fedora-infra/fedora-tagger/commit/3847b80517225e3dab481eb188fb522fcb842daf>`_
+- Make 'n' move you to the next card. `40a238f40 <https://github.com/fedora-infra/fedora-tagger/commit/40a238f4050160b5dd9a37b09fc75718a92bd2b6>`_
+- Update the hotkeys documentation. `bfb2d4475 <https://github.com/fedora-infra/fedora-tagger/commit/bfb2d44758d99894243864f2e49e315e365e1ddb>`_
+- Merge pull request #160 from fedora-infra/feature/consistent-hotkeys `b72d78773 <https://github.com/fedora-infra/fedora-tagger/commit/b72d7877361d4a35c80b81eec2d3763b565decf5>`_
+- change default `c2b8c44f5 <https://github.com/fedora-infra/fedora-tagger/commit/c2b8c44f5cc4fe43b075c0529664b5ae728805c2>`_
+- Merge pull request #162 from arielb2/feature/change_default `9434e8369 <https://github.com/fedora-infra/fedora-tagger/commit/9434e8369ac637c88e41fb96402f28aeb41fe258>`_
+- Not true anymore. `651c87350 <https://github.com/fedora-infra/fedora-tagger/commit/651c873505277081540e55e98b0593bdfb623f2b>`_
+- Use python-fedora avatar support.  Fixes #47. `01fdfba34 <https://github.com/fedora-infra/fedora-tagger/commit/01fdfba34736bd5e05602f470a58cb95a46512da>`_
+- Merge pull request #163 from fedora-infra/feature/python-fedora-avatars `564d19ca3 <https://github.com/fedora-infra/fedora-tagger/commit/564d19ca3ad48a906ea30cc1180afd7c080ea408>`_
+- Add some more stats to the stats page.  Fixes #63. `31b66fdac <https://github.com/fedora-infra/fedora-tagger/commit/31b66fdac983be378d75e24e09621f6ceed1bdba>`_
+- Handle division by zero. `bea899042 <https://github.com/fedora-infra/fedora-tagger/commit/bea899042e6219912d4722ec8a1a4ed65aa1b720>`_
+- Merge pull request #164 from fedora-infra/feature/stats++ `de9a529ec <https://github.com/fedora-infra/fedora-tagger/commit/de9a529ec7e4210fb5668eb0903804a9cee03594>`_
+- Preload 2 cards instead of 1. `3bb1740ea <https://github.com/fedora-infra/fedora-tagger/commit/3bb1740eadb31e4a82e6396d5582d74f1138209f>`_
+- Go ahead and animate left while waiting on the next card. `db1851c80 <https://github.com/fedora-infra/fedora-tagger/commit/db1851c804e5383f2b3c729789aa2ce128647fb2>`_
+- Signal request status to user with a spinning wait cursor. `c94e68b97 <https://github.com/fedora-infra/fedora-tagger/commit/c94e68b9754299c3d46067b1a3150175e263b69b>`_
+- Merge pull request #165 from fedora-infra/feature/prebuffer `38a892633 <https://github.com/fedora-infra/fedora-tagger/commit/38a8926330404a0e899c1081e8bf6f9019e90df9>`_
+- Update links to pkgdb2. `85785d662 <https://github.com/fedora-infra/fedora-tagger/commit/85785d662732099cd2d4cf7395e258fd7136b6cc>`_
+- Merge pull request #166 from fedora-infra/feature/pkgdb2-link `95116aa8b <https://github.com/fedora-infra/fedora-tagger/commit/95116aa8b492039efc3ec004a79615f1d98d9dea>`_
+
 2.1.2
 -----
 
