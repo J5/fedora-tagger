@@ -37,7 +37,7 @@ def get_tests_require(filename="test-requirements.txt"):
 setup(
     name='fedora-tagger',
     description='A web application for tagging and ranking packages',
-    version='2.1.3',
+    version='2.1.4',
     author='Pierre-Yves Chibon and Ralph Bean',
     author_email='pingou@pingoured.fr, ralph@fedoraproject.org',
     license='GPLv2+',
@@ -54,5 +54,6 @@ setup(
     [console_scripts]
     fedoratagger-update-db = fedoratagger.lib.update:main
     fedoratagger-remove-pkgs = fedoratagger.lib.retired:main
+    fedoratagger-merge-tag = fedoratagger.lib.merge_tags:main
     '''
 )
