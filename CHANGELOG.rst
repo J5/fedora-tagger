@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.1.5
+-----
+
+- Merge pull request #1 from fedora-infra/develop `013932455 <https://github.com/fedora-infra/fedora-tagger/commit/013932455f9dd9106bf9e1e5b397200c52baca53>`_
+- fix GROUP BY clause `760fb921a <https://github.com/fedora-infra/fedora-tagger/commit/760fb921a8e8b2288f5a0248a1d0bddde3bb1cd8>`_
+- Merge pull request #170 from arielb2/develop `9525b7b6d <https://github.com/fedora-infra/fedora-tagger/commit/9525b7b6d3acd9ba8f752eae8f1864173b2a7e58>`_
+- Specfile updates. `203e280b0 <https://github.com/fedora-infra/fedora-tagger/commit/203e280b0fa8f30720e5415d830afd85c7be1570>`_
+
 2.1.4
 -----
 
