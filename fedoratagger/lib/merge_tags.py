@@ -16,7 +16,7 @@ import fedoratagger as ft
 
 import sqlalchemy
 from sqlalchemy import func
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
 
 from sqlalchemy import and_
 
@@ -26,7 +26,7 @@ def process_values():
     print "Finding duplicate values....."
 
     rows = ft.SESSION.query(func.min(m.Tag.id).label("id"), m.Tag.package_id,\
-                            m.Tag.label,\
+                            func.lower(m.Tag.label).label("label"),\
                           func.sum(m.Tag.like).label("like"),\
                           func.sum(m.Tag.dislike).label("dislike")).\
                       group_by(func.lower(m.Tag.label), m.Tag.package_id).\
@@ -38,16 +38,30 @@ def process_values():
         c += 1
         update = ft.SESSION.query(m.Tag).filter(m.Tag.id==r.id)
         update.update(
-                       {"like": r.like, 
+                       {"like": r.like,
                         "dislike": r.dislike
                        }, synchronize_session='fetch'
                      )
 
         print "-----Deleting duplicate values.."
+
         duplicate = ft.SESSION.query(m.Tag.id, m.Tag.label).\
                        filter(and_(m.Tag.id != r.id,
                                    func.lower(m.Tag.label) == func.lower(r.label)),\
                                    m.Tag.package_id == r.package_id)
+
+        for rupdate in duplicate:
+            s = ft.SESSION
+            vote = s.query(m.Vote).filter(m.Vote.tag_id == rupdate.id)
+            try:
+                vote.update({"tag_id": r.id})
+            except IntegrityError:
+                s.rollback()
+            s.commit()
+
+        for rdel in duplicate:
+            vote = ft.SESSION.query(m.Vote).filter(m.Vote.tag_id == rdel.id)
+            vote.delete()
 
         duplicate.delete(synchronize_session='fetch')
 
