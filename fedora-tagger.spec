@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.1.3
+Version:        2.1.4
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -141,6 +141,8 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %files
 %doc README.rst
 %{_bindir}/fedoratagger-update-db
+%{_bindir}/fedoratagger-merge-tag
+%{_bindir}/fedoratagger-remove-pkgs
 %config %{_sysconfdir}/%{modname}/
 %{_datadir}/%{modname}/
 %config %{_datadir}/%{modname}/alembic.ini
@@ -148,6 +150,9 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Thu Jul 10 2014 Ralph Bean <rbean@redhat.com> - 2.1.4-1
+- Removing duplicate tags.
+
 * Wed May 21 2014 Ralph Bean <rbean@redhat.com> - 2.1.3-1
 - Various enhancements.
 
