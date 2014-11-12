@@ -17,7 +17,7 @@ BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 BuildRequires:  python-sqlalchemy0.7
 BuildRequires:  python-ordereddict
 %else
@@ -57,7 +57,7 @@ BuildRequires:  python-pydns
 
 BuildRequires:  python-nose
 
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 Requires:  python-sqlalchemy0.7
 Requires:  python-ordereddict
 %else
@@ -94,7 +94,7 @@ Requires:  python-pydns
 Requires:  python-psycopg2
 
 # Sad panda.  Oldschool mako doesn't handle encoding issues well.
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 BuildRequires:  python-mako0.4
 Requires:       python-mako0.4
 %endif
@@ -106,7 +106,7 @@ A web application for adding and ranking tags for Fedora packages.
 %prep
 %setup -q
 
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 # Make sure that epel/rhel picks up the correct version of webob
 awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"Mako>=0.4.2\", \"sqlalchemy>=0.7\"]; import pkg_resources"}1' setup.py > setup.py.tmp
 mv setup.py.tmp setup.py
