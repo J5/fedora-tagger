@@ -598,7 +598,9 @@ def tag_pkg_sqlite():
     This export format is consumed by the bodhi masher for inclusion
     in created yum repositories.
     """
-    return fedoratagger.lib.sqlitebuildtags()
+    return flask.Response(
+        fedoratagger.lib.sqlitebuildtags(),
+        mimetype='application/x-sqlite3')
 
 
 @API.route('/usage/<pkgname>/', methods=['GET', 'PUT'])
