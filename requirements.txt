@@ -1,31 +1,26 @@
 # Used for when working from a virtualenv.
 # Use this file by running "$ pip install -r requirements.txt"
-flask<0.10
+flask
 sqlalchemy
 alembic
 wtforms
-Flask-WTF<0.9
+Flask-WTF
 Flask-Mako
 mako>=0.4.2
 #psycopg2 ## Not needed for testing only when working with postgresql
 kitchen
-tw2.core<2.2
-tw2.forms<2.2
-tw2.jquery<2.2
-tw2.jqplugins.ui<2.2
-tw2.jqplugins.gritter<2.2
+tw2.core
+tw2.forms
+tw2.jquery
+tw2.jqplugins.ui
+tw2.jqplugins.gritter
 docutils
 WebOb
 fedmsg
 pkgwat.api
 pyzmq
 
-# Really, just 'python-fedora' will do, but we need the
-# flask_fas_openid stuff that hasn't yet been released.
-# Everything below here stuff that python-fedora *should*
-# pull in, but it doesn't when we install it this way.
-#git+https://github.com/fedora-infra/python-fedora.git
-
+python-fedora
 python-openid
 python-openid-cla # required by flask_fas_openid
 python-openid-teams # required by flask_fas_openid
