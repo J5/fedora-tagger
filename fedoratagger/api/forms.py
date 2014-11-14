@@ -21,11 +21,12 @@
 
 
 import flask
-from flask.ext import wtf
+import flask_wtf
 from datetime import time
 from datetime import datetime
 
 from wtforms import ValidationError
+import wtforms as wtf
 
 import fedoratagger.lib.model as model
 
@@ -52,14 +53,14 @@ def validate_boolean(form, field):
         raise ValidationError('Input must be either -1 (dislike) or 1 (like)')
 
 
-class AddTagForm(wtf.Form):
+class AddTagForm(flask_wtf.Form):
     """ Form used to add a tag to a package. """
     pkgname = wtf.TextField('Package name',
                             [wtf.validators.Required(), validate_package])
     tag = wtf.TextField('Tag', [wtf.validators.Required()])
 
 
-class AddRatingForm(wtf.Form):
+class AddRatingForm(flask_wtf.Form):
     """ Form used to add a rating to a package. """
     pkgname = wtf.TextField('Package name',
                             [wtf.validators.Required(), validate_package]
@@ -68,7 +69,7 @@ class AddRatingForm(wtf.Form):
                               validate_percentage])
 
 
-class SetUsageForm(wtf.Form):
+class SetUsageForm(flask_wtf.Form):
     """ Form used when toggling usage on a package. """
     pkgname = wtf.TextField('Package name',
                             [wtf.validators.Required(), validate_package]
@@ -76,7 +77,7 @@ class SetUsageForm(wtf.Form):
     usage = wtf.TextField('Usage', [wtf.validators.Required()])
 
 
-class VoteTagForm(wtf.Form):
+class VoteTagForm(flask_wtf.Form):
     """ Form used to add a rating to a package. """
     pkgname = wtf.TextField('Package name',
                             [wtf.validators.Required(), validate_package]
