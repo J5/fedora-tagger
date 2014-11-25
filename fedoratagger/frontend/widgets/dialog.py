@@ -73,7 +73,7 @@ class AddTagDialog(DialogWidget):
         'width': 350,
         'modal': True,
     }
-    value = """<input id="add_box"/>"""
+    value = """<input id="add_box"/><div id="info1" class="info">Press Enter to save tag</div>"""
 
 class LeaderboardDialog(DialogWidget):
     """ jQuery UI dialog for showing the leaderboard. """
