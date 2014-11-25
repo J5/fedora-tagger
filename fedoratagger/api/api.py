@@ -166,8 +166,8 @@ def tag_pkg_put(pkgname):
     output = {}
     form = forms.AddTagForm(csrf_enabled=False)
     if form.validate_on_submit():
-        pkgname = form.pkgname.data
-        tag = form.tag.data
+        pkgname = form.pkgname.data.strip()
+        tag = form.tag.data.strip()
         try:
             if ',' in tag:
                 tag = tag.split(',')
@@ -249,7 +249,7 @@ def rating_pkg_put(pkgname):
     output = {}
     form = forms.AddRatingForm(csrf_enabled=False)
     if form.validate_on_submit():
-        pkgname = form.pkgname.data
+        pkgname = form.pkgname.data.strip()
         rating = form.rating.data
         try:
             message = fedoratagger.lib.add_rating(ft.SESSION, pkgname, rating,
@@ -304,8 +304,8 @@ def usage_pkg_put(pkgname):
     output = {}
     form = forms.SetUsageForm(csrf_enabled=False)
     if form.validate_on_submit():
-        pkgname = form.pkgname.data
-        usage =  form.usage.data
+        pkgname = form.pkgname.data.strip()
+        usage =  form.usage.data.strip()
 
         # Not sure how to do this with just wtforms.
         # The BooleanField didn't behave like I want.
@@ -357,8 +357,8 @@ def vote_pkg_put(pkgname):
     output = {}
     form = forms.VoteTagForm(csrf_enabled=False)
     if form.validate_on_submit():
-        pkgname = form.pkgname.data
-        tag = form.tag.data
+        pkgname = form.pkgname.data.strip()
+        tag = form.tag.data.strip()
         vote = int(form.vote.data) == 1
         try:
             message = fedoratagger.lib.add_vote(ft.SESSION, pkgname, tag, vote,
@@ -598,7 +598,9 @@ def tag_pkg_sqlite():
     This export format is consumed by the bodhi masher for inclusion
     in created yum repositories.
     """
-    return fedoratagger.lib.sqlitebuildtags()
+    return flask.Response(
+        fedoratagger.lib.sqlitebuildtags(),
+        mimetype='application/x-sqlite3')
 
 
 @API.route('/usage/<pkgname>/', methods=['GET', 'PUT'])

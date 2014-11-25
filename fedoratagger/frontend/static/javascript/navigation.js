@@ -1,3 +1,8 @@
+if (typeof(String.prototype.trim) === "undefined") {
+    String.prototype.trim = function() {
+        return String(this).replace(/^\s+|\s+$/g, '');
+    };
+}
 function logout() {
     window.location = "logout/?" + $.param({
         next: window.location.href.split('?')[0]
@@ -63,21 +68,21 @@ function change_card() {
     center.removeClass('center');
     center.next().addClass('center');
 
-    var pkgname = $(".center h2").text();
+    var pkgname = $(".center h2").text().trim();
 
     // Add the vote callbacks to the tags on the new center card.
     $('.center .voter [class*=up]').click(function() {
-        var tagname = $(this).parent().parent().children('a').text();
+        var tagname = $(this).parent().parent().children('a').text().trim();
         upvote(pkgname, tagname);
     });
     $('.center .voter [class*=down]').click(function() {
-        var tagname = $(this).parent().parent().children('a').text();
+        var tagname = $(this).parent().parent().children('a').text().trim();
         downvote(pkgname, tagname);
     });
 
     // Enable the rating widget
     $('.center .rating').rating({showCancel: false, callback: function(v) {
-        var pkgname = $('.center .title h2').text();
+        var pkgname = $('.center .title h2').text().trim();
         rate_package(pkgname, Math.floor((v / 5) * 100));
     }});
 
@@ -308,21 +313,21 @@ function init_navigation() {
         }
     });
 
-    var pkgname = $(".center h2").text();
+    var pkgname = $(".center h2").text().trim();
 
     // Add the vote callbacks to the tags on the new center card.
     $('.center .voter [class*=up]').click(function() {
-        var tagname = $(this).parent().parent().children('a').text();
+        var tagname = $(this).parent().parent().children('a').text().trim();
         upvote(pkgname, tagname);
     });
     $('.center .voter [class*=down]').click(function() {
-        var tagname = $(this).parent().parent().children('a').text();
+        var tagname = $(this).parent().parent().children('a').text().trim();
         downvote(pkgname, tagname);
     });
 
     // Enable the rating widget
     $('.center .rating').rating({showCancel: false, callback: function(v) {
-        var pkgname = $('.center .title h2').text();
+        var pkgname = $('.center .title h2').text().trim();
         rate_package(pkgname, Math.floor((v / 5) * 99) + 1);
     }});
 }

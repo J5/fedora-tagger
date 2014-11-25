@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.1.3
+Version:        2.2.0
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -17,7 +17,7 @@ BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 BuildRequires:  python-sqlalchemy0.7
 BuildRequires:  python-ordereddict
 %else
@@ -57,7 +57,7 @@ BuildRequires:  python-pydns
 
 BuildRequires:  python-nose
 
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 Requires:  python-sqlalchemy0.7
 Requires:  python-ordereddict
 %else
@@ -94,7 +94,7 @@ Requires:  python-pydns
 Requires:  python-psycopg2
 
 # Sad panda.  Oldschool mako doesn't handle encoding issues well.
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 BuildRequires:  python-mako0.4
 Requires:       python-mako0.4
 %endif
@@ -106,7 +106,7 @@ A web application for adding and ranking tags for Fedora packages.
 %prep
 %setup -q
 
-%if %{?rhel}%{!?rhel:0} >= 6
+%if %{?rhel}%{!?rhel:0} <= 6
 # Make sure that epel/rhel picks up the correct version of webob
 awk 'NR==1{print "import __main__; __main__.__requires__ = __requires__ = [\"Mako>=0.4.2\", \"sqlalchemy>=0.7\"]; import pkg_resources"}1' setup.py > setup.py.tmp
 mv setup.py.tmp setup.py
@@ -141,6 +141,8 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %files
 %doc README.rst
 %{_bindir}/fedoratagger-update-db
+%{_bindir}/fedoratagger-merge-tag
+%{_bindir}/fedoratagger-remove-pkgs
 %config %{_sysconfdir}/%{modname}/
 %{_datadir}/%{modname}/
 %config %{_datadir}/%{modname}/alembic.ini
@@ -148,6 +150,15 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Fri Nov 14 2014 Ralph Bean <rbean@redhat.com> - 2.2.0-1
+- New release with modernizations for el7.
+
+* Tue Jul 15 2014 Ralph Bean <rbean@redhat.com> - 2.1.5-1
+- Bugfixes to the duplciate tag handling scripts.
+
+* Thu Jul 10 2014 Ralph Bean <rbean@redhat.com> - 2.1.4-1
+- Removing duplicate tags.
+
 * Wed May 21 2014 Ralph Bean <rbean@redhat.com> - 2.1.3-1
 - Various enhancements.
 
