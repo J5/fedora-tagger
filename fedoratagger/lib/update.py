@@ -89,10 +89,16 @@ def import_koji_pkgs():
     import koji
     session = koji.ClientSession("https://koji.fedoraproject.org/kojihub")
     count = 0
+    tagbp = 230 # id of el6-docs tag to bypass
     packages = session.listPackages()
     log.info("Looking through %i packages from koji." % len(packages))
     for package in packages:
         name = to_unicode(package['package_name'])
+        pkg_tagstatus = session.getPackageConfig(tagbp, package['package_id'])
+        if pkg_tagstatus is not None:
+            log.info("Package %s is tagged with el6-docs and will be skipped")\
+                 % name
+            continue # skipping if the package is tagged
         try:
             p = m.Package.by_name(ft.SESSION, name)
         except NoResultFound:
