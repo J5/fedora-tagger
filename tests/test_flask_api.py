@@ -98,7 +98,7 @@ class Flasktests(Modeltests):
         output = json.loads(output.data)
         self.assertEqual(output['name'], 'guake')
         self.assertEqual(output['summary'], u'drop-down terminal for gnóme')
-        self.assertEqual(output['icon'],'https://apps.fedoraproject.org/'
+        self.assertEqual(output['icon'], 'https://apps.fedoraproject.org/'
                          'packages/images/icons/guake.png')
         self.assertEqual(output['rating'], -1)
         self.assertEqual(output['usage'], 0)
@@ -478,7 +478,7 @@ class Flasktests(Modeltests):
         """ Test the vote_tag_pkg_put function.  """
 
         ### Test with wrong input
-        data = {'pkgname': 'guake', 'tags': 'terminal', 'vote':'1'}
+        data = {'pkgname': 'guake', 'tags': 'terminal', 'vote': '1'}
 
         output = self.app.put('/api/v1/vote/guake/', data=data)
         self.assertEqual(output.status_code, 500)
@@ -606,7 +606,7 @@ class Flasktests(Modeltests):
                     u'guake': [{
                         u'tag': u'gnóme',
                         u'total': 2,
-                    },{
+                    }, {
                         u'tag': u'terminal',
                         u'total': 2,
                     }]
@@ -614,7 +614,7 @@ class Flasktests(Modeltests):
                     u'geany': [{
                         u'tag': u'gnóme',
                         u'total': 2,
-                    },{
+                    }, {
                         u'tag': u'ide',
                         u'total': 2,
                     }]
