@@ -606,11 +606,11 @@ class FASUser(DeclarativeBase):
         :arg session: the session used to query the database.
         :kwarg limit: the max number of user to return.
         """
-        return  session.query(cls
-                             ).filter(FASUser.anonymous == False
-                             ).order_by(FASUser.score.desc()
-                             ).limit(limit
-                             ).all()
+        return session.query(cls
+                            ).filter(FASUser.anonymous == False
+                            ).order_by(FASUser.score.desc()
+                            ).limit(limit
+                            ).all()
 
     @classmethod
     def by_name(cls, session, username):
@@ -619,10 +619,10 @@ class FASUser(DeclarativeBase):
         :arg session: the session used to query the database.
         :arg username: the username of the desired user.
         """
-        return  session.query(cls
-                             ).filter(FASUser.username == username
-                             ).filter(FASUser.anonymous == False
-                             ).one()
+        return session.query(cls
+                            ).filter(FASUser.username == username
+                            ).filter(FASUser.anonymous == False
+                            ).one()
 
     def __json__(self, visited=None):
         obj = {
