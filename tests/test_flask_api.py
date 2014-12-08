@@ -812,9 +812,9 @@ class Flasktests(Modeltests):
         self.assertEqual(new_response.status_code, 200)
         data = json.loads(new_response.data)
         new_state = data['notifications_on']
-        if old_state == False:
+        if old_state is False:
             self.assertEqual(new_state, True)
-        elif old_state == True:
+        elif old_state is True:
             self.assertEqual(new_state, False)
         else:
             self.assertEqual(1, 2)
