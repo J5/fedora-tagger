@@ -44,7 +44,7 @@ def get_packages(status):
         total = output['page_total']
         for pkg in output['packages']:
             packages.append(pkg['name'])
-        page+=1
+        page += 1
 
     return packages
 
