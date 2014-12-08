@@ -637,7 +637,7 @@ def rating_pkg_dump():
 
     # Build a unique list while maintaining order
     packages = ratings.keys()
-    packages += [p for p in usages.keys() if not p in packages]
+    packages += [p for p in usages.keys() if p not in packages]
 
     for package in packages:
         n_ratings = len(package.ratings)
