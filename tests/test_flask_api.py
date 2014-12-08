@@ -710,7 +710,7 @@ class Flasktests(Modeltests):
         output = self.app.get('/api/v1/statistics/')
         self.assertEqual(output.status_code, 200)
         output = json.loads(output.data)
-        self.assertEqual([ 'summary'], output.keys())
+        self.assertEqual(['summary'], output.keys())
         self.assertEqual(0, output['summary']['with_tags'])
         self.assertEqual(3, output['summary']['no_tags'])
         self.assertEqual(0, output['summary']['tags_per_package'])
