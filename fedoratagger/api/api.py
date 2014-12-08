@@ -305,7 +305,7 @@ def usage_pkg_put(pkgname):
     form = forms.SetUsageForm(csrf_enabled=False)
     if form.validate_on_submit():
         pkgname = form.pkgname.data.strip()
-        usage =  form.usage.data.strip()
+        usage = form.usage.data.strip()
 
         # Not sure how to do this with just wtforms.
         # The BooleanField didn't behave like I want.
