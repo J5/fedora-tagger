@@ -235,7 +235,7 @@ def statistics(session):
         avg_votes_per_tag = 0
 
     if n_packs:
-        avg_votes_per_package  = n_votes / n_packs
+        avg_votes_per_package = n_votes / n_packs
         most_votes_per_tag = max(raw_data.values())
     else:
         avg_votes_per_package = 0
