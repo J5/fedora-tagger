@@ -200,14 +200,14 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(user_kevin.rank(self.session), 3)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                        'terminal', True , user_pingou)
+                                        'terminal', True, user_pingou)
 
         self.assertEqual(user_pingou.rank(self.session), 1)
         self.assertEqual(user_toshio.rank(self.session), 3)
         self.assertEqual(user_kevin.rank(self.session), 3)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                           'terminal', True , user_toshio)
+                                           'terminal', True, user_toshio)
 
         self.assertEqual(user_pingou.rank(self.session), 1)
         self.assertEqual(user_toshio.rank(self.session), 3)
@@ -228,16 +228,16 @@ class TaggerLibtests(Modeltests):
 
         self.assertRaises(fedoratagger.lib.TaggerapiException,
                           fedoratagger.lib.add_vote,
-                          self.session, 'test', 'terminal', True ,
+                          self.session, 'test', 'terminal', True,
                           user_pingou)
 
         self.assertRaises(fedoratagger.lib.TaggerapiException,
                           fedoratagger.lib.add_vote,
-                          self.session, 'guake', 'test', True ,
+                          self.session, 'guake', 'test', True,
                           user_pingou)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                           'terminal', True , user_pingou)
+                                           'terminal', True, user_pingou)
         self.assertEqual(out, 'Your vote on the tag "terminal" for the '
                          'package "guake" did not change')
 
@@ -249,7 +249,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(2, pkg.tags[1].like)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                           'terminal', False ,
+                                           'terminal', False,
                                            user_pingou)
         self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
@@ -263,7 +263,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(2, pkg.tags[1].total_votes)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                           'terminal', True , user_toshio)
+                                           'terminal', True, user_toshio)
         self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
 
@@ -276,7 +276,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, pkg.tags[1].total_votes)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                           'terminal', True , user_pingou)
+                                           'terminal', True, user_pingou)
         self.assertEqual(out, 'Vote changed on the tag "terminal" of the'
                          ' package "guake"')
 
@@ -289,7 +289,7 @@ class TaggerLibtests(Modeltests):
         self.assertEqual(3, pkg.tags[1].total_votes)
 
         out = fedoratagger.lib.add_vote(self.session, 'guake',
-                                           'terminal', False , user_kevin)
+                                           'terminal', False, user_kevin)
         self.assertEqual(out, 'Vote added on the tag "terminal" of the'
                          ' package "guake"')
 

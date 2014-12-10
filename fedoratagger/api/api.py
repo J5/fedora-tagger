@@ -305,7 +305,7 @@ def usage_pkg_put(pkgname):
     form = forms.SetUsageForm(csrf_enabled=False)
     if form.validate_on_submit():
         pkgname = form.pkgname.data.strip()
-        usage =  form.usage.data.strip()
+        usage = form.usage.data.strip()
 
         # Not sure how to do this with just wtforms.
         # The BooleanField didn't behave like I want.
@@ -637,7 +637,7 @@ def rating_pkg_dump():
 
     # Build a unique list while maintaining order
     packages = ratings.keys()
-    packages += [p for p in usages.keys() if not p in packages]
+    packages += [p for p in usages.keys() if p not in packages]
 
     for package in packages:
         n_ratings = len(package.ratings)

@@ -19,7 +19,7 @@ def strip_comments(lines):
         if line.startswith('#') or not line:
             continue
 
-        if not '#' in line:
+        if '#' not in line:
             yield line
         else:
             yield line[:line.index('#')]
