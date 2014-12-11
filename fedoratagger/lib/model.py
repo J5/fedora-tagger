@@ -190,7 +190,7 @@ class Package(DeclarativeBase):
             'name': self.name,
             'summary': self.summary,
             'tags': tags,
-            'rating': float(rating),
+            'rating': int(rating),
             'usage': self.usage,
             'icon': self.icon,
         }
