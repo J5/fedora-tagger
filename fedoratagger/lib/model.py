@@ -190,7 +190,7 @@ class Package(DeclarativeBase):
             'name': self.name,
             'summary': self.summary,
             'tags': tags,
-            'rating': float(rating),
+            'rating': int(rating),
             'usage': self.usage,
             'icon': self.icon,
         }
@@ -483,7 +483,10 @@ class Rating(DeclarativeBase):
     def __json__(self, session):
 
         result = {
-            'rating': self.rating,
+            # We type this to an int to avoid precision problems in json that
+            # cascade into crypto problems between machines.
+            # See https://github.com/fedora-infra/fedmsg/pull/201 for reference
+            'rating': int(self.rating),
             'user': self.user.__json__(),
             'package': self.package.__json__(session),
         }
