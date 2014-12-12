@@ -1,6 +1,43 @@
 Changelog
 =========
 
+2.2.1
+-----
+
+- Merge pull request #2 from fedora-infra/develop `aed7484a7 <https://github.com/fedora-infra/fedora-tagger/commit/aed7484a7bff569e0a471ab101c20ffac8fe56d8>`_
+- add message below input text `4ab4fe4c2 <https://github.com/fedora-infra/fedora-tagger/commit/4ab4fe4c254ad465bb5c5e2e68d2e71cec27b28e>`_
+- Exclude packages that are el6-docs tagged `85570fcb6 <https://github.com/fedora-infra/fedora-tagger/commit/85570fcb605bc1191625aa18d839b97c89eea9e6>`_
+- Merge pull request #183 from danielbruno/develop `7333c4280 <https://github.com/fedora-infra/fedora-tagger/commit/7333c42809a715597912bc7c9b286cc2e4fbacc8>`_
+- Merge pull request #182 from arielb2/develop `3193c583b <https://github.com/fedora-infra/fedora-tagger/commit/3193c583b9f1cdaf131e427c8fd9a18ade1db33d>`_
+- E713 test for membership should be 'not in' `a687d56f8 <https://github.com/fedora-infra/fedora-tagger/commit/a687d56f85b4c336fbcb278c5d5857cc6cd5cc8e>`_
+- E222 multiple spaces after operator `e5671cb55 <https://github.com/fedora-infra/fedora-tagger/commit/e5671cb55bf44642a5fa0ffb2ef4f82ad6691878>`_
+- E221 multiple spaces before operator `dbf0086e6 <https://github.com/fedora-infra/fedora-tagger/commit/dbf0086e6fe470fbbe248356345b627d77621bdd>`_
+- E225 missing whitespace around operator `2ced4ac67 <https://github.com/fedora-infra/fedora-tagger/commit/2ced4ac67155ced187a2a0a20a951aed8c4daa48>`_
+- E271 multiple spaces after keyword `2826c7a35 <https://github.com/fedora-infra/fedora-tagger/commit/2826c7a35b714556107898aeee5ced72d260e883>`_
+- E231 missing whitespace after ',' or ':' `18d5b4ec1 <https://github.com/fedora-infra/fedora-tagger/commit/18d5b4ec1a27902c941037aa661996872da14eb5>`_
+- E201 whitespace after '[' `2ca328e41 <https://github.com/fedora-infra/fedora-tagger/commit/2ca328e4164297695b602bdd7b3c1e92aa87cb3e>`_
+- E712 comparison to False should be 'if cond is False:' or 'if not cond:' `7a194b15e <https://github.com/fedora-infra/fedora-tagger/commit/7a194b15ee9223ceafc8a4c67d7f72dc4f8a3887>`_
+- E203 whitespace before ',' `ca049b90f <https://github.com/fedora-infra/fedora-tagger/commit/ca049b90fe6749891214568c6a42a7bac7d99f4e>`_
+- Merge pull request #184 from abhaykadam/develop `4bdc674bc <https://github.com/fedora-infra/fedora-tagger/commit/4bdc674bc1789cfde73ff1bf769483ea0cc28f46>`_
+- Floor the rating for fedmsg messages. `6ee162de6 <https://github.com/fedora-infra/fedora-tagger/commit/6ee162de68eef6c0acbfac0a978da48f0c547f80>`_
+- Also here (mostly here). `8c306d9cc <https://github.com/fedora-infra/fedora-tagger/commit/8c306d9cc361b905d66bf3d05a52e06a8aac1af8>`_
+- Merge pull request #185 from fedora-infra/feature/fedmsg-crypto `f850889fe <https://github.com/fedora-infra/fedora-tagger/commit/f850889fe599e0007bf15128fc9b1c86888ae58e>`_
+
+2.2.0
+-----
+
+- 2.1.5 `112505a9f <https://github.com/fedora-infra/fedora-tagger/commit/112505a9f5cdb360d54b1dd9a8a709ed46578ffb>`_
+- Open package details in a new tab `a7a37ef2e <https://github.com/fedora-infra/fedora-tagger/commit/a7a37ef2eac96cffa84c95b658f4de08c2b7dc8f>`_
+- Merge pull request #178 from abhaykadam/develop `24b848cc8 <https://github.com/fedora-infra/fedora-tagger/commit/24b848cc8536ddff80046dc477b812a1e6be1574>`_
+- Fix rhel conditionals. `9e2fb106d <https://github.com/fedora-infra/fedora-tagger/commit/9e2fb106d5866c618dd9248280a0bb2fd35cc6b9>`_
+- Merge pull request #180 from fedora-infra/feature/rhel7 `4f91ebb48 <https://github.com/fedora-infra/fedora-tagger/commit/4f91ebb48f6afaffd32abc5815d1ce0e5d806af1>`_
+- Loosen deps. `d57728ab9 <https://github.com/fedora-infra/fedora-tagger/commit/d57728ab9ca1acd44b49bb89784e059caa9576ac>`_
+- Use the modern syntax for flask.wtf. `afd2a54af <https://github.com/fedora-infra/fedora-tagger/commit/afd2a54af36ba31578d77e42c29273e169f9977c>`_
+- Stuff correct headers in there. `eb4e08a9f <https://github.com/fedora-infra/fedora-tagger/commit/eb4e08a9fc8df06c43b98e580f4c4bcc7516c7a6>`_
+- strip data returned by wtforms.  it now includes white space for unknown reasons. `d4ad7991e <https://github.com/fedora-infra/fedora-tagger/commit/d4ad7991e83ee432d81a1ab44aefb1567b606dde>`_
+- This is where all that whitespace was coming from. `c9e609fa0 <https://github.com/fedora-infra/fedora-tagger/commit/c9e609fa0f01aac15c614c36dfaf5ccbcd755d9e>`_
+- Merge pull request #181 from fedora-infra/feature/modernize-for-el7 `7e755dd52 <https://github.com/fedora-infra/fedora-tagger/commit/7e755dd5250b8586758c546d6c4ebae75c549b94>`_
+
 2.1.5
 -----
 
