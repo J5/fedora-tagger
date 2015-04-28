@@ -46,7 +46,6 @@
 		</div>
 
     % if 'FEDMENU_URL' in g.config:
-    <script src="${g.config['FEDMENU_URL']}/js/fedora-libravatar.js"></script>
     <script src="${g.config['FEDMENU_URL']}/js/fedmenu.js"></script>
     <script>
       fedmenu({
