@@ -44,5 +44,26 @@
 			<a href="https://github.com/fedora-infra/fedora-tagger/issues">
 			the GitHub issues tracker</a>.
 		</div>
+
+    % if 'FEDMENU_URL' in g.config:
+    <script src="${g.config['FEDMENU_URL']}/js/fedmenu.js"></script>
+    <script>
+      fedmenu({
+          'url': '${g.config["FEDMENU_DATA_URL"]}',
+          'mimeType': 'application/javascript',
+          'position': 'bottom-right',
+          #### It would be really nice to be able to link directly to packages
+          #### with fedmenu, but currently fedmenu can only be called once at
+          #### the initial page setup.  Tagger is very javascript-driven, so we
+          #### would need a way to update fedmenu with the new package icon every
+          #### time the user navigates to the next tagger card.  Put this on the
+          #### TODO list, low priority.
+          ## % if cards:
+          ## 'package': '${cards[1].package.name}',
+          ## % endif
+      });
+    </script>
+    % endif
+
     </body>
 </html>

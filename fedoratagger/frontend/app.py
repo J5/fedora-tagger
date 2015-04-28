@@ -81,6 +81,8 @@ def before_request(*args, **kw):
     for link in ["utilities.js", "cards.js", "navigation.js"]:
         tw2.core.JSLink(link="javascript/%s" % link).req().prepare()
 
+    flask.g.config = ft.APP.config
+
     flask.g.hotkeys_dialog = HotkeysDialog
     flask.g.search_dialog = SearchDialog
     flask.g.leaderboard_dialog = LeaderboardDialog
