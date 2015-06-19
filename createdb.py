@@ -12,6 +12,8 @@ session = model.create_tables(APP.config['DB_URL'], debug=True)
 import sys
 
 if '--with-dev-data' in sys.argv:
-    package = model.Package(id=1, name=u"mattd", summary=u"Matt Daemon ☃")
+    package = model.Package(
+        id=1, name=u"nethack",
+        summary=u"The greatest game you will ever play ☃")
     session.add(package)
     session.commit()

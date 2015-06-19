@@ -143,7 +143,7 @@ def card(name):
     else:
         package = m.Package.random(ft.SESSION)
 
-    w = CardWidget(package=package)
+    w = CardWidget(package=package, session=ft.SESSION)
     return w.display()
 
 
@@ -219,7 +219,10 @@ def home(name=None):
         except m.NoResultFound:
             packages[1] = m.Package()
 
-    cards = [CardWidget(package=packages[i]) for i in range(4)]
+    cards = [
+        CardWidget(package=packages[i], session=ft.SESSION)
+        for i in range(4)
+    ]
     cards[1].css_class = 'card center'
 
     return render_template('tagger.mak', cards=cards,

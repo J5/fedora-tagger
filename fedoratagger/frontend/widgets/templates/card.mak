@@ -4,8 +4,8 @@
     <div class="package_header">
       <div class="title">
         % if w.package.name:
-          % if w.package.icon:
-            <div class="icon"><img src="${w.package.icon}"/></div>
+          % if w.package.icon(w.session):
+            <div class="icon"><img src="${w.package.icon(w.session)}"/></div>
           % endif
           <div>
             <h2>
@@ -19,7 +19,7 @@
            % if w.package.summary:
              ${w.package.summary}
            % else:
-             ${w.package.xapian_summary}
+             ${w.package.xapian_summary(w.session)}
            % endif
           </div>
           <div>
