@@ -108,6 +108,7 @@ class Package(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
     summary = Column(UnicodeText(convert_unicode=False), nullable=False)
+    _meta = Column(Unicode(255), server_default='{}', nullable=False)
 
     tags = relation('Tag', backref=('package'))
     ratings = relation('Rating', backref=('package'))
@@ -117,25 +118,27 @@ class Package(DeclarativeBase):
         return session.query(func.avg(Rating.rating))\
             .filter_by(package_id=self.id).one()[0]
 
-    @property
-    def meta(self):
-        if not getattr(self, '_meta', None):
+    def meta(self, session):
+        meta = json.loads(self._meta or '{}')
+        if not meta:
             try:
-                self._meta = pkgwat.api.get(self.name)
-            except Exception:
-                self._meta = {}
+                meta = pkgwat.api.get(self.name)
+                self._meta = json.dumps(meta)
+                session.add(self)
+                session.commit()
+            except Exception as e:
+                print "Failed to get meta: %r from fedora-packages" % self.name
+                print str(e)
 
-        return self._meta
+        return meta
 
-    @property
-    def icon(self):
+    def icon(self, sess):
         # TODO - cache this in the db so we don't have to hit pkgwat.
         tmpl = "https://apps.fedoraproject.org/packages/images/icons/%s.png"
-        return tmpl % (self.meta.get('icon', None) or 'package_128x128')
+        return tmpl % (self.meta(sess).get('icon', None) or 'package_128x128')
 
-    @property
-    def xapian_summary(self):
-        return self.meta.get('summary', None) or ''
+    def xapian_summary(self, sess):
+        return self.meta(sess).get('summary', None) or ''
 
     @classmethod
     def by_name(cls, session, pkgname):

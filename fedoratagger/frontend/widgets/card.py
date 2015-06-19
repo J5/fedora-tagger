@@ -43,6 +43,7 @@ class CardWidget(tw2.forms.LabelField):
 
     N = tw2.core.Param("Number of tags to show", default=5)
     package = tw2.core.Param(default=None)
+    session = tw2.core.Param(default=None)
     tags = tw2.core.params.Variable()
     css_class = 'card'
     rating = None
