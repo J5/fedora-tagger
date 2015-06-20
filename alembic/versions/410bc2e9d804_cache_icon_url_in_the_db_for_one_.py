@@ -16,7 +16,7 @@ import sqlalchemy as sa
 
 def upgrade():
     op.add_column('package', sa.Column(
-        '_meta', sa.Unicode(length=255), server_default='{}', nullable=False))
+        '_meta', sa.Unicode(), server_default='{}', nullable=False))
 
 
 def downgrade():

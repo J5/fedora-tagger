@@ -108,7 +108,7 @@ class Package(DeclarativeBase):
     id = Column(Integer, primary_key=True)
     name = Column(Unicode(255), nullable=False)
     summary = Column(UnicodeText(convert_unicode=False), nullable=False)
-    _meta = Column(Unicode(255), server_default='{}', nullable=False)
+    _meta = Column(Unicode, server_default='{}', nullable=False)
 
     tags = relation('Tag', backref=('package'))
     ratings = relation('Rating', backref=('package'))
