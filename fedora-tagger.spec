@@ -5,7 +5,7 @@
 %define eggname fedora_tagger
 
 Name:           fedora-tagger
-Version:        2.3.0
+Version:        2.3.1
 Release:        1%{?dist}
 Summary:        A web application for adding and ranking tags for Fedora packages
 
@@ -150,6 +150,9 @@ cp -rf alembic/* %{buildroot}%{_datadir}/%{modname}/alembic
 %{python_sitelib}/%{eggname}-%{version}-py%{pyver}.egg-info/
 
 %changelog
+* Fri Jun 19 2015 Ralph Bean <rbean@redhat.com> - 2.3.1-1
+- Lengthen metadata cache field.
+
 * Fri Jun 19 2015 Ralph Bean <rbean@redhat.com> - 2.3.0-1
 - Cache pkgwat data in the db for faster response times.
 
