@@ -41,7 +41,8 @@ from fedoratagger.lib import model
 
 
 DB_URL = 'sqlite:///:memory:'
-FAITOUT_URL = 'http://209.132.184.152/faitout/'
+FAITOUT_URL = 'http://faitout.fedorainfracloud.org/'
+
 try:
     import requests
     req = requests.get('%s/new' % FAITOUT_URL)
