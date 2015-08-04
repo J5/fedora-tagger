@@ -1,0 +1,34 @@
+# Used for when working from a virtualenv.
+# Use this file by running "$ pip install -r requirements.txt"
+flask
+sqlalchemy
+alembic
+wtforms
+Flask-WTF
+Flask-Mako
+mako>=0.4.2
+#psycopg2 ## Not needed for testing only when working with postgresql
+kitchen
+tw2.core
+tw2.forms
+tw2.jquery
+tw2.jqplugins.ui
+tw2.jqplugins.gritter
+docutils
+WebOb
+fedmsg
+pkgwat.api
+pyzmq
+
+python-fedora
+python-openid
+python-openid-cla # required by flask_fas_openid
+python-openid-teams # required by flask_fas_openid
+requests
+urllib3
+PyYAML
+
+# These are not strictly required, but they enable the libravatar support in
+# python-fedora which we want.
+pylibravatar
+pydns

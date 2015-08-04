@@ -1,0 +1,512 @@
+Changelog
+=========
+
+2.2.1
+-----
+
+- Merge pull request #2 from fedora-infra/develop `aed7484a7 <https://github.com/fedora-infra/fedora-tagger/commit/aed7484a7bff569e0a471ab101c20ffac8fe56d8>`_
+- add message below input text `4ab4fe4c2 <https://github.com/fedora-infra/fedora-tagger/commit/4ab4fe4c254ad465bb5c5e2e68d2e71cec27b28e>`_
+- Exclude packages that are el6-docs tagged `85570fcb6 <https://github.com/fedora-infra/fedora-tagger/commit/85570fcb605bc1191625aa18d839b97c89eea9e6>`_
+- Merge pull request #183 from danielbruno/develop `7333c4280 <https://github.com/fedora-infra/fedora-tagger/commit/7333c42809a715597912bc7c9b286cc2e4fbacc8>`_
+- Merge pull request #182 from arielb2/develop `3193c583b <https://github.com/fedora-infra/fedora-tagger/commit/3193c583b9f1cdaf131e427c8fd9a18ade1db33d>`_
+- E713 test for membership should be 'not in' `a687d56f8 <https://github.com/fedora-infra/fedora-tagger/commit/a687d56f85b4c336fbcb278c5d5857cc6cd5cc8e>`_
+- E222 multiple spaces after operator `e5671cb55 <https://github.com/fedora-infra/fedora-tagger/commit/e5671cb55bf44642a5fa0ffb2ef4f82ad6691878>`_
+- E221 multiple spaces before operator `dbf0086e6 <https://github.com/fedora-infra/fedora-tagger/commit/dbf0086e6fe470fbbe248356345b627d77621bdd>`_
+- E225 missing whitespace around operator `2ced4ac67 <https://github.com/fedora-infra/fedora-tagger/commit/2ced4ac67155ced187a2a0a20a951aed8c4daa48>`_
+- E271 multiple spaces after keyword `2826c7a35 <https://github.com/fedora-infra/fedora-tagger/commit/2826c7a35b714556107898aeee5ced72d260e883>`_
+- E231 missing whitespace after ',' or ':' `18d5b4ec1 <https://github.com/fedora-infra/fedora-tagger/commit/18d5b4ec1a27902c941037aa661996872da14eb5>`_
+- E201 whitespace after '[' `2ca328e41 <https://github.com/fedora-infra/fedora-tagger/commit/2ca328e4164297695b602bdd7b3c1e92aa87cb3e>`_
+- E712 comparison to False should be 'if cond is False:' or 'if not cond:' `7a194b15e <https://github.com/fedora-infra/fedora-tagger/commit/7a194b15ee9223ceafc8a4c67d7f72dc4f8a3887>`_
+- E203 whitespace before ',' `ca049b90f <https://github.com/fedora-infra/fedora-tagger/commit/ca049b90fe6749891214568c6a42a7bac7d99f4e>`_
+- Merge pull request #184 from abhaykadam/develop `4bdc674bc <https://github.com/fedora-infra/fedora-tagger/commit/4bdc674bc1789cfde73ff1bf769483ea0cc28f46>`_
+- Floor the rating for fedmsg messages. `6ee162de6 <https://github.com/fedora-infra/fedora-tagger/commit/6ee162de68eef6c0acbfac0a978da48f0c547f80>`_
+- Also here (mostly here). `8c306d9cc <https://github.com/fedora-infra/fedora-tagger/commit/8c306d9cc361b905d66bf3d05a52e06a8aac1af8>`_
+- Merge pull request #185 from fedora-infra/feature/fedmsg-crypto `f850889fe <https://github.com/fedora-infra/fedora-tagger/commit/f850889fe599e0007bf15128fc9b1c86888ae58e>`_
+
+2.2.0
+-----
+
+- 2.1.5 `112505a9f <https://github.com/fedora-infra/fedora-tagger/commit/112505a9f5cdb360d54b1dd9a8a709ed46578ffb>`_
+- Open package details in a new tab `a7a37ef2e <https://github.com/fedora-infra/fedora-tagger/commit/a7a37ef2eac96cffa84c95b658f4de08c2b7dc8f>`_
+- Merge pull request #178 from abhaykadam/develop `24b848cc8 <https://github.com/fedora-infra/fedora-tagger/commit/24b848cc8536ddff80046dc477b812a1e6be1574>`_
+- Fix rhel conditionals. `9e2fb106d <https://github.com/fedora-infra/fedora-tagger/commit/9e2fb106d5866c618dd9248280a0bb2fd35cc6b9>`_
+- Merge pull request #180 from fedora-infra/feature/rhel7 `4f91ebb48 <https://github.com/fedora-infra/fedora-tagger/commit/4f91ebb48f6afaffd32abc5815d1ce0e5d806af1>`_
+- Loosen deps. `d57728ab9 <https://github.com/fedora-infra/fedora-tagger/commit/d57728ab9ca1acd44b49bb89784e059caa9576ac>`_
+- Use the modern syntax for flask.wtf. `afd2a54af <https://github.com/fedora-infra/fedora-tagger/commit/afd2a54af36ba31578d77e42c29273e169f9977c>`_
+- Stuff correct headers in there. `eb4e08a9f <https://github.com/fedora-infra/fedora-tagger/commit/eb4e08a9fc8df06c43b98e580f4c4bcc7516c7a6>`_
+- strip data returned by wtforms.  it now includes white space for unknown reasons. `d4ad7991e <https://github.com/fedora-infra/fedora-tagger/commit/d4ad7991e83ee432d81a1ab44aefb1567b606dde>`_
+- This is where all that whitespace was coming from. `c9e609fa0 <https://github.com/fedora-infra/fedora-tagger/commit/c9e609fa0f01aac15c614c36dfaf5ccbcd755d9e>`_
+- Merge pull request #181 from fedora-infra/feature/modernize-for-el7 `7e755dd52 <https://github.com/fedora-infra/fedora-tagger/commit/7e755dd5250b8586758c546d6c4ebae75c549b94>`_
+
+2.1.5
+-----
+
+- Merge pull request #1 from fedora-infra/develop `013932455 <https://github.com/fedora-infra/fedora-tagger/commit/013932455f9dd9106bf9e1e5b397200c52baca53>`_
+- fix GROUP BY clause `760fb921a <https://github.com/fedora-infra/fedora-tagger/commit/760fb921a8e8b2288f5a0248a1d0bddde3bb1cd8>`_
+- Merge pull request #170 from arielb2/develop `9525b7b6d <https://github.com/fedora-infra/fedora-tagger/commit/9525b7b6d3acd9ba8f752eae8f1864173b2a7e58>`_
+- Specfile updates. `203e280b0 <https://github.com/fedora-infra/fedora-tagger/commit/203e280b0fa8f30720e5415d830afd85c7be1570>`_
+
+2.1.4
+-----
+
+- But.... `a715d90a5 <https://github.com/fedora-infra/fedora-tagger/commit/a715d90a58b54eba79b5afe1bb40035c89bcc6c3>`_
+- merge tags duplicate `adcb14784 <https://github.com/fedora-infra/fedora-tagger/commit/adcb147844a84028d01e80b4fe69449abee7f943>`_
+- finds retired packages and removes them `d9b0de970 <https://github.com/fedora-infra/fedora-tagger/commit/d9b0de970647ad024a30965e76d646ef647fdd6b>`_
+- rm retired.py `6ba901bfe <https://github.com/fedora-infra/fedora-tagger/commit/6ba901bfe7b76f7570f9ef9d3189602c4590b89c>`_
+- Finds retired packages and removes them. `9c3c5de95 <https://github.com/fedora-infra/fedora-tagger/commit/9c3c5de9556679e298c5f71353a929cc1eab74a1>`_
+- Merge pull request #168 from arielb2/retire `583fb4fa5 <https://github.com/fedora-infra/fedora-tagger/commit/583fb4fa57e594032a81855ddf0a6945693e0d18>`_
+- Merge remote-tracking branch 'upstream/develop' into develop `bb783fe03 <https://github.com/fedora-infra/fedora-tagger/commit/bb783fe03292dfe54e0d528d47f2cf6d4799863e>`_
+- Lower all tags entered. `a0a090f6d <https://github.com/fedora-infra/fedora-tagger/commit/a0a090f6db76107fde0aa48557ca0265720abd09>`_
+- Merge pull request #169 from arielb2/feature/merge-tag `1a2d5641d <https://github.com/fedora-infra/fedora-tagger/commit/1a2d5641dbe697994e474638f5f097eb423dca48>`_
+
+2.1.3
+-----
+
+- spec bump. `c8b60fd0a <https://github.com/fedora-infra/fedora-tagger/commit/c8b60fd0a5c22b61b3e929b54031930d6df8cfef>`_
+- Link package name to fedora packages app `ae007a31d <https://github.com/fedora-infra/fedora-tagger/commit/ae007a31d0e7b393dcc76be645fa9e17c879d70f>`_
+- Update URLs in package details `f3574a48c <https://github.com/fedora-infra/fedora-tagger/commit/f3574a48ca2016273254ebd9d8257ef5e51f5851>`_
+- Fix some PEP8 violations `1678329df <https://github.com/fedora-infra/fedora-tagger/commit/1678329df443ac1cec8bec0da9eb7f7299f70b17>`_
+- Merge pull request #147 from tyll/link_fedora_packages `1fca39cb6 <https://github.com/fedora-infra/fedora-tagger/commit/1fca39cb6cec88d060c3190aef42956caaa14122>`_
+- Remove hard-coded secret key from the sources `45e3fa789 <https://github.com/fedora-infra/fedora-tagger/commit/45e3fa789ef3de913b0a3c36399b8197988857ed>`_
+- Add a default secret key to the configuration `0c342b890 <https://github.com/fedora-infra/fedora-tagger/commit/0c342b890505968dd9807557399eca394e785d51>`_
+- Merge pull request #148 from fedora-infra/feature/add_default_secret `e72fbf958 <https://github.com/fedora-infra/fedora-tagger/commit/e72fbf958993f98aba7653945a4912811a9f5e1f>`_
+- change unicode `453a4439a <https://github.com/fedora-infra/fedora-tagger/commit/453a4439a72f5d707e159eb4aa2104273e874801>`_
+- filter filter change packages to load summary with ('no summary') `cb337ca02 <https://github.com/fedora-infra/fedora-tagger/commit/cb337ca0266541d78ad327f6003fd3faef898246>`_
+- Merge pull request #150 from arielb2/summarysummary `62a5b15f5 <https://github.com/fedora-infra/fedora-tagger/commit/62a5b15f54980d1a164a0d66c3e93b5d87bd7438>`_
+- Merge pull request #149 from arielb2/feature/unicodetext `e4dfec8c4 <https://github.com/fedora-infra/fedora-tagger/commit/e4dfec8c43a9d4b8f4715a7bae4160a881d53ae2>`_
+- Fix card stepping, which was broken in ae007a31d0e7 `ec6d72e0c <https://github.com/fedora-infra/fedora-tagger/commit/ec6d72e0ceae547d5238d0613209ca9bb3db118e>`_
+- Fix css for the titles of the "cards" `604f252e9 <https://github.com/fedora-infra/fedora-tagger/commit/604f252e9f02906872422888e87a4d4d91dbdaf7>`_
+- Merge pull request #152 from fedora-infra/feature/css-for-package-names `6b3cec6d6 <https://github.com/fedora-infra/fedora-tagger/commit/6b3cec6d60b4afd23a886074bf41d48560fe079c>`_
+- Merge pull request #151 from fedora-infra/feature/fix-card-stepping `7f4452edf <https://github.com/fedora-infra/fedora-tagger/commit/7f4452edf971e0191138f40e433cb6b81e85c3ad>`_
+- Fix JS race condition `301f8140a <https://github.com/fedora-infra/fedora-tagger/commit/301f8140ae2b5878a895eeeaca6155b36c0e78ac>`_
+- Fix "1 people use this" `dd5fc4b28 <https://github.com/fedora-infra/fedora-tagger/commit/dd5fc4b28d5955f2ad7dba05df6c76c2d056df47>`_
+- Merge pull request #156 from fedora-infra/1-people `fa3bd8490 <https://github.com/fedora-infra/fedora-tagger/commit/fa3bd84908ce2048947717aeefae84c4c67d4fad>`_
+- Catch and inform 500 of non-existing packages `7ba763bc3 <https://github.com/fedora-infra/fedora-tagger/commit/7ba763bc327392a504969476243d1307f3ad38ad>`_
+- Rework the indentation and add missing % endif and </div> in the card template `fa7ecbe36 <https://github.com/fedora-infra/fedora-tagger/commit/fa7ecbe36c0dd470f9787fbe481f7792cb49dd0e>`_
+- Merge pull request #159 from fedora-infra/indentation_fix `0711fcdf7 <https://github.com/fedora-infra/fedora-tagger/commit/0711fcdf72f8a0aeefd515273432d14fe3e9a636>`_
+- Further fix indentation and mako control from #159. `671fb3f56 <https://github.com/fedora-infra/fedora-tagger/commit/671fb3f565fcce9a1d40209b2158f8ec9ddb0837>`_
+- Fix another basic bug introduced in a recent pull request. `2355dd612 <https://github.com/fedora-infra/fedora-tagger/commit/2355dd612e6352a1d8200df9085ff62aad4b00e8>`_
+- Make upvoting the last item not automatically move you to the next card. `3847b8051 <https://github.com/fedora-infra/fedora-tagger/commit/3847b80517225e3dab481eb188fb522fcb842daf>`_
+- Make 'n' move you to the next card. `40a238f40 <https://github.com/fedora-infra/fedora-tagger/commit/40a238f4050160b5dd9a37b09fc75718a92bd2b6>`_
+- Update the hotkeys documentation. `bfb2d4475 <https://github.com/fedora-infra/fedora-tagger/commit/bfb2d44758d99894243864f2e49e315e365e1ddb>`_
+- Merge pull request #160 from fedora-infra/feature/consistent-hotkeys `b72d78773 <https://github.com/fedora-infra/fedora-tagger/commit/b72d7877361d4a35c80b81eec2d3763b565decf5>`_
+- change default `c2b8c44f5 <https://github.com/fedora-infra/fedora-tagger/commit/c2b8c44f5cc4fe43b075c0529664b5ae728805c2>`_
+- Merge pull request #162 from arielb2/feature/change_default `9434e8369 <https://github.com/fedora-infra/fedora-tagger/commit/9434e8369ac637c88e41fb96402f28aeb41fe258>`_
+- Not true anymore. `651c87350 <https://github.com/fedora-infra/fedora-tagger/commit/651c873505277081540e55e98b0593bdfb623f2b>`_
+- Use python-fedora avatar support.  Fixes #47. `01fdfba34 <https://github.com/fedora-infra/fedora-tagger/commit/01fdfba34736bd5e05602f470a58cb95a46512da>`_
+- Merge pull request #163 from fedora-infra/feature/python-fedora-avatars `564d19ca3 <https://github.com/fedora-infra/fedora-tagger/commit/564d19ca3ad48a906ea30cc1180afd7c080ea408>`_
+- Add some more stats to the stats page.  Fixes #63. `31b66fdac <https://github.com/fedora-infra/fedora-tagger/commit/31b66fdac983be378d75e24e09621f6ceed1bdba>`_
+- Handle division by zero. `bea899042 <https://github.com/fedora-infra/fedora-tagger/commit/bea899042e6219912d4722ec8a1a4ed65aa1b720>`_
+- Merge pull request #164 from fedora-infra/feature/stats++ `de9a529ec <https://github.com/fedora-infra/fedora-tagger/commit/de9a529ec7e4210fb5668eb0903804a9cee03594>`_
+- Preload 2 cards instead of 1. `3bb1740ea <https://github.com/fedora-infra/fedora-tagger/commit/3bb1740eadb31e4a82e6396d5582d74f1138209f>`_
+- Go ahead and animate left while waiting on the next card. `db1851c80 <https://github.com/fedora-infra/fedora-tagger/commit/db1851c804e5383f2b3c729789aa2ce128647fb2>`_
+- Signal request status to user with a spinning wait cursor. `c94e68b97 <https://github.com/fedora-infra/fedora-tagger/commit/c94e68b9754299c3d46067b1a3150175e263b69b>`_
+- Merge pull request #165 from fedora-infra/feature/prebuffer `38a892633 <https://github.com/fedora-infra/fedora-tagger/commit/38a8926330404a0e899c1081e8bf6f9019e90df9>`_
+- Update links to pkgdb2. `85785d662 <https://github.com/fedora-infra/fedora-tagger/commit/85785d662732099cd2d4cf7395e258fd7136b6cc>`_
+- Merge pull request #166 from fedora-infra/feature/pkgdb2-link `95116aa8b <https://github.com/fedora-infra/fedora-tagger/commit/95116aa8b492039efc3ec004a79615f1d98d9dea>`_
+
+2.1.2
+-----
+
+- spec bump. `3252451de <https://github.com/fedora-infra/fedora-tagger/commit/3252451decd5e1345455bdc6d4c9900eb37fbbc1>`_
+- Use a hash of anonymous users' IPs. `db417f003 <https://github.com/fedora-infra/fedora-tagger/commit/db417f003764511a09269b0d4eccd6dad7f78b74>`_
+- Alembic upgrade script for hashed ips. `eb75bdb29 <https://github.com/fedora-infra/fedora-tagger/commit/eb75bdb29f69c241d5656b8d720d555a7054e913>`_
+- Merge pull request #145 from fedora-infra/feature/hash-ip `a014a0a83 <https://github.com/fedora-infra/fedora-tagger/commit/a014a0a839c3804f49301e7a42207ad7f6fddfdb>`_
+- Add failing test for the ratings dump. `74c780ed2 <https://github.com/fedora-infra/fedora-tagger/commit/74c780ed285797a2de6d5cdd13509df7d78c1266>`_
+- Fix the rating/usage list. `f7e1ef874 <https://github.com/fedora-infra/fedora-tagger/commit/f7e1ef87476afa3606333ef9221ec81c8c44823b>`_
+- Merge pull request #146 from fedora-infra/feature/rating-list-fix `16f664926 <https://github.com/fedora-infra/fedora-tagger/commit/16f6649263a9b68f6633c9f311a4e9c2ed7bf482>`_
+
+2.1.1
+-----
+
+- spec work. `89b5273c9 <https://github.com/fedora-infra/fedora-tagger/commit/89b5273c9c697ff01c9d8edbdbbeac799caad3af>`_
+- Make that usage api a little more explicit for @hughsie. `3354de115 <https://github.com/fedora-infra/fedora-tagger/commit/3354de115fdb18cd498ee5c4dbeba112e3ab6ddd>`_
+- Remove unused variable. `ce392f934 <https://github.com/fedora-infra/fedora-tagger/commit/ce392f9342388b3ca3b2536fe06c9ba5b851da81>`_
+- Merge pull request #143 from fedora-infra/feature/explicit-usage-api `f686d941a <https://github.com/fedora-infra/fedora-tagger/commit/f686d941a9b18053ffde217c88c4e24b53569d07>`_
+
+2.1.0
+-----
+
+- Gracefully degrade if the fedora-packages app is unavailable. `bcfdf4e6a <https://github.com/fedora-infra/fedora-tagger/commit/bcfdf4e6a6b75e8c2e9d07cdd01f895db95c654d>`_
+- Merge pull request #133 from fedora-infra/feature/careful `a407ece00 <https://github.com/fedora-infra/fedora-tagger/commit/a407ece00af2350596a388e410c0a962278d77cd>`_
+- Add method to Model Vote and function for statics_per_user in lib `aacbc7f5b <https://github.com/fedora-infra/fedora-tagger/commit/aacbc7f5bde4f59efd6bb0a8304975e3c83f1b0c>`_
+- Add new test user `06080d61a <https://github.com/fedora-infra/fedora-tagger/commit/06080d61a9564cd6ffe313a56f8187720cf2815a>`_
+- Add test for statistics_per_user `b636ec9af <https://github.com/fedora-infra/fedora-tagger/commit/b636ec9afab46de3d0fbf2e5bd3ade844f450e9f>`_
+- Add function for API `b785f9bd3 <https://github.com/fedora-infra/fedora-tagger/commit/b785f9bd3439d11f3a0f237a5de4d25c1eb1e285>`_
+- Add API `659be25f2 <https://github.com/fedora-infra/fedora-tagger/commit/659be25f23d6df7de051f73bddc85733291298b1>`_
+- Change per with by and fix minor issues `7c94e6cba <https://github.com/fedora-infra/fedora-tagger/commit/7c94e6cba0b9b816404448b8e67857194f6a97ff>`_
+- Change get_vote_user with get_votes_user `4e67c0199 <https://github.com/fedora-infra/fedora-tagger/commit/4e67c0199caed540d37a079b08409df4a9cd6af4>`_
+- Add statistics link to user card `38bca0d61 <https://github.com/fedora-infra/fedora-tagger/commit/38bca0d612df6f5be37d834690b19e9cbc4eb580>`_
+- Change minor in API and frontend `5661b1a22 <https://github.com/fedora-infra/fedora-tagger/commit/5661b1a22eecc5824f6ced705879c3cc0b511248>`_
+- add username to .mak file `87af805a6 <https://github.com/fedora-infra/fedora-tagger/commit/87af805a67b76594ffffff4ff6a22fcb531d1bc7>`_
+- Remove erroneous characters. `37c7ed36c <https://github.com/fedora-infra/fedora-tagger/commit/37c7ed36cf8ee2058d78ddbc9d48db58d483db85>`_
+- Fix the tests. `819641379 <https://github.com/fedora-infra/fedora-tagger/commit/819641379ce0331dc8c03d21db0e382a49dba0c0>`_
+- Fix problem with table and data `4edd1d408 <https://github.com/fedora-infra/fedora-tagger/commit/4edd1d4083ea6053809f75a8737ed7acab7edd5d>`_
+- Remove unnecessary files `eb3b84081 <https://github.com/fedora-infra/fedora-tagger/commit/eb3b840811901db0b67cadc483b3d856756d9229>`_
+- Just update this text. `7ab8038b6 <https://github.com/fedora-infra/fedora-tagger/commit/7ab8038b6237838b2e5807092f80504dd3d79c42>`_
+- Change the format of the ratings dump endpoint. `55ed00b4f <https://github.com/fedora-infra/fedora-tagger/commit/55ed00b4f5857be3b6d6b20b37f68e5623fb2877>`_
+- Import list of meta-applications from gnome-software. `11878c60d <https://github.com/fedora-infra/fedora-tagger/commit/11878c60d4ff9bf907b9a21a40e06462d6019022>`_
+- Merge pull request #138 from fedora-infra/feature/dump-votes-number `c8e0908dd <https://github.com/fedora-infra/fedora-tagger/commit/c8e0908dda3b082772173b9d571d716429b26f4b>`_
+- Handle case where meta-application data is malformed. `358adfb88 <https://github.com/fedora-infra/fedora-tagger/commit/358adfb88cb6c013503f3a5280f17e875d190722>`_
+- Merge pull request #139 from fedora-infra/feature/meta-applications `5d87db572 <https://github.com/fedora-infra/fedora-tagger/commit/5d87db5729a39b4c3fa0995bcb7d15e5144146f1>`_
+- model, lib, api, and tests for an "i use this" feature. `4a264acb1 <https://github.com/fedora-infra/fedora-tagger/commit/4a264acb125777455a77438a20cce82edf3b20b4>`_
+- Add requests as a requirement for the tests `429de8f85 <https://github.com/fedora-infra/fedora-tagger/commit/429de8f857a8053fcbed70ad72b1773232cde18b>`_
+- Port the unit-tests to faitout `9bc453022 <https://github.com/fedora-infra/fedora-tagger/commit/9bc453022e5d9f31826ce44ea9e57ecad461a500>`_
+- Add alembic upgrade stuffs for the new usage table. `94fe45c3b <https://github.com/fedora-infra/fedora-tagger/commit/94fe45c3bde4b219ec113e64ba0227b29b2e5be4>`_
+- Add a usage button to the frontend. `12ce1e381 <https://github.com/fedora-infra/fedora-tagger/commit/12ce1e38127f6146358fa0dba627fcb5aeac8233>`_
+- Add missing requirement to run the tests on faitout: psycopg2 `8e2a07764 <https://github.com/fedora-infra/fedora-tagger/commit/8e2a07764a359f216ad149786a6172b9529ecf12>`_
+- Merge pull request #140 from fedora-infra/faitout `07530a99a <https://github.com/fedora-infra/fedora-tagger/commit/07530a99a0e0c522475c72ac3410a1db49adb448>`_
+- Merge pull request #141 from fedora-infra/feature/i_use_this `7c60a206a <https://github.com/fedora-infra/fedora-tagger/commit/7c60a206a5abeeb461a9d177f26e2d5014ad4ff0>`_
+
+2.0.8
+-----
+
+- Bumpspec. `91df2088d <https://github.com/fedora-infra/fedora-tagger/commit/91df2088d0d2c55ed6634f0bca1c847a63474f90>`_
+- Fix js locking problem that was breaking search (still). `c6e448a1d <https://github.com/fedora-infra/fedora-tagger/commit/c6e448a1dd1f0d293371b5e96e75a531e3afe821>`_
+- Merge pull request #132 from fedora-infra/feature/fix-search-for-the-100000th-time `8fde74839 <https://github.com/fedora-infra/fedora-tagger/commit/8fde74839b975071816cc62a0f14f1e2097904fa>`_
+- Bump spec version. `41b949fab <https://github.com/fedora-infra/fedora-tagger/commit/41b949fabf31068434f6240cb69d8378f0ddff60>`_
+
+2.0.7
+-----
+
+- Add instructions for configuring virtualenvwrapper `864eee89e <https://github.com/fedora-infra/fedora-tagger/commit/864eee89e456b60bba327d1eb39c15494404d8a9>`_
+- Use consistent syntax in the readme `c2d0676e7 <https://github.com/fedora-infra/fedora-tagger/commit/c2d0676e7ce6f1e099dd4930e6d561e86d5712e2>`_
+- Added Test case for tag_sorter etc `89bfc2070 <https://github.com/fedora-infra/fedora-tagger/commit/89bfc207097569c34a391725841e07f9ffb925de>`_
+- Modified Test case for tag_sorter by following pep8 coding convention `a15d89384 <https://github.com/fedora-infra/fedora-tagger/commit/a15d8938408c0ed21a436cda84702a025e7bf159>`_
+- Modified Test case for tag_sorter by following pep8 coding convention `e1f9d3f89 <https://github.com/fedora-infra/fedora-tagger/commit/e1f9d3f895276fc4e1a78c4e15a6244439e77dfc>`_
+- Modified Version of  Test case for tag_sorter with pep8 coding convention etc `7b51aebf4 <https://github.com/fedora-infra/fedora-tagger/commit/7b51aebf429b3a04c14d0e2673e7e67ca9b2b98b>`_
+- Modified Version 1 of  Test case for tag_sorter with pep8 coding convention etc `be79621f8 <https://github.com/fedora-infra/fedora-tagger/commit/be79621f893ed3e47c73d8dad9ceb2a45237687d>`_
+- Modified Version of  Test case with an additional test case for tag_sorter with pep8 coding convention etc `6641d1bc2 <https://github.com/fedora-infra/fedora-tagger/commit/6641d1bc23e6abf1b289a157f028837ec0bfea25>`_
+- Merge pull request #122 from Swetha5/develop `d4703fe4f <https://github.com/fedora-infra/fedora-tagger/commit/d4703fe4f948bc6742ba19bbfc6748d05830f2b2>`_
+- Added a new Test case for test_rank_changes with pep8 coding convention `65dd8caf6 <https://github.com/fedora-infra/fedora-tagger/commit/65dd8caf631fa1731e29f4513fd0b82e73ce0f22>`_
+- Merge pull request #123 from Swetha5/develop `7f20758c9 <https://github.com/fedora-infra/fedora-tagger/commit/7f20758c9cbfdf2bf436a8650cc96eaa2c3d44ff>`_
+- Added test cases in test_add_tag with pep8 coding convention. `7328ab763 <https://github.com/fedora-infra/fedora-tagger/commit/7328ab763de61b378c2568642ab89e58d55c2f72>`_
+- Merge pull request #124 from Swetha5/develop `f356f5f94 <https://github.com/fedora-infra/fedora-tagger/commit/f356f5f941e42d4eb12b6fc6142e8155476ddfc6>`_
+- Modified Tag.banned and Added test cases for Tag.banned following pep8 coding convention. `db9580102 <https://github.com/fedora-infra/fedora-tagger/commit/db9580102cd922b4fda394d7ac04de4761ecb98e>`_
+- Modified Tag.banned and Added additional test cases for Tag.banned following pep8 coding convention. `f51696aa1 <https://github.com/fedora-infra/fedora-tagger/commit/f51696aa16ec96aaaf8994f03916121c8c43bb85>`_
+- Merge pull request #125 from Swetha5/develop `edd57a5ff <https://github.com/fedora-infra/fedora-tagger/commit/edd57a5ff5b6cc33288642187e02fe0c99af683e>`_
+- Added a Test case to test ValueError Exception in fedoratagger.api.api.tag_pkg_put following pep8 coding conventions. `1703e05d0 <https://github.com/fedora-infra/fedora-tagger/commit/1703e05d0bd4e0092b14ccb4d4f51eddfa892d2a>`_
+- Adding a comment to the (source code)Test case to test ValueError Exception in fedoratagger.api.api.tag_pkg_put. `888a01f73 <https://github.com/fedora-infra/fedora-tagger/commit/888a01f736e5a13e2d3618302788825bbb0d5283>`_
+- Merge pull request #126 from Swetha5/develop `087b829ca <https://github.com/fedora-infra/fedora-tagger/commit/087b829cae2ff160ba3ac3fcb2cf9786faa035f2>`_
+- Handle hostname in fedmsg endpoints the 'right' way. `aa0714665 <https://github.com/fedora-infra/fedora-tagger/commit/aa07146650e815bf43b1167909e0dcae79b0289a>`_
+- removed the integrity exception `885e0c804 <https://github.com/fedora-infra/fedora-tagger/commit/885e0c804ed1ff69fa9b18a59ad455c7170549dc>`_
+- Merge pull request #127 from Tessie/develop `5db579fdb <https://github.com/fedora-infra/fedora-tagger/commit/5db579fdbbc79c3ea04df8985e0115cfab8efef2>`_
+- working tests `fe619cce4 <https://github.com/fedora-infra/fedora-tagger/commit/fe619cce48cf9c4943a7741f761ee076fa641ed3>`_
+- added toggle test `d019bf833 <https://github.com/fedora-infra/fedora-tagger/commit/d019bf83391ff7f7499dd3fc50f537a6eb3d6205>`_
+- added test `45638319b <https://github.com/fedora-infra/fedora-tagger/commit/45638319b92a003e9ab94f212dfbb2622e2d7afd>`_
+- Merge pull request #130 from beckastar/develop `01980280f <https://github.com/fedora-infra/fedora-tagger/commit/01980280fe8a1090ba553bef73ced44a7b8127e8>`_
+- Remove some unbecoming css from the searchbox. `767a4be24 <https://github.com/fedora-infra/fedora-tagger/commit/767a4be242ffcfb652cd817ffc302de625ab9057>`_
+- Give the search box the right class.  How did this get messed up? `6aef7bb47 <https://github.com/fedora-infra/fedora-tagger/commit/6aef7bb47cea73b702e0cbfd728cf3e04d58146a>`_
+- Merge pull request #131 from fedora-infra/feature/search-fixes `c88f216ff <https://github.com/fedora-infra/fedora-tagger/commit/c88f216ff703f7be5b6da9fb74abb2878e60e96c>`_
+
+2.0.6
+-----
+
+- Fix "did not changed" --> "did not change" in gritter notification. `befc28fd5 <https://github.com/fedora-infra/fedora-tagger/commit/befc28fd5e7cd2c40809fb86799068f960860667>`_
+- Add python-openid-cla as requirement `e2e776e47 <https://github.com/fedora-infra/fedora-tagger/commit/e2e776e47e5b822b4593e5e3e55c5eadc1076714>`_
+- Add python-openid-team as requirement `c27341bbc <https://github.com/fedora-infra/fedora-tagger/commit/c27341bbc952549dbe742e9d10c363038ff2b3b0>`_
+- These are required these days.. `26653b15d <https://github.com/fedora-infra/fedora-tagger/commit/26653b15df585c5c6412d12a2a88715b16a977ca>`_
+- No more need for this TODO list. `069489a3f <https://github.com/fedora-infra/fedora-tagger/commit/069489a3f42adb47bb997b1b6c7c501bc52fd0a5>`_
+- Initial UI reorg for search-bar. `9bb6ee314 <https://github.com/fedora-infra/fedora-tagger/commit/9bb6ee3144bfb336e0e7417ef10b899a04603b17>`_
+- Functionality. `db392bd74 <https://github.com/fedora-infra/fedora-tagger/commit/db392bd740360e47d65663ade5f257864e2538c0>`_
+- Try to distinguish css selectors a little. `bc861b374 <https://github.com/fedora-infra/fedora-tagger/commit/bc861b3745be2a0a093be728437d2badbd77e099>`_
+- Merge pull request #111 from fedora-infra/feature/search-bar `f4d37a3c0 <https://github.com/fedora-infra/fedora-tagger/commit/f4d37a3c0c1eaf6cadbcc170e65c2376cb841d4b>`_
+- Remove debugging statement `4e87ff496 <https://github.com/fedora-infra/fedora-tagger/commit/4e87ff496810a782dd2b1c06e3292dec3abcf2d7>`_
+- Expand the API to return ratings of multiple packages `eddbe46b3 <https://github.com/fedora-infra/fedora-tagger/commit/eddbe46b3cc83bd50f667912c00164de5a4c14c5>`_
+- Loosen pyzmq constraint. `57dfc362e <https://github.com/fedora-infra/fedora-tagger/commit/57dfc362efeb1ac1e827189d9fc692a2d9497f3a>`_
+- More dep fixups. `1a01de17d <https://github.com/fedora-infra/fedora-tagger/commit/1a01de17d0058ca80c1bcf03a604b6fee4f98d8b>`_
+- Require old tw2 to avoid a unicode explosion in the tests. `fd631e6f4 <https://github.com/fedora-infra/fedora-tagger/commit/fd631e6f47c7b074669eb3e1803f1897b553f763>`_
+- Merge pull request #115 from fedora-infra/feature/deps `8af643db8 <https://github.com/fedora-infra/fedora-tagger/commit/8af643db879929d7738c81a3c67460e296883d3b>`_
+- Merge branch 'develop' into expand_api `97459ce38 <https://github.com/fedora-infra/fedora-tagger/commit/97459ce380a68cb06de3e9e1052ba3efaaf689c4>`_
+- Fix what I think is a broken test. `1e9bbb71d <https://github.com/fedora-infra/fedora-tagger/commit/1e9bbb71d81c3e7d83118640601a192d438c1b03>`_
+- Merge pull request #114 from fedora-infra/expand_api `3fb0510c4 <https://github.com/fedora-infra/fedora-tagger/commit/3fb0510c48e7d3292dd7e8b1ff6d4117984bb746>`_
+- Dont pull old tags from pkgdb anymore. `62c9fe612 <https://github.com/fedora-infra/fedora-tagger/commit/62c9fe6129066130700b93290306147b5f62b588>`_
+- Require openid extensions in the spec file. `35ccdf93a <https://github.com/fedora-infra/fedora-tagger/commit/35ccdf93ae3db1725012726c492545b4e07f0b4b>`_
+- Merge pull request #117 from fedora-infra/feature/openid-deps `9052046b5 <https://github.com/fedora-infra/fedora-tagger/commit/9052046b5b1f9697e59fd1e1393d08e839b974f0>`_
+- Merge pull request #116 from fedora-infra/feature/pkgdb-cronjob `01b3c1b33 <https://github.com/fedora-infra/fedora-tagger/commit/01b3c1b33fd0c97d432eb55e3074eaacff5e17e6>`_
+- Update the title element with the package name.  Fixes #110. `353ce6003 <https://github.com/fedora-infra/fedora-tagger/commit/353ce6003146bf55959f9a4a3d475e559c2e7081>`_
+- Merge pull request #119 from fedora-infra/feature/title-update `d0cdb2de9 <https://github.com/fedora-infra/fedora-tagger/commit/d0cdb2de9e7e59040b1cff0d47dc5e93db9377c6>`_
+
+2.0.5
+-----
+
+- Show a dialog while stats are loading.  Fixes #90. `5970a59da <https://github.com/fedora-infra/fedora-tagger/commit/5970a59da738dd121b20bcfb5a3ab16f0400fe01>`_
+- Wipe out anything the user typed into the add box if they cancel.  Fixes #89. `b2cb49858 <https://github.com/fedora-infra/fedora-tagger/commit/b2cb49858974ef82aacc553e9053510c7d8cd497>`_
+- More descriptive descriptions of hotkeys.  Fixes #87. `6d282f95b <https://github.com/fedora-infra/fedora-tagger/commit/6d282f95bdff4464a9f45502b3466b5f9ba8c1d9>`_
+- Disallow multiple clicks on the navigate-next-card button.  Fixes #84. `436f0f743 <https://github.com/fedora-infra/fedora-tagger/commit/436f0f74387e6b24f9886a22936ebd64d7054fcd>`_
+- Merge pull request #93 from fedora-infra/feature/stats-dialog-pause `32da7b0d0 <https://github.com/fedora-infra/fedora-tagger/commit/32da7b0d04923c271de72d20cac3acb26e9d969b>`_
+- Merge pull request #94 from fedora-infra/feature/wipe-add-box `51a1aee75 <https://github.com/fedora-infra/fedora-tagger/commit/51a1aee75bed23b6d74210c7e1f9f1e47da9ab12>`_
+- Merge pull request #96 from fedora-infra/feature/corrupt-url `dfed07616 <https://github.com/fedora-infra/fedora-tagger/commit/dfed076163752d5be7a83e9010727d1f1ce5819a>`_
+- Merge pull request #95 from fedora-infra/feature/hot-hot-hotkeys `43cb7abab <https://github.com/fedora-infra/fedora-tagger/commit/43cb7abab7ddb5837777477b7cd506a964f25a60>`_
+- Fix the card_new js to match the modern API. `d2bcc6dd6 <https://github.com/fedora-infra/fedora-tagger/commit/d2bcc6dd6b7a630b48de09c26568f6b60d699d59>`_
+- Use the Fedora Packages API to handle tagger search.  Fixes #88. `4f15ac1b8 <https://github.com/fedora-infra/fedora-tagger/commit/4f15ac1b8084bb71d52acea7e99c885a0c25ed78>`_
+- Merge pull request #99 from fedora-infra/feature/search-revival `bf1023453 <https://github.com/fedora-infra/fedora-tagger/commit/bf102345323045ffd08ab213a15e25a081501130>`_
+- Remove console.log statements. `d0f0cf217 <https://github.com/fedora-infra/fedora-tagger/commit/d0f0cf217f29ff39ae27e025689168fb12f0eb05>`_
+- Always use lowercase tags. `fdfd40d3a <https://github.com/fedora-infra/fedora-tagger/commit/fdfd40d3ad61e41c0a9cad6fdfcf0393b060f7ab>`_
+
+2.0.4
+-----
+
+- Get around unicode/sqlite issues discovered in production. `995f499d8 <https://github.com/fedora-infra/fedora-tagger/commit/995f499d81ac13f1257f544e72048bedc6c53bad>`_
+- All my ordinals are out of range!  s/gnome/gnóme/g for the tests. `a786f164a <https://github.com/fedora-infra/fedora-tagger/commit/a786f164aa073fc8337d1b929628081ad03e0c8c>`_
+- Merge pull request #82 from fedora-infra/feature/unicode-sqlite `4c997564c <https://github.com/fedora-infra/fedora-tagger/commit/4c997564cb860f49ebe1d2c46814a7beaba8144c>`_
+
+2.0.3
+-----
+
+- Use our new cached score instead of recomputing the length of the votes assoc. `3c070b0fb <https://github.com/fedora-infra/fedora-tagger/commit/3c070b0fb37b4d1b3d5a1fdcc13577eb1acade91>`_
+- Something is acting fishy.  Be more careful here. `6bbe55360 <https://github.com/fedora-infra/fedora-tagger/commit/6bbe553605e192505d4b60b35196cb3d426446c0>`_
+- Make sure to save rank changes. `71de8f8e9 <https://github.com/fedora-infra/fedora-tagger/commit/71de8f8e9ec6b8a075fdd74ee329e4d5a014f55c>`_
+- Merge pull request #73 from fedora-infra/feature/packages-compat `738872214 <https://github.com/fedora-infra/fedora-tagger/commit/7388722144f4e7a1c0857a412e14c861f88460d2>`_
+- Simplify that sort.  Thanks @lmacken. `7a63d871d <https://github.com/fedora-infra/fedora-tagger/commit/7a63d871d61068d58178edf97d7b95d7128c5a9d>`_
+- Merge pull request #71 from fedora-infra/feature/rankings `6deb396d6 <https://github.com/fedora-infra/fedora-tagger/commit/6deb396d6f132a338425a6890f5f5e84d2f1e988>`_
+- Add an API url to export sqlitebuildtags. `91e752a47 <https://github.com/fedora-infra/fedora-tagger/commit/91e752a47ea378d6ea37ad6b0a9a18531a6e1c52>`_
+- Add test case for new sqlite build tags url. `814041590 <https://github.com/fedora-infra/fedora-tagger/commit/81404159018397499e5c60e48e4462813b1200a4>`_
+- 2.0.2 `ceaa76907 <https://github.com/fedora-infra/fedora-tagger/commit/ceaa76907348379dc34d5f53bc52f009e3a1c3e1>`_
+- Fix spelling typo. `aa181f972 <https://github.com/fedora-infra/fedora-tagger/commit/aa181f97203c89401ec582564979a0bace8269bd>`_
+- Add brief documentation about tag/rating export URLs. `2a2b0637e <https://github.com/fedora-infra/fedora-tagger/commit/2a2b0637e88481383d9978200732a837007c6330>`_
+- Merge pull request #74 from fedora-infra/feature/sqlitebuildtags `3314da79c <https://github.com/fedora-infra/fedora-tagger/commit/3314da79c8a042045f3e36b3cfbca0b912c9a545>`_
+- When retrieve package detail links, name can be in the url or as argument `ea818e89d <https://github.com/fedora-infra/fedora-tagger/commit/ea818e89d8e831bfb5e8a8ce28079d9f825a796f>`_
+- The OpenID login expects a 'next' argument to redirect to after login `9a0a4771e <https://github.com/fedora-infra/fedora-tagger/commit/9a0a4771e834da5952d27d2d1abc40fc0beac28c>`_
+- Fix the shebangs in createdb and runserver `77edf48d0 <https://github.com/fedora-infra/fedora-tagger/commit/77edf48d0f6337ecefc0d350ae576697bcb91f83>`_
+- Merge pull request #80 from fedora-infra/fix_shebang `a40df86b7 <https://github.com/fedora-infra/fedora-tagger/commit/a40df86b72da327abf04b5d3dae629eac0ece658>`_
+- Merge pull request #78 from fedora-infra/fix_broken_links `fc4089d2b <https://github.com/fedora-infra/fedora-tagger/commit/fc4089d2be6a342bc173ed31c986c83a102f40c2>`_
+- Remove old unused template. `7c80db211 <https://github.com/fedora-infra/fedora-tagger/commit/7c80db2117ab7efe13a827c5d9974f155ce99964>`_
+- Use javascript for login logout links so openid redirects work correctly. `954d17033 <https://github.com/fedora-infra/fedora-tagger/commit/954d170339e7b6dc198fb2800818070c6fdc9ce3>`_
+- Merge pull request #79 from fedora-infra/redirect_login `99d514be7 <https://github.com/fedora-infra/fedora-tagger/commit/99d514be767e878d21479eb14dadf7dc01a4b1ba>`_
+- Update user widget with score as they vote.  Fixes #72 `41d9af84c <https://github.com/fedora-infra/fedora-tagger/commit/41d9af84c2f8e7908e045d3d3a46006e5c5d5207>`_
+- More tests for @pypingou! `4453d23b3 <https://github.com/fedora-infra/fedora-tagger/commit/4453d23b3a7fad57d67887ab688aac718242e00e>`_
+- Merge pull request #81 from fedora-infra/feature/score-ui `dd4867a9b <https://github.com/fedora-infra/fedora-tagger/commit/dd4867a9b44741e28a00fe795be7a99ba0a81816>`_
+
+2.0.2
+-----
+
+- Fix a last lingering test for #70. `47fc502e6 <https://github.com/fedora-infra/fedora-tagger/commit/47fc502e6cea7c5bea76f2e8704d21725d0d92a1>`_
+- Compat url for fedora-packages' cronjob. `7bda399e3 <https://github.com/fedora-infra/fedora-tagger/commit/7bda399e37d8621218c724e66f80608cfde3e461>`_
+
+2.0.1
+-----
+
+- Reverse the rank ordering. `850822dd5 <https://github.com/fedora-infra/fedora-tagger/commit/850822dd57a9d0d168cc08ffa696b2330755f745>`_
+- Bugfix.  iterators don't have index. `be9181903 <https://github.com/fedora-infra/fedora-tagger/commit/be9181903bdacc8ce3b428317cbdadda2c9b3adf>`_
+- Bugfix.  iterators don't have a .__len__. `71df06ffd <https://github.com/fedora-infra/fedora-tagger/commit/71df06ffd3f5cc54257f5c53936db1e23b323a92>`_
+- Don't spam the bus with users' entire voting histories. `509345642 <https://github.com/fedora-infra/fedora-tagger/commit/5093456425e0223fabd62d1fb04b420c0772b318>`_
+- Bump spec to release 5. `799e87284 <https://github.com/fedora-infra/fedora-tagger/commit/799e8728431291a437ae1d01c57afc70cca2b550>`_
+- Less strict queries. `fe578e53c <https://github.com/fedora-infra/fedora-tagger/commit/fe578e53c88307df640538a92633233d4d8e338b>`_
+- De-duplicate packages in the tagger DB as they are found. `bcbab224c <https://github.com/fedora-infra/fedora-tagger/commit/bcbab224c18c5af43ff922fbf93c3e083ff2ae11>`_
+- Workaround db deadlock issue. `38fa0f8a9 <https://github.com/fedora-infra/fedora-tagger/commit/38fa0f8a9aab30994019646a08c0730428497720>`_
+- Replace beefy favicon with beefymiracle.org's `ee893d022 <https://github.com/fedora-infra/fedora-tagger/commit/ee893d0228779db8d20374bf1649401d43012012>`_
+- Merge pull request #58 from fedora-infra/feature/update-beefy `a0d99303f <https://github.com/fedora-infra/fedora-tagger/commit/a0d99303f682c3155b15913eaa19f893a6737247>`_
+- Change the title of the statistics dialog to 'Statistics' `774468797 <https://github.com/fedora-infra/fedora-tagger/commit/7744687977d8bf897a74d5ced81712c5630ac8f2>`_
+- Import first working code of TaggerAPI `934d97286 <https://github.com/fedora-infra/fedora-tagger/commit/934d97286b6d1d73ac7fbec15ca7511cf1b33a03>`_
+- Add a .gitignore file `3116acea7 <https://github.com/fedora-infra/fedora-tagger/commit/3116acea7ebb85dfde20c1120f2c6f9888aa95f2>`_
+- Add the __requires__ line to make it work on EL6 `3b7b872dc <https://github.com/fedora-infra/fedora-tagger/commit/3b7b872dc7e71e96061f036a4bfc3ca6a0d30759>`_
+- Update the database schema `e2d3ebf22 <https://github.com/fedora-infra/fedora-tagger/commit/e2d3ebf22f2bc88c0cd8ec59589d5dd1378ee1ce>`_
+- Update the logic to associate a tag to a package with the new model `2601cdf5e <https://github.com/fedora-infra/fedora-tagger/commit/2601cdf5ec4044b747ae7d54613d17652b915dfe>`_
+- Make use of the __json__ function and rollback when there is an SA error `4dbe70b69 <https://github.com/fedora-infra/fedora-tagger/commit/4dbe70b69395ab84ba8b0504ea86b54c4a6d7abd>`_
+- Update API documentation `2b74641f4 <https://github.com/fedora-infra/fedora-tagger/commit/2b74641f4177506b99170ddb2a7fda253ddc1cb5>`_
+- Reorder __table_args__ and create the method get_or_create for FASUser `1632b34ac <https://github.com/fedora-infra/fedora-tagger/commit/1632b34ac4f93feca19a0ed0061afe4c691dc426>`_
+- Add add_rating method and logic `fdd54cf8b <https://github.com/fedora-infra/fedora-tagger/commit/fdd54cf8b8e0ba5282072f8ed9658f51738213e6>`_
+- Add validator to make sure the rating submitted is a percentage `c7f20faa9 <https://github.com/fedora-infra/fedora-tagger/commit/c7f20faa90c9c6edb4e20d20259fe1a4fdafac01>`_
+- Implement the rating management, get/post `eb71640be <https://github.com/fedora-infra/fedora-tagger/commit/eb71640be62debeb093523aaa902781e9f7439d7>`_
+- Update the API documentation `2b9aebdb9 <https://github.com/fedora-infra/fedora-tagger/commit/2b9aebdb9ca4bb822a91f822325f0d118376c724>`_
+- Expand the model API `d2ce862e9 <https://github.com/fedora-infra/fedora-tagger/commit/d2ce862e97f2c2f006833af3e8010b06b4739bf0>`_
+- Add form to vote on a tag with the appropriate validator `4053661a1 <https://github.com/fedora-infra/fedora-tagger/commit/4053661a156b4e6ae56fab954d11ce7569bb5b28>`_
+- Add logic to vote on the tag of a package and consider adding an exising tag as a vote `dd8e7d7a7 <https://github.com/fedora-infra/fedora-tagger/commit/dd8e7d7a704529de44239a86a69c48aaa53273da>`_
+- Add API to vote on the tag of a package and record votes when adding a tag `62194709e <https://github.com/fedora-infra/fedora-tagger/commit/62194709e833eaed5316d7a04e9a7893b4c66fa2>`_
+- Adjust the return message to reflect if the vote was added or changed `e985ce9e2 <https://github.com/fedora-infra/fedora-tagger/commit/e985ce9e2bda714a35d1a250c6871507cfae08dd>`_
+- Update API documentation `69a72152e <https://github.com/fedora-infra/fedora-tagger/commit/69a72152e36907751345b4279c642990d373ab3a>`_
+- Add one function to retrieve all known information about a package `c194f118a <https://github.com/fedora-infra/fedora-tagger/commit/c194f118a8a0646202c819deeb48e34668e02506>`_
+- Use PUT requests when adding something to the database `0061fb978 <https://github.com/fedora-infra/fedora-tagger/commit/0061fb9788276bf9c8c0522b530c14c70e3d006e>`_
+- Add a method to get all the packages in the DB `b44b7f67d <https://github.com/fedora-infra/fedora-tagger/commit/b44b7f67d6be4198cf88647af29e041fd3b0ab24>`_
+- Add two possibilities to dump the Tag or Rating info for all the packages in the database `c21459c67 <https://github.com/fedora-infra/fedora-tagger/commit/c21459c67be0cd6c540d2796e6f6f33e61450083>`_
+- Add a all() method to retrieve all the rating in the database. `1c29b50d2 <https://github.com/fedora-infra/fedora-tagger/commit/1c29b50d21faf59153584ec086f6eaac8dd13a3f>`_
+- Rework the dump of the ratings so that we finally have only one query. `6df2856f1 <https://github.com/fedora-infra/fedora-tagger/commit/6df2856f143f8b9acba8a642d02c1a608bf62354>`_
+- Like defaults to 1 when creating a tag `e70549c2f <https://github.com/fedora-infra/fedora-tagger/commit/e70549c2fbb0d1165fef8312298740c1e65d000f>`_
+- Remove the get_or_create for Tag and fix the group_by query from Rating.all() `28e01fcb3 <https://github.com/fedora-infra/fedora-tagger/commit/28e01fcb3522ae479b4945c8384a544770c700e7>`_
+- Fix that tagging for an already existing tag == vote for the tag `005a10d49 <https://github.com/fedora-infra/fedora-tagger/commit/005a10d496b7cb4e616915fffcfccb81c8f2ab2b>`_
+- Make error message more informative to the user than the raw SQLAlchemy message `18e143d43 <https://github.com/fedora-infra/fedora-tagger/commit/18e143d43b7e3ef41fccd5896de8df0a6bda65ec>`_
+- Add the requirements.txt file `ed6b42846 <https://github.com/fedora-infra/fedora-tagger/commit/ed6b42846ad321cc36e038243d7a41c7388084ef>`_
+- Add mechanism to load configuration from TAGGERAPI_CONFIG if provided `52b17f68b <https://github.com/fedora-infra/fedora-tagger/commit/52b17f68baf0f2948264715f2819c70cc4f61283>`_
+- No need to check for ValueError as the field is already an IntegerField `43d082a48 <https://github.com/fedora-infra/fedora-tagger/commit/43d082a48aa088f919535ebb0a3eda3c7b7d17a7>`_
+- Rework flask application `fe9f2fac5 <https://github.com/fedora-infra/fedora-tagger/commit/fe9f2fac543104eb2568d3b54bd53ee63a755316>`_
+- Move the retrieval of the package within the try/except as it can fail `92f971e5b <https://github.com/fedora-infra/fedora-tagger/commit/92f971e5b5de56c1dbac8ce3d9adc0309e422b60>`_
+- The rating of a package is either -1 or a percentage, rework the group by in Rating.all() `21ad7aff8 <https://github.com/fedora-infra/fedora-tagger/commit/21ad7aff80211039f57d6e05ae1f684a38cf3e64>`_
+- Add unit-test and the script to run them `b6b346a9a <https://github.com/fedora-infra/fedora-tagger/commit/b6b346a9a8444266843e1822b0b754e4eeabf1db>`_
+- Don't cover with unit-test some part of the model `ebe25472f <https://github.com/fedora-infra/fedora-tagger/commit/ebe25472f48b0d504922bd61faa7acc24ac420c8>`_
+- Update requirement list `b59eabc69 <https://github.com/fedora-infra/fedora-tagger/commit/b59eabc69b8597f87aac07cd99fa3cf487f8e209>`_
+- Close parenthesis `a024cbae0 <https://github.com/fedora-infra/fedora-tagger/commit/a024cbae0aeb7f1e6a482f691cd2d3c00fea4e77>`_
+- Reformulate an exception and fix typo `402a75920 <https://github.com/fedora-infra/fedora-tagger/commit/402a7592024c19b32160d0bd1831decf5c3ded22>`_
+- Adjust tests to new messages `425ad9ed2 <https://github.com/fedora-infra/fedora-tagger/commit/425ad9ed2b16074bdaf92a79bd43a50d419e9317>`_
+- Move the tests to use json to compare the expected output to the returned output `669631b65 <https://github.com/fedora-infra/fedora-tagger/commit/669631b65702677b48c5b0f13caa91b06208d469>`_
+- pep8 correction on all the headers and harmonize them `2d046b0bd <https://github.com/fedora-infra/fedora-tagger/commit/2d046b0bd84b0c8a0cdc2b4d14d7058257395e72>`_
+- pep8 fixes `874bb4664 <https://github.com/fedora-infra/fedora-tagger/commit/874bb46641b2e080db6a0e9c0217278108f2f87c>`_
+- Small pep8 fixes `62880d6b5 <https://github.com/fedora-infra/fedora-tagger/commit/62880d6b57ffba4543651e551436e713ac340d0d>`_
+- Small pyling fix `fe8217f24 <https://github.com/fedora-infra/fedora-tagger/commit/fe8217f242da0cd772c2da1f9e92a1a451ac6984>`_
+- Make the runserver script executable `6cc895baa <https://github.com/fedora-infra/fedora-tagger/commit/6cc895baa113bfba3ef416219947fd6f548d22ba>`_
+- Only tag if the package has any and if they are not empty `be40783e3 <https://github.com/fedora-infra/fedora-tagger/commit/be40783e300c9cf073db0b7820b5f127edda17fa>`_
+- Fix tests `325981c57 <https://github.com/fedora-infra/fedora-tagger/commit/325981c5785dc8f0a68983305801b10eefb4939a>`_
+- API changes `dacc4077a <https://github.com/fedora-infra/fedora-tagger/commit/dacc4077a44ac504c639cb9739817fe41b52208a>`_
+- Add a link from Tag to Package and the method to retrieve Tag from label `b106cee70 <https://github.com/fedora-infra/fedora-tagger/commit/b106cee708fccea27a0df2328ea98c02a135785d>`_
+- Implement the call to retrieve the packages associated with a tag `54e9811aa <https://github.com/fedora-infra/fedora-tagger/commit/54e9811aa8813fb851094270decfcba76b0d63c2>`_
+- Implement method to retrieve all the packages with a given rating `d12865aa8 <https://github.com/fedora-infra/fedora-tagger/commit/d12865aa84ae3ac5f9b28edd2515c3f8aafc8695>`_
+- Expand the API to retrieve all the packages associated with a given rating. `38a713964 <https://github.com/fedora-infra/fedora-tagger/commit/38a713964e0a432a95ad7830c4cd9e829d6d695a>`_
+- Update API documentation to reflect lastest changes made `c8e39c9a5 <https://github.com/fedora-infra/fedora-tagger/commit/c8e39c9a5094e0906e3ce6163aa16b0cf654235d>`_
+- Add backend method to retrieve a random package `932c41bd9 <https://github.com/fedora-infra/fedora-tagger/commit/932c41bd9e16cbf3fb00e520883203c8ed4d1359>`_
+- Add API entry to retrieve a random package `6acb085c6 <https://github.com/fedora-infra/fedora-tagger/commit/6acb085c6a1cb586b204f2e32a8d9b98389dd45b>`_
+- Fix the default icon to the package icon if no else are found `beaebf12a <https://github.com/fedora-infra/fedora-tagger/commit/beaebf12ac9bf6e38e541572d021c4fafa8a5933>`_
+- Return 404 when there are no package to return in /random/ `f52e05bcb <https://github.com/fedora-infra/fedora-tagger/commit/f52e05bcb868298e52d20200a3db0e70d5eba12a>`_
+- Implement unit-test for /random/ and fix unit-test for url returned `73e150f17 <https://github.com/fedora-infra/fedora-tagger/commit/73e150f17a3dd0ce6d2df2f2ac50da70abf392eb>`_
+- Clean the session after each request and pylint fixes `1dd7a9712 <https://github.com/fedora-infra/fedora-tagger/commit/1dd7a9712af80869bf4285fa0e8cd26fc9187655>`_
+- Add method to get the number of different tags in the DB `b9da953c7 <https://github.com/fedora-infra/fedora-tagger/commit/b9da953c7c955a6fcfdb92c3ac9b2329b8b78fcc>`_
+- Add method to retrieve the statistics of the database `4b88c95a9 <https://github.com/fedora-infra/fedora-tagger/commit/4b88c95a9d8589ebf148b1b9a385a66a3cdbc336>`_
+- Return float where it should be float `44d5f5579 <https://github.com/fedora-infra/fedora-tagger/commit/44d5f55794820c4db2296b24422a58b1d4d53aa3>`_
+- Expose the statistics from the database in the API `18fa53598 <https://github.com/fedora-infra/fedora-tagger/commit/18fa535983924ccf245af68271dc3c6a71c468d2>`_
+- Remove the raw data from the statistics output `a73592347 <https://github.com/fedora-infra/fedora-tagger/commit/a73592347e3ebb4e6dae0f062e196b15e85b26db>`_
+- Make test files runable on EL6 `df8e9650f <https://github.com/fedora-infra/fedora-tagger/commit/df8e9650faaa8b4649242dc960ee83c80ee72a84>`_
+- Add score entry in the user table `635d48473 <https://github.com/fedora-infra/fedora-tagger/commit/635d48473c04d421b73fa9a3bd6c8f369e639c3e>`_
+- Implement scoring in the logic `1e6db146f <https://github.com/fedora-infra/fedora-tagger/commit/1e6db146ff8b73b8fb7563ad7e0010cb11483d66>`_
+- Add a top and a by_name methods to the FASUser object `018cc25c6 <https://github.com/fedora-infra/fedora-tagger/commit/018cc25c6005c4ccffcbd61ce58ecc967a813850>`_
+- Implement the leaderboard and score methods in the backend library `1d023367a <https://github.com/fedora-infra/fedora-tagger/commit/1d023367a7c4ce67623a46a4e0802525e686e4c6>`_
+- Expose the leaderboard and score method in the flask API `a2a1ed392 <https://github.com/fedora-infra/fedora-tagger/commit/a2a1ed392b1fdc8256b446f6bc331a80dcfb0501>`_
+- Make the createdb script executable `07a799f32 <https://github.com/fedora-infra/fedora-tagger/commit/07a799f32f7f17b744d32c405fd53b129f0f5f9e>`_
+- Add some documentation `3fe39d9e2 <https://github.com/fedora-infra/fedora-tagger/commit/3fe39d9e22d49c82cd6818d1a1682db9205a2310>`_
+- Implement the generation of an API token `a4dbf5a72 <https://github.com/fedora-infra/fedora-tagger/commit/a4dbf5a727370e4e2a4fdd9bb3256bb36805e608>`_
+- Update the database upgrade script `ca4543fdb <https://github.com/fedora-infra/fedora-tagger/commit/ca4543fdb7622b9d8098b0da2e2745377b0b117c>`_
+- Provide directly FASUser object to the backend library `4be16f6db <https://github.com/fedora-infra/fedora-tagger/commit/4be16f6db4bcce4746c8d3ba15417faee5207985>`_
+- Move the api to its own file and at /api/ `1131406fc <https://github.com/fedora-infra/fedora-tagger/commit/1131406fc56fd5b12500e5a83d2dda4d36e4ec1a>`_
+- Rename the test_flask file into test_flask_api which is more appropriate considering what is tested `215edb323 <https://github.com/fedora-infra/fedora-tagger/commit/215edb323916a3da96e4166fb658f1f5a658c581>`_
+- We need to commit if the user was created `a8c4d4bc9 <https://github.com/fedora-infra/fedora-tagger/commit/a8c4d4bc95e1eeb9c0c10e8085b2a7541e2efbb0>`_
+- Fix unit-tests `af91141d4 <https://github.com/fedora-infra/fedora-tagger/commit/af91141d4d9b9bba5e8742c82778d734ed4ed688>`_
+- Update API documentation `9832b4098 <https://github.com/fedora-infra/fedora-tagger/commit/9832b4098376a0471f084d7dde2b6d5685d79d3f>`_
+- Add an anonymous boolean field in the user table `18e6357cd <https://github.com/fedora-infra/fedora-tagger/commit/18e6357cd190a55b20c7d0cdb7f99233a30f28a9>`_
+- Update the FASUser object to take into account the new anonymous field `2b2fcd29e <https://github.com/fedora-infra/fedora-tagger/commit/2b2fcd29e978520538320dc1e8eb9fe2b709e6d1>`_
+- Update database scheme in the doc/ `6e5a01d13 <https://github.com/fedora-infra/fedora-tagger/commit/6e5a01d13aeb120ed391d7a0932c3cff7500bc94>`_
+- Add a keyword argument to the get_or_create method of FASUser `f876d8128 <https://github.com/fedora-infra/fedora-tagger/commit/f876d812893d721ab6a60999e200dce47e143796>`_
+- Small changes/fix in the API authentification process `f2bc42137 <https://github.com/fedora-infra/fedora-tagger/commit/f2bc42137a1b1209fdf0690424bac862a9bfca76>`_
+- Update unit-tests accordingly to the latests change `9f5e6d421 <https://github.com/fedora-infra/fedora-tagger/commit/9f5e6d421302ed0547d84762c145c61e6f3a0af5>`_
+- Added some stuff to the .gitignore. `07d1827c0 <https://github.com/fedora-infra/fedora-tagger/commit/07d1827c0516b3f7770f86e1a3f188d41d4a5be8>`_
+- Move taggerapi/ to fedoratagger/blueprints/api/ `8bf1fa11e <https://github.com/fedora-infra/fedora-tagger/commit/8bf1fa11e03e179c6763ef1f4061c5c6002b201e>`_
+- Fully re-namespace to fedoratagger from taggerapi.  Tests pass. `ecf0fb59e <https://github.com/fedora-infra/fedora-tagger/commit/ecf0fb59e2465fecee863ac506f5773ba5795fb0>`_
+- Collapse namespace.  Get rid of fedoratagger.blueprints. `a13095d12 <https://github.com/fedora-infra/fedora-tagger/commit/a13095d12a970c41608a779b1010d6b13a623473>`_
+- Frontend stub. `70e151ac9 <https://github.com/fedora-infra/fedora-tagger/commit/70e151ac947c3668157a89db7a1071e7bb1a8022>`_
+- Fixed the db_upgrade script for postgres. `316386e20 <https://github.com/fedora-infra/fedora-tagger/commit/316386e20804d8e04851f1eee5d1c538914da710>`_
+- Renamespace the createdb script. `db057a87e <https://github.com/fedora-infra/fedora-tagger/commit/db057a87e288c4320bec3bc12fc32513e6d25cac>`_
+- Port over of some of the old UI. `07667e529 <https://github.com/fedora-infra/fedora-tagger/commit/07667e5294dab106270d9fa4422b6a627bb439e8>`_
+- Frontpage and templates for the frontend. `2ec09cb7f <https://github.com/fedora-infra/fedora-tagger/commit/2ec09cb7f7e6ad0500d2ad7bd6aefb68c74769ae>`_
+- Static resources. `a510dc459 <https://github.com/fedora-infra/fedora-tagger/commit/a510dc4597fe6d7b1265d6017c15f64476eb57c7>`_
+- js_escape utility. `14d960ff6 <https://github.com/fedora-infra/fedora-tagger/commit/14d960ff635acbb1147aa6488a03ca2d54d6e9cd>`_
+- Add some more information to the json response from the vote api. `f7cac443e <https://github.com/fedora-infra/fedora-tagger/commit/f7cac443ecf70e8871a827496674957e2e97dbf9>`_
+- Use new /vote/ api from the js frontend. `026ccf9ed <https://github.com/fedora-infra/fedora-tagger/commit/026ccf9ed4dd62b19430cec7ba895fa1363d23f1>`_
+- Factor out flask authn to a flask_utils module. `6b5e81de6 <https://github.com/fedora-infra/fedora-tagger/commit/6b5e81de6a18c079ecf6e0b2bb0caea86f705f2b>`_
+- Use flask authn at pageload in the js app. `27fc2dc62 <https://github.com/fedora-infra/fedora-tagger/commit/27fc2dc626f98a8449671711c3e5a8253c6a82a2>`_
+- Got the statistics pane working. `3375d4979 <https://github.com/fedora-infra/fedora-tagger/commit/3375d49794fbe18e775398ec3273c2f81a43a875>`_
+- Remove spurious import. `d842680f1 <https://github.com/fedora-infra/fedora-tagger/commit/d842680f1f26398099eb2bb67d6b5d9b9a6dd5d7>`_
+- Reorder items just to be more organized. `2db8525da <https://github.com/fedora-infra/fedora-tagger/commit/2db8525daa1dd2cfc6a610b31079b504b4b39e78>`_
+- Only initialize ft.FAS once. `cf8f29243 <https://github.com/fedora-infra/fedora-tagger/commit/cf8f29243ec1e12ee52ad033de80c13894c01bc3>`_
+- Convert Bunch from flask_fas_openid into m.FASUser. `88c5721cd <https://github.com/fedora-infra/fedora-tagger/commit/88c5721cd1238e2666d991f4dde0cc646af63409>`_
+- Add forgotten import. `9de34cc75 <https://github.com/fedora-infra/fedora-tagger/commit/9de34cc7520587fae24af216d55db0c730203cef>`_
+- Add login/logout to the frontend app. `b30e6b043 <https://github.com/fedora-infra/fedora-tagger/commit/b30e6b04385da72447398cc0ddc98d35911caa7a>`_
+- Fix up the hitherto untested UserWidget.  :sparkles:Login works!:sparkles: `5395da45b <https://github.com/fedora-infra/fedora-tagger/commit/5395da45b10752d12f6c210ae53cbf159690ae44>`_
+- Reorganize login widget html. `015977f24 <https://github.com/fedora-infra/fedora-tagger/commit/015977f243bd0b54f552f9e8309baade83a0cfc0>`_
+- "Add tags" from the frontend now uses the new api. `625b7b5b6 <https://github.com/fedora-infra/fedora-tagger/commit/625b7b5b6c2d8eadece3195ae2184afbf5229a53>`_
+- Remove unused imports. `a6c25739a <https://github.com/fedora-infra/fedora-tagger/commit/a6c25739a46b654a7de8fb00f3c275f59f6a3c70>`_
+- Use more specific SQLAlchemy exceptions. `359ae56b1 <https://github.com/fedora-infra/fedora-tagger/commit/359ae56b1eea618f60bb6ac57083748aee7109d2>`_
+- Fix some import issues. `3aece94ea <https://github.com/fedora-infra/fedora-tagger/commit/3aece94ea7837d72eedb246167a346fe7156c6a1>`_
+- Allow tests to be run against postgres. `aaf65a83a <https://github.com/fedora-infra/fedora-tagger/commit/aaf65a83a9462c161079309cb359a8e6a6af2f35>`_
+- Remove old print statements. `53c50e7ab <https://github.com/fedora-infra/fedora-tagger/commit/53c50e7abab5f69ec6275ee037adf775892b16f4>`_
+- Fix rating query to work against postgres and sqlite. `53624dadb <https://github.com/fedora-infra/fedora-tagger/commit/53624dadb0aff61e583e0e71b94632c39165d6bc>`_
+- Fix another rating query to work against postgres and sqlite. `93b755010 <https://github.com/fedora-infra/fedora-tagger/commit/93b75501005a8d5d900e985b0c04ba540b1410eb>`_
+- Add some development data with a switch. `3442d922c <https://github.com/fedora-infra/fedora-tagger/commit/3442d922c198991affb4e80acf6316f263e5b9ef>`_
+- raise NoResultFound like the other classmethods `7ef19af22 <https://github.com/fedora-infra/fedora-tagger/commit/7ef19af226641943daed5936043e218d84fad973>`_
+- Make add dialog respond more gracefully to failure. `991b8f5bd <https://github.com/fedora-infra/fedora-tagger/commit/991b8f5bd453d263297868d7881d7f353f418e5e>`_
+- Spread the jquery disease /cc @lmacken. `a2d7c6aef <https://github.com/fedora-infra/fedora-tagger/commit/a2d7c6aefb722f33c5bd4884a9591d1898463e3e>`_
+- Add new tw2 deps to requirements.txt. `a7e2a2306 <https://github.com/fedora-infra/fedora-tagger/commit/a7e2a2306f91684899e819617f823fe21475eab5>`_
+- Add python-fedora to the reqs for flask_fas_openid. `4cde48c86 <https://github.com/fedora-infra/fedora-tagger/commit/4cde48c8663ce9ec9f97d1ee839fd319ca6006e9>`_
+- Correctly handle newly-raised NoResultFound exception. `b7a03cf6b <https://github.com/fedora-infra/fedora-tagger/commit/b7a03cf6be41c26329baecbaa3780563a409bd74>`_
+- Sqlite support in createdb --with-dev-data `5fa1084f5 <https://github.com/fedora-infra/fedora-tagger/commit/5fa1084f57233ccc59a6a674c9386891ebd37333>`_
+- Selenium test for the frontend. `4bccff4e2 <https://github.com/fedora-infra/fedora-tagger/commit/4bccff4e2e74f799ee3d800c1c9aad7d8f8864f3>`_
+- Logout of openid during selenium test. `a66288634 <https://github.com/fedora-infra/fedora-tagger/commit/a66288634ad845ecdd68c8c0a4fde539c5282829>`_
+- More intense selenium tests. `8cadec30e <https://github.com/fedora-infra/fedora-tagger/commit/8cadec30e50e5e87d0fa871f4ae4f53f935f90fc>`_
+- Disable fedmsg for now. `bcc997b55 <https://github.com/fedora-infra/fedora-tagger/commit/bcc997b553677f76a9c68e74a0d4e33bf119e391>`_
+- Add requirement on WebOb `de953c0b7 <https://github.com/fedora-infra/fedora-tagger/commit/de953c0b7e383cedf99add604b77355d4ebf06b0>`_
+- Test unicode/utf8 stuff by default. `400830f40 <https://github.com/fedora-infra/fedora-tagger/commit/400830f40af0a9ec18f4c8b29d471725b13212c4>`_
+- New requirements. `24aa9e0f6 <https://github.com/fedora-infra/fedora-tagger/commit/24aa9e0f6e11cd8ab28c223cb0ce8dc8f139cf05>`_
+- A setup.py for egg info entrypoints stuff mostly. `771707ce3 <https://github.com/fedora-infra/fedora-tagger/commit/771707ce3bf753dac489ff5bf0fd4a3babac6f38>`_
+- Initial re-packaging as an rpm. `36a346567 <https://github.com/fedora-infra/fedora-tagger/commit/36a3465672421a2de88802c6cf605fa0024e8d30>`_
+- Merge branch 'frontend' of github.com:fedora-infra/fedora-tagger into frontend `0a062bc11 <https://github.com/fedora-infra/fedora-tagger/commit/0a062bc11d5cadcc9ddfe193a6def8d097b832a7>`_
+- Added a pre-staging TODO list. `c68c9f027 <https://github.com/fedora-infra/fedora-tagger/commit/c68c9f027dd93cc701c587dfa49248b079354c14>`_
+- Add fedmsg hooks back in. `7658c4f90 <https://github.com/fedora-infra/fedora-tagger/commit/7658c4f90f8742fd82db9793a2ea51cd5a5c9cc1>`_
+- Add fedmsg config for development. `9aea9f72c <https://github.com/fedora-infra/fedora-tagger/commit/9aea9f72c0e6291f1a5eaf6b2697e97c559fc82c>`_
+- Add a few more fedmsg endpoints for the tests. `8edd3a90c <https://github.com/fedora-infra/fedora-tagger/commit/8edd3a90c48851ba8a9706b0842086bb9c783ff0>`_
+- Fix some package/tag/rating relationship stuff. `3d912ab04 <https://github.com/fedora-infra/fedora-tagger/commit/3d912ab04092a284f3daf4617c06e567e25177be>`_
+- Remove duplicate code. `a9dd29ba1 <https://github.com/fedora-infra/fedora-tagger/commit/a9dd29ba165048d3790aa73fe4e3404d8dd722f2>`_
+- Should have added this file a while ago.  It was accidentally .gitignored. `d82fb7da9 <https://github.com/fedora-infra/fedora-tagger/commit/d82fb7da9940f691244fb6515584147e88779d40>`_
+- Un .gitignore *.cfg files. `1a59f074c <https://github.com/fedora-infra/fedora-tagger/commit/1a59f074c07e98954c03713eb3bebe61647f4b1e>`_
+- Some nosetests configuration for rube. `d00bcd484 <https://github.com/fedora-infra/fedora-tagger/commit/d00bcd48408399087dfe3845fa15f2771a1888b9>`_
+- Mark fedmsg as done in the TODO. `80b1d2c78 <https://github.com/fedora-infra/fedora-tagger/commit/80b1d2c78394f99737f05b8e829375c5af80b7c7>`_
+- Fix frontend app blueprint mount path `65e6b1e88 <https://github.com/fedora-infra/fedora-tagger/commit/65e6b1e886f8e3e17b465495ef295b243b60c249>`_
+- Unearthed a few more TODO items. `b723032d9 <https://github.com/fedora-infra/fedora-tagger/commit/b723032d94e67e1882b0b4bf74f7c26d9ab9200d>`_
+- yumdb is done.  @pypingou is a monster! `0275bc69e <https://github.com/fedora-infra/fedora-tagger/commit/0275bc69e6269c7bf8e65096b4953b209e47827e>`_
+- Gotta get those blacklist tags. `75bb53dd6 <https://github.com/fedora-infra/fedora-tagger/commit/75bb53dd6bf97f9b24bed086f2b11f8f40ebc8e6>`_
+- Gotta remove anonymous user from the leaderboard. `dd0ff50d3 <https://github.com/fedora-infra/fedora-tagger/commit/dd0ff50d3451fd99e86505364bf065c40d767f5a>`_
+- Toggling notifications works now.  :sparkles:Yay!:sparkles: `fcda821d4 <https://github.com/fedora-infra/fedora-tagger/commit/fcda821d4607a185d03b9bf0a846fbef77765031>`_
+- Remove unused import. `2981961c6 <https://github.com/fedora-infra/fedora-tagger/commit/2981961c602a69f19d18adda82d2f473f0f524ed>`_
+- Case-sensitive requirements.txt. `2525c68b5 <https://github.com/fedora-infra/fedora-tagger/commit/2525c68b5ef43ff70e332315bd925af3a06ab4c7>`_
+- Be more careful with the flask.g namespace. `6b407adf9 <https://github.com/fedora-infra/fedora-tagger/commit/6b407adf9392d7c41630d99e01bc94c1adbfda55>`_
+- Port update script over from old TG2 app. `193b4d7ca <https://github.com/fedora-infra/fedora-tagger/commit/193b4d7ca260893e01111413eea06aacf0e1e887>`_
+- Correct old icon code. `265de7dd0 <https://github.com/fedora-infra/fedora-tagger/commit/265de7dd04aa307c324978dc9912e9ae99be9098>`_
+- Drop xapian stuff.  Use pkgwat.api. `fa89b8ba0 <https://github.com/fedora-infra/fedora-tagger/commit/fa89b8ba0c66433354ffee69deb1d376708f9dd3>`_
+- Configurable fedoratagger-update-db script. `f47f91831 <https://github.com/fedora-infra/fedora-tagger/commit/f47f91831bbbaf1c05d4cf2f58446b0bdb63e874>`_
+- No more j5 icons.  :kissing_heart: `0c2392b53 <https://github.com/fedora-infra/fedora-tagger/commit/0c2392b537d10f2768ff43970a853e602aa748ba>`_
+- New test-requirements.txt file. `c76d1301b <https://github.com/fedora-infra/fedora-tagger/commit/c76d1301b73eb0662873055db4e8600ef160f83e>`_
+- Update rube tests to use the latest frontend url path. `f7e546c32 <https://github.com/fedora-infra/fedora-tagger/commit/f7e546c32f01705f5a0b7a97ba84067cc7473bc2>`_
+- Add temporary pyzmq req. `e3b38fd92 <https://github.com/fedora-infra/fedora-tagger/commit/e3b38fd92b09620985e7d18f483f9d50de2fc502>`_
+- Try to get requirements right for jenkins. `103cff3fa <https://github.com/fedora-infra/fedora-tagger/commit/103cff3fac73754904c10404a546e06767ea3fb7>`_
+- Update TODO list. `14ba7f92b <https://github.com/fedora-infra/fedora-tagger/commit/14ba7f92b860210ca57f101fbcf8d8d055355c63>`_
+- Blacklist dirty tags. :see_no_evil: :hear_no_evil: :speak_no_evil: `b02b16760 <https://github.com/fedora-infra/fedora-tagger/commit/b02b16760ab0b8ba19dc08bbf67da22003f4987f>`_
+- Tick the TODO list. `f6e40c1ca <https://github.com/fedora-infra/fedora-tagger/commit/f6e40c1cac0844ea451db4179ba0c3d891edf335>`_
+- Remove anonymous user from the leaderboard. `27887fc5e <https://github.com/fedora-infra/fedora-tagger/commit/27887fc5ed6fc9bd0ea2392fa65f6393f51d66b9>`_
+- Bugfix when there are less than 10 users in the system. `a17cc275d <https://github.com/fedora-infra/fedora-tagger/commit/a17cc275d0acedba6aa36a8ee8ebe46a4dd980df>`_
+- Another TODO item. `a37445754 <https://github.com/fedora-infra/fedora-tagger/commit/a374457543046c3823c0695dd198608af358753e>`_
+- Ratings don't have tags. `d943f15c2 <https://github.com/fedora-infra/fedora-tagger/commit/d943f15c2c4d47a14044f8edff22bde32b430f7a>`_
+- Allow a user to change their rating on a package. `c9aae948f <https://github.com/fedora-infra/fedora-tagger/commit/c9aae948f338036aa92ef27b99a39c7bce0b38b6>`_
+- Hide users' IPs from dumps and fedmsg. `238d51f5f <https://github.com/fedora-infra/fedora-tagger/commit/238d51f5fb15483960036b9c6a67ae5fd21d2b1b>`_
+- Disable selenium tests for now. `63582795d <https://github.com/fedora-infra/fedora-tagger/commit/63582795d6eb92b4f2216f88db07c56d2664a27f>`_
+- Updated setup.py to handle comments in requirements.txt `bb8f92494 <https://github.com/fedora-infra/fedora-tagger/commit/bb8f92494c0c0ffdda1fb6209e339d452cfb481c>`_
+- Remove punctuation for consistency. `b25028e49 <https://github.com/fedora-infra/fedora-tagger/commit/b25028e490f791194e9e03435ae5e6ec1534ba8d>`_
+- Include package information with ratings JSON. `ee36b6e5c <https://github.com/fedora-infra/fedora-tagger/commit/ee36b6e5ce88f3307f02f55ceec51bee72f87fb6>`_
+- Tests require coverage. `678d9e6d3 <https://github.com/fedora-infra/fedora-tagger/commit/678d9e6d372fa3015198d5384d74d120ae38d9ae>`_
+- We actually produce the correct icons now. `c61a14e41 <https://github.com/fedora-infra/fedora-tagger/commit/c61a14e41d4f4cf0c733b7b5f6f8ad8b77ec9833>`_
+- Update tests to correctly reflect rating behavior. `45bce71a2 <https://github.com/fedora-infra/fedora-tagger/commit/45bce71a2ac3c48215c3ef8dd73532b14e1fceb8>`_
+- Publish fedmsg messages on rating updates. `d8943be93 <https://github.com/fedora-infra/fedora-tagger/commit/d8943be93efeeeb8b9871d25f21fb4d537cf6b83>`_
+- Star-rating widget. `c70af4e3f <https://github.com/fedora-infra/fedora-tagger/commit/c70af4e3f9467ac5f457d579f16f265be8f5efa2>`_
+- Fighting with jenkins. `ffd7adb98 <https://github.com/fedora-infra/fedora-tagger/commit/ffd7adb98505e8aeb05f1ad78c2933c1dc423cd8>`_
+- :sparkling_heart:Jenkins is happy.:sparkling_heart: `d199bbb5a <https://github.com/fedora-infra/fedora-tagger/commit/d199bbb5aaa40d09b2ecaef111ec45cecf062d90>`_
+- New rpm requirements. `0788f164b <https://github.com/fedora-infra/fedora-tagger/commit/0788f164bf728d57157344042d01df0f52978c7f>`_
+- Protect against postgres peculiarity. `a1e174a48 <https://github.com/fedora-infra/fedora-tagger/commit/a1e174a4857e4d5a36f4d895b2229730ac54a181>`_
+- Remove that git+http req for now. `6ac45f2e2 <https://github.com/fedora-infra/fedora-tagger/commit/6ac45f2e2f2b52dbec3ef5867f5b70546681ca2e>`_
+- Dev instructions in the README. `88d165fff <https://github.com/fedora-infra/fedora-tagger/commit/88d165fffbfb0f9d849ae4e4df7203b563da14d9>`_
+- Updates for the .spec. `a04f62e9e <https://github.com/fedora-infra/fedora-tagger/commit/a04f62e9ef4607d04a2477495ac2039d5fb63291>`_
+- Add more pre-staging TODO items. `a6959bbb2 <https://github.com/fedora-infra/fedora-tagger/commit/a6959bbb22fea305061708ed678a33c93a268312>`_
+- Merge branch 'develop' into frontend `9d086e55d <https://github.com/fedora-infra/fedora-tagger/commit/9d086e55de365f5fa7daed7dcd7708775c1a352a>`_
+- fix #64 (add link to report bugs) `b0e47f5e7 <https://github.com/fedora-infra/fedora-tagger/commit/b0e47f5e7a0ae26c774ca23cb4be0554ac3f4558>`_
+- fix #56 (final tweaks for readme cleanup) `95d761189 <https://github.com/fedora-infra/fedora-tagger/commit/95d761189fe480ad61c6bb606845f10955ad45ce>`_
+- Merge pull request #66 from oddshocks/develop `2d8d39ec3 <https://github.com/fedora-infra/fedora-tagger/commit/2d8d39ec3381260413365ee06c51786f7058bdce>`_
+- Merge pull request #67 from oddshocks/issue-56 `bbc99be20 <https://github.com/fedora-infra/fedora-tagger/commit/bbc99be20bfd29d09e8c231ebb5d48348d2dfad6>`_
+- A collection of things learned from a first try in staging. `1d5cbffc2 <https://github.com/fedora-infra/fedora-tagger/commit/1d5cbffc2bacadfa04d367a1ceeb536d7a6cc625>`_
+- Add a version to the API link `1c864a071 <https://github.com/fedora-infra/fedora-tagger/commit/1c864a071592d55d5b6045d5d115b23a6bfc7329>`_
+- Update flask_api unit-tests for the new API versioned URL `eff77f8fc <https://github.com/fedora-infra/fedora-tagger/commit/eff77f8fc7a171a5285cc54771fdff74f4e40e86>`_
+- Add API version to the URL the front end uses `544ed3bdd <https://github.com/fedora-infra/fedora-tagger/commit/544ed3bdd16a478247a95cbf2bc3d95be5dcf5c9>`_
+- Update documentation to include the API version in the URLs `a57425bde <https://github.com/fedora-infra/fedora-tagger/commit/a57425bde160feea9da444abe1f48df71bb90b35>`_
+- Make sure to log errors in production. `95184ce4c <https://github.com/fedora-infra/fedora-tagger/commit/95184ce4c08f7b36d22651fc32f5435f2e8f7b72>`_
+- Make tw2 resource prefix configurable (for production) `285976830 <https://github.com/fedora-infra/fedora-tagger/commit/285976830e89db64d6b0430ea68fa20e036afd4b>`_
+- Merge pull request #68 from fedora-infra/versioned_api `84a61ce44 <https://github.com/fedora-infra/fedora-tagger/commit/84a61ce440ad029c0d335f9465d46522a1240ea1>`_
+- A collection of things learned from a first try in staging. `787dd73fe <https://github.com/fedora-infra/fedora-tagger/commit/787dd73fe5bad846de3b921e9bdff4bcc2ce9ff9>`_
+- Merge branch 'feature/log-errors-in-production' into develop `a73415c50 <https://github.com/fedora-infra/fedora-tagger/commit/a73415c507343ee55bdcd906d9e51c046821815b>`_
+- Fix api prefix. `e7c4342f9 <https://github.com/fedora-infra/fedora-tagger/commit/e7c4342f909a05bfc2b63149706632530eceecfb>`_
+- Fix focus-stealing by the add box. `bee8d5045 <https://github.com/fedora-infra/fedora-tagger/commit/bee8d5045b9c8279caa2d5fb08061cdbc67d01bb>`_
+- Second part to the db upgrade script for user scores. `2a9ab94a7 <https://github.com/fedora-infra/fedora-tagger/commit/2a9ab94a7d91b8d38fcc5364f383c4665651c7cd>`_
+- Some updates from db02.stg. `8c407ae45 <https://github.com/fedora-infra/fedora-tagger/commit/8c407ae456bafe6d947c5a8931104a049bee67f6>`_
+- Add login notice if anonymous and package has no tags.  Fixes #65. `c13a2b8c3 <https://github.com/fedora-infra/fedora-tagger/commit/c13a2b8c3ecb285b5063d775b0dfebd62a87131b>`_
+- 2.0.0 `e03f9ea43 <https://github.com/fedora-infra/fedora-tagger/commit/e03f9ea43a9ae2709af21b964e36bfdd1f4b419c>`_

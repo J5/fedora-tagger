@@ -1,0 +1,11 @@
+include fedoratagger/dirtywords.txt
+include requirements.txt
+include test-requirements.txt
+include setup.cfg
+include README.rst
+include fedoratagger/README.rst
+include alembic.ini
+graft alembic
+graft apache
+graft fedoratagger/frontend/static
+recursive-include fedoratagger *.py *.mak *.js *.css *.png *.gif *.html
